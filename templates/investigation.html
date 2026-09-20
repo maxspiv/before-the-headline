@@ -3,19 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Signal / Noise — Before the Headline</title>
+<title>Signal / Noise — {{ inv.title }}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
 </head>
-<body>
+<body data-investigation-id="{{ inv.id }}" data-story-label="{{ inv.story_label }}">
 <header class="site-header">
   <div class="header-inner">
     <div class="brand">
+      <a class="wordmark brand-link" href="/">← Investigations</a>
       <span class="wordmark">Signal / Noise</span>
       <span class="tagline">Before the Headline · Evidence lab</span>
     </div>
     <div class="header-right">
       <span class="cache-pill">Local · cached data only</span>
-      <span class="coverage-warning">Incomplete observed coverage</span>
+      <span class="coverage-warning">{{ inv.coverage_status }}</span>
       <nav class="site-nav">
         <a href="#inspect">Inspect</a>
         <a href="#replay">Replay</a>
@@ -27,17 +28,18 @@
 
 <main>
   <section class="hero">
-    <p class="kicker">A HackMIT 2026 evidence desk</p>
-    <h1>Inspect a news spike.</h1>
-    <p class="hero-copy">Separate relevant coverage from unrelated matches and repeated reporting.</p>
-    <p class="section-note">Explore cached GDELT-result and externally discovered pages around a reported MSC booking suspension. This is an evidence-inspection prototype, not a live feed.</p>
+    <p class="kicker">{{ inv.kicker }}</p>
+    <h1>{{ inv.title }}</h1>
+    <p class="hero-copy">{{ inv.description }}</p>
     <p><a class="cta" id="begin-investigation" href="#inspect">Begin investigation</a></p>
+    {% if inv.aggregate_context %}
     <aside class="aggregate-block" id="aggregate-block">
       <p class="aggregate-copy"><strong>Broad-query context, not sample size.</strong> <span id="aggregate-count">—</span> aggregate matches.</p>
-      <p class="aggregate-copy">The inspected sample combines Spanish GDELT-result pages with externally discovered evidence. It is not representative of this English-language aggregate, and we have not established what caused the spike.</p>
-      <p class="aggregate-meta" id="aggregate-meta">GDELT TimelineVolRaw
-      aggregate · English shipping · 31 Aug 2026</p>
+      <p class="aggregate-copy">{{ inv.aggregate_context.meaning }}</p>
+      <p class="aggregate-meta" id="aggregate-meta">{{ inv.aggregate_context.source }}
+      · {{ inv.aggregate_context.language }} · {{ inv.aggregate_context.date }}</p>
     </aside>
+    {% endif %}
   </section>
 
   <section id="inspect" class="panel">
@@ -45,11 +47,10 @@
       <p class="section-number">01</p>
       <h2>Inspect the matches</h2>
     </div>
-    <p class="section-note" id="scope-notice">The reviewed set mixes GDELT
-    results and externally discovered contextual pages, including other-topic
-    checks. It is not every GDELT match.</p>
+    <p class="section-note" id="scope-notice"></p>
     <p class="control-note">Entire inspected set · before browser filters</p>
     <div class="summary-counters" id="summary-counters" aria-live="polite"></div>
+    <p class="control-note" id="classification-note">{{ inv.classification_note }}{% if inv.origin == 'imported' %} {{ inv.persistence_note }}{% endif %}</p>
 
     <form class="controls" id="filter-controls">
       <label class="control"><input type="checkbox" id="show-unrelated" checked>
@@ -61,7 +62,7 @@
       <label class="control"><input type="checkbox" id="include-uninspected">
         <span>Include uninspected inventory</span></label>
       <div class="control-buttons">
-        <button type="button" id="focus-msc">Focus on MSC story</button>
+        <button type="button" id="focus-story">Focus on {{ inv.story_label }}</button>
         <button type="button" id="reset-filters">Reset filters</button>
       </div>
     </form>
@@ -82,9 +83,7 @@
     <p class="section-note" id="replay-scope"></p>
     <div class="day-buttons" id="day-buttons" role="group"
          aria-label="Select publisher-claimed day">
-      <button type="button" data-day="all" class="day-btn active">All observed pages</button>
-      <button type="button" data-day="2026-08-31" class="day-btn">31 Aug</button>
-      <button type="button" data-day="2026-09-01" class="day-btn">1 Sep</button>
+      <button type="button" data-day="all" class="day-btn active">All days</button>
     </div>
     <p id="replay-count" aria-live="polite"></p>
     <div id="replay-timeline" class="replay-timeline"></div>
@@ -98,39 +97,6 @@
     </div>
     <div id="uncertainty-cards" class="card-grid uncertainty-grid"></div>
   </section>
-
-  <section id="technical-results" class="panel technical-results">
-    <details>
-      <summary>
-        <span class="section-number">04</span>
-        <span class="details-title">Technical results — separate historical multilingual experiment</span>
-        <span class="details-hint">Optional · not part of the MSC case study · feasibility, not validated detection</span>
-      </summary>
-      <p class="section-note">A bounded check of whether GDELT's separate <em>translated</em> GKG stream carries usable historical source-language labels. It is independent of the MSC replay above and did not build or evaluate a detector.</p>
-      <div class="summary-counters">
-        <div class="counter"><strong>6</strong>translated GKG files verified</div>
-        <div class="counter"><strong>14,725</strong>GKG records</div>
-        <div class="counter"><strong>60</strong>reported source-language code values</div>
-        <div class="counter"><strong>14,320</strong>distinct typed document identifiers</div>
-        <div class="counter"><strong>6</strong>non-English article bodies confirmed by manual review</div>
-      </div>
-      <div class="card-grid results-grid">
-        <article class="evidence-card">
-          <p class="card-title">What was established</p>
-          <p class="card-meta">Six translated GKG ZIPs for 00:00 and 00:15 UTC on 1 March 2015, 2017 and 2019 returned HTTP 200 and matched manifest sizes and MD5s. Every record carried an explicit <code>srclc</code> source-language code and a translated-record marker. Codes are retained as supplied; 60 code values are not a validated census of 60 languages.</p>
-        </article>
-        <article class="evidence-card">
-          <p class="card-title">Article-body language check</p>
-          <p class="card-meta">A frozen, topic-independent sample of 96 URLs (72 native, 24 translated) was fetched with caching and robots checks. 49 returned HTTP success; 35 diagnostic body-language candidates remained after review. Manual inspection supported six substantial non-English bodies: Russian, Arabic, Finnish, Ukrainian, Spanish and French. Current pages are not guaranteed to match 2015–2019 text.</p>
-        </article>
-        <article class="evidence-card">
-          <p class="card-title">What is not established</p>
-          <p class="card-meta">The native GKG sample (15,339 records) had every language field blank; blank is unknown, not English, so a comparable English denominator remains unvalidated. No 28-day corpus was downloaded (the listed compressed GKG window exceeds 50 GB). No detector, alert threshold, lead time or held-out false-alarm rate was evaluated — these are not evaluated, not zero.</p>
-        </article>
-      </div>
-      <p class="control-note">Details, evidence paths and the recommended next experiment: HISTORICAL_FEASIBILITY.md in the repository. The raw historical caches are not part of this checkout.</p>
-    </details>
-  </section>
 </main>
 
 <footer class="site-footer">
@@ -143,7 +109,7 @@
 <dialog id="source-dialog" class="source-dialog" aria-labelledby="source-title">
   <div class="dialog-inner">
     <div class="dialog-head">
-      <span class="coverage-warning">Incomplete observed coverage</span>
+      <span class="coverage-warning">{{ inv.coverage_status }}</span>
       <button type="button" id="dialog-close" aria-label="Close source panel">Close</button>
     </div>
     <h3 id="source-title"></h3>

@@ -1,5 +1,9 @@
 'use strict';
 
+const INV = document.body.dataset.investigationId;
+const STORY_LABEL = document.body.dataset.storyLabel || 'the story';
+const API = '/api/investigations/' + encodeURIComponent(INV);
+
 const els = {
   cards: document.getElementById('evidence-cards'),
   resultCount: document.getElementById('result-count'),
@@ -16,7 +20,7 @@ const els = {
     inventory: document.getElementById('include-uninspected'),
   },
   filterForm: document.getElementById('filter-controls'),
-  focusMsc: document.getElementById('focus-msc'),
+  focusStory: document.getElementById('focus-story'),
   resetFilters: document.getElementById('reset-filters'),
   dialog: document.getElementById('source-dialog'),
   dialogInner: null,
@@ -32,6 +36,7 @@ const els = {
 els.dialogInner = els.dialog.querySelector('.dialog-inner');
 
 const DEFAULT_FILTERS = { unrelated: true, possible: true, fold: false, inventory: false };
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 let lastOpener = null;
 let evidenceSeq = 0;
 let replaySeq = 0;
@@ -41,6 +46,7 @@ let evidenceAbort = null;
 let replayAbort = null;
 let sourceAbort = null;
 let currentDay = 'all';
+let dayButtonsBuilt = false;
 
 function el(tag, cls, text) {
   const node = document.createElement(tag);
@@ -78,7 +84,7 @@ function currentFlags() {
 
 function evidenceUrl() {
   const f = currentFlags();
-  return '/api/evidence?unrelated=' + f.unrelated + '&possible=' + f.possible +
+  return API + '/evidence?unrelated=' + f.unrelated + '&possible=' + f.possible +
     '&fold=' + f.fold + '&inventory=' + f.inventory;
 }
 
@@ -142,7 +148,7 @@ function renderEmpty() {
   const box = el('div', 'empty-state');
   box.appendChild(el('p', null,
     'No cards match the current filters. Hiding possible shared reporting ' +
-    'can hide all three retained MSC pages, and hiding other stories removes ' +
+    'can hide retained ' + STORY_LABEL + ' pages, and hiding other stories removes ' +
     'the contextual checks.'));
   const btn = el('button', null, 'Reset filters');
   btn.addEventListener('click', resetFilters);
@@ -173,11 +179,13 @@ async function loadEvidence() {
     if (seq !== evidenceSeq) return;
     renderSummary(data.summary);
     renderCounts(data.counts);
-    els.scopeNotice.textContent = data.scope_notice;
-    els.aggregateCount.textContent = data.aggregate_context.count;
-    els.aggregateMeta.textContent = data.aggregate_context.source + ' · ' +
-      data.aggregate_context.language + ' shipping · ' +
-      data.aggregate_context.date;
+    els.scopeNotice.textContent = data.scope_notice || '';
+    const aggregate = data.aggregate_context;
+    if (aggregate && els.aggregateCount && els.aggregateMeta) {
+      els.aggregateCount.textContent = aggregate.count;
+      els.aggregateMeta.textContent = aggregate.source + ' · ' +
+        aggregate.language + ' · ' + aggregate.date;
+    }
     renderHashes(data.artifact_hashes);
     renderUncertainties(data.uncertainties);
     els.cards.textContent = '';
@@ -268,7 +276,7 @@ async function openSource(id, opener) {
   if (switching) els.dialogInner.scrollTop = 0;
   els.dialogClose.focus();
   try {
-    const res = await fetch('/api/source/' + encodeURIComponent(id),
+    const res = await fetch(API + '/source/' + encodeURIComponent(id),
       { signal: sourceAbort.signal });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const s = await res.json();
@@ -313,9 +321,8 @@ function populateSource(s) {
   const capEl = document.getElementById('source-excerpt-caption');
   if (s.excerpt && s.excerpt.text) {
     excerptEl.textContent = s.excerpt.text;
-    capEl.textContent = 'Cached excerpt · ' + s.excerpt.source_file +
-      ' lines ' + (s.excerpt.range_label ||
-        (s.excerpt.line_start + '–' + s.excerpt.line_end)) +
+    capEl.textContent = 'Cached excerpt · ' + (s.excerpt.source_file || 'supplied with import') +
+      (s.excerpt.range_label ? ' lines ' + s.excerpt.range_label : '') +
       (s.excerpt.truncated ? ' · truncated' : '') +
       (s.excerpt.meaning ? ' · ' + s.excerpt.meaning : '');
   } else {
@@ -354,12 +361,12 @@ function populateSource(s) {
 
   document.getElementById('source-seendate').textContent =
     'GDELT seendate (platform observation): ' +
-    (s.gdelt_seendate || 'unavailable') + ' — ' +
-    (s.gdelt_seendate_meaning || '');
+    (s.gdelt_seendate || 'unavailable') +
+    (s.gdelt_seendate_meaning ? ' — ' + s.gdelt_seendate_meaning : '');
   document.getElementById('source-retrieved').textContent =
     'Captured by this project (retrieved_at_utc): ' +
-    (s.retrieved_at_utc || 'unavailable') + ' — ' +
-    (s.retrieval_meaning || '');
+    (s.retrieved_at_utc || 'unavailable') +
+    (s.retrieval_meaning ? ' — ' + s.retrieval_meaning : '');
   document.getElementById('source-gkg').textContent =
     (s.gkg_document_date || s.gkg_record_id)
       ? 'GKG metadata labels (not verified publisher time): document-date field ' + (s.gkg_document_date || 'n/a') +
@@ -396,7 +403,7 @@ els.dialog.addEventListener('close', () => {
   if (sourceAbort) sourceAbort.abort();
   currentSourceId = null;
   const target = (lastOpener && document.contains(lastOpener))
-    ? lastOpener : els.focusMsc;
+    ? lastOpener : els.focusStory;
   lastOpener = null;
   target.focus();
 });
@@ -448,7 +455,7 @@ for (const key of Object.keys(els.controls)) {
 }
 els.resetFilters.addEventListener('click', resetFilters);
 els.retryEvidence.addEventListener('click', loadEvidence);
-els.focusMsc.addEventListener('click', () => {
+els.focusStory.addEventListener('click', () => {
   setFilters({ unrelated: false, possible: true, fold: true, inventory: false });
   loadEvidence();
 });
@@ -466,6 +473,23 @@ function replayEventButton(ev) {
   btn.appendChild(marker);
   btn.appendChild(body);
   return btn;
+}
+
+function formatDay(iso) {
+  const parts = iso.split('-');
+  return String(Number(parts[2])) + ' ' + MONTHS[Number(parts[1]) - 1];
+}
+
+function buildDayButtons(days) {
+  if (dayButtonsBuilt) return;
+  dayButtonsBuilt = true;
+  for (const day of days || []) {
+    const btn = el('button', 'day-btn', formatDay(day));
+    btn.type = 'button';
+    btn.dataset.day = day;
+    btn.setAttribute('aria-pressed', 'false');
+    els.dayButtons.appendChild(btn);
+  }
 }
 
 function renderReplayError(message, day) {
@@ -486,11 +510,12 @@ async function loadReplay(day) {
   replayAbort = new AbortController();
   els.replayTimeline.setAttribute('aria-busy', 'true');
   try {
-    const res = await fetch('/api/replay?day=' + encodeURIComponent(day),
+    const res = await fetch(API + '/replay?day=' + encodeURIComponent(day),
       { signal: replayAbort.signal });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     if (seq !== replaySeq) return;
+    buildDayButtons(data.days);
     els.replayScope.textContent = data.filter_scope;
     els.replayCount.textContent = 'Showing ' + data.visible_count + ' of ' +
       data.total_count + ' retained pages';
@@ -499,7 +524,7 @@ async function loadReplay(day) {
       'Blank intervals before and after dated pages are ' +
       (emptyMeaning
         ? emptyMeaning.charAt(0).toLowerCase() + emptyMeaning.slice(1)
-        : emptyMeaning) + '. ' + data.date_axis_meaning;
+        : emptyMeaning) + '. ' + (data.date_axis_meaning || '');
     els.replayTimeline.textContent = '';
     const byDay = new Map();
     for (const ev of data.events) {
@@ -517,7 +542,9 @@ async function loadReplay(day) {
     }
     if (!data.events.length) {
       els.replayTimeline.appendChild(el('div', 'empty-state',
-        'No retained pages carry this publisher-claimed date.'));
+        data.total_count === 0
+          ? 'No replay entries were supplied for this investigation.'
+          : 'No retained pages carry this publisher-claimed date.'));
     }
   } catch (err) {
     if (err.name === 'AbortError' || seq !== replaySeq) return;

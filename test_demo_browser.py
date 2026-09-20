@@ -1,7 +1,12 @@
 import json
 import os
 import re
+import subprocess
+import sys
+import tempfile
+import time
 import unittest
+import urllib.request
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -9,6 +14,7 @@ from playwright.sync_api import expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parent
 BASE = os.environ.get('SIGNAL_DEMO_URL', 'http://127.0.0.1:8765')
+SHIPPING = '/investigations/shipping-msc-2026'
 PAYLOAD = '<img data-payload="yes" src="https://bad.invalid/pixel" onerror="window.__signalNoiseXSS=1">'
 
 
@@ -44,7 +50,7 @@ class DemoBrowserTests(unittest.TestCase):
         self.assertEqual(self.errors, [], 'Browser JavaScript raised errors')
 
     def open_demo(self):
-        self.page.goto(BASE, wait_until='networkidle')
+        self.page.goto(BASE + SHIPPING, wait_until='networkidle')
         expect(self.page.locator('#evidence-cards .evidence-card')).to_have_count(13)
         expect(self.page.get_by_text('Incomplete observed coverage', exact=True).first).to_be_visible()
 
@@ -136,8 +142,8 @@ class DemoBrowserTests(unittest.TestCase):
             data['external_url'] = 'javascript:window.__signalNoiseXSS=3'
             data['url'] = data['external_url']
             route.fulfill(response=response, json=data)
-        self.context.route('**/api/evidence*', mutate_cards)
-        self.context.route('**/api/source/gdelt_panama_es', mutate_source)
+        self.context.route('**/api/investigations/*/evidence*', mutate_cards)
+        self.context.route('**/api/investigations/*/source/gdelt_panama_es', mutate_source)
         self.open_demo()
         card = self.page.locator('#evidence-cards [data-source-id="gdelt_panama_es"]').first
         expect(self.page.locator('#evidence-cards')).to_contain_text(PAYLOAD)
@@ -158,7 +164,7 @@ class DemoBrowserTests(unittest.TestCase):
         self.page.screenshot(path=str(ROOT / 'results/signal_noise_source.png'))
         self.page.keyboard.press('Escape')
         self.page.set_viewport_size({'width': 390, 'height': 844})
-        self.page.goto(BASE, wait_until='networkidle')
+        self.page.goto(BASE + SHIPPING, wait_until='networkidle')
         self.assert_cards(13)
         self.assertTrue(self.page.evaluate('document.documentElement.scrollWidth <= window.innerWidth'))
         self.page.screenshot(path=str(ROOT / 'results/signal_noise_mobile.png'), full_page=True)
@@ -178,6 +184,134 @@ class DemoBrowserTests(unittest.TestCase):
         }""")
         self.assert_cards(3)
         self.assertTrue(self.page.locator('#show-possible').is_checked())
+
+
+class ImportBrowserTests(unittest.TestCase):
+    """Import UI tests run against a dedicated server whose SIGNAL_DATA_DIR is a
+    temp directory, so imported investigations never land in local_investigations/."""
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = tempfile.TemporaryDirectory()
+        import socket
+        with socket.socket() as sock:
+            sock.bind(('127.0.0.1', 0))
+            port = sock.getsockname()[1]
+        cls.base = 'http://127.0.0.1:%d' % port
+        env = dict(os.environ, SIGNAL_DATA_DIR=cls.tmp.name)
+        cls.server = subprocess.Popen(
+            [sys.executable, 'app.py', '--port', str(port)], cwd=ROOT, env=env,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        deadline = time.monotonic() + 30
+        while time.monotonic() < deadline:
+            try:
+                urllib.request.urlopen(cls.base + '/healthz', timeout=1)
+                break
+            except OSError:
+                time.sleep(0.1)
+        else:
+            raise RuntimeError('import test server did not start')
+        cls.playwright = sync_playwright().start()
+        channel = os.environ.get('SIGNAL_BROWSER_CHANNEL')
+        cls.browser = cls.playwright.chromium.launch(headless=True, **({'channel': channel} if channel else {}))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.browser.close()
+        cls.playwright.stop()
+        cls.server.terminate()
+        cls.server.wait(timeout=10)
+        cls.tmp.cleanup()
+
+    def setUp(self):
+        self.context = self.browser.new_context(viewport={'width': 1440, 'height': 1000}, reduced_motion='reduce')
+        self.errors = []
+        self.dialogs = []
+        self.page = self.context.new_page()
+        self.page.on('pageerror', lambda error: self.errors.append(str(error)))
+        self.page.on('dialog', lambda dialog: (self.dialogs.append(dialog.message), dialog.dismiss()))
+
+    def tearDown(self):
+        self.context.close()
+        self.assertEqual(self.errors, [], 'Browser JavaScript raised errors')
+        self.assertEqual(self.dialogs, [], 'A browser dialog (alert) fired')
+
+    def open_home(self):
+        self.page.goto(self.base, wait_until='networkidle')
+        expect(self.page.locator('.investigation-card')).to_have_count(1)
+
+    def import_via_ui(self, payload):
+        self.page.locator('#import-text').fill(payload)
+        self.page.get_by_role('button', name='Validate and import').click()
+
+    def test_import_synthetic_via_home_ui(self):
+        self.open_home()
+        fixture = (ROOT / 'fixtures/synthetic_investigation.json').read_text()
+        self.import_via_ui(fixture)
+        expect(self.page.locator('#import-result a')).to_be_visible()
+        expect(self.page.locator('.investigation-card')).to_have_count(2)
+        self.page.locator('#investigation-search').fill('synthetic')
+        expect(self.page.locator('.investigation-card:not(.hidden)')).to_have_count(1)
+        self.page.locator('#investigation-search').fill('nomatch')
+        expect(self.page.locator('#search-empty')).to_be_visible()
+        self.page.locator('#investigation-search').fill('')
+        self.page.locator('#import-result a').click()
+        expect(self.page.locator('#evidence-cards .evidence-card')).to_have_count(4)
+        self.page.locator('#include-uninspected').check()
+        expect(self.page.locator('#evidence-cards .evidence-card')).to_have_count(5)
+        self.page.locator('#focus-story').click()
+        expect(self.page.locator('#evidence-cards .evidence-card')).to_have_count(2)
+        day = self.page.locator('[data-day="2030-01-03"]')
+        expect(self.page.locator('[data-day="2030-01-02"]')).to_be_visible()
+        expect(day).to_be_visible()
+        day.click()
+        syn_b = self.page.locator('[data-replay-source="syn-b"]')
+        expect(syn_b).to_contain_text('date only; time and timezone unknown')
+        self.page.get_by_role('button', name='Reset filters', exact=True).first.click()
+        self.page.locator('#include-uninspected').check()
+        self.page.locator('#evidence-cards [data-source-id="syn-e"]').first.click()
+        dialog = self.page.locator('#source-dialog')
+        expect(dialog).to_be_visible()
+        expect(dialog).to_contain_text('External link unavailable')
+        expect(dialog).to_contain_text('No reviewed excerpt')
+        link = self.page.locator('#source-external-link')
+        self.assertIn(link.get_attribute('href'), (None, ''))
+        self.page.keyboard.press('Escape')
+        self.page.goto(self.base, wait_until='networkidle')
+        remove = self.page.locator('[data-remove="synthetic-fixture"]')
+        expect(remove).to_be_visible()
+        self.page.evaluate("window.confirm = () => true")
+        remove.click()
+        expect(self.page.locator('.investigation-card')).to_have_count(1)
+
+    def test_import_xss_and_javascript_url(self):
+        self.open_home()
+        bad = {
+            'schema_version': 1, 'id': 'xss-test', 'topic': 'test',
+            'title': PAYLOAD,
+            'articles': [{'id': 'xss-a', 'title': 'x', 'publisher': PAYLOAD,
+                          'language': 'english', 'relevance': 'related',
+                          'url': 'javascript:alert(1)'}]}
+        self.import_via_ui(json.dumps(bad))
+        expect(self.page.locator('#import-errors li').first).to_be_visible()
+        expect(self.page.locator('#import-errors')).to_contain_text('invalid or unsafe URL scheme')
+        bad['articles'][0]['url'] = 'https://example.org/a'
+        bad['articles'][0]['excerpt'] = '<script>window.__signalNoiseXSS=2</script>'
+        self.context.add_init_script('window.__signalNoiseXSS=0')
+        self.import_via_ui(json.dumps(bad))
+        expect(self.page.locator('#import-result a')).to_be_visible()
+        self.page.locator('#import-result a').click()
+        expect(self.page.locator('h1')).to_have_text(PAYLOAD)
+        card = self.page.locator('#evidence-cards .evidence-card').first
+        card.click()
+        expect(self.page.locator('#source-excerpt')).to_contain_text('<script>')
+        expect(self.page.locator('#source-meta')).to_contain_text(PAYLOAD)
+        self.assertEqual(self.page.locator('img[data-payload]').count(), 0)
+        self.assertEqual(self.page.evaluate('window.__signalNoiseXSS'), 0)
+        self.assertEqual(self.page.locator('a[href^="javascript:"]').count(), 0)
+        self.page.evaluate("window.confirm = () => true")
+        res = self.page.evaluate(
+            "fetch('/api/investigations/xss-test', {method: 'DELETE'}).then(r => r.status)")
+        self.assertEqual(res, 204)
 
 
 if __name__ == '__main__':

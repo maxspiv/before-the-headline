@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "id": "synthetic-fixture",
+  "title": "Synthetic fixture — not real evidence",
+  "topic": "Synthetic test data",
+  "description": "A fabricated investigation used only to exercise the import path. Every entry is invented; nothing here is real reporting.",
+  "story_label": "synthetic story",
+  "articles": [
+    {
+      "id": "syn-a",
+      "title": "Synthetic article A",
+      "publisher": "Example Publisher",
+      "language": "english",
+      "url": "https://example.org/syn-a",
+      "relevance": "related",
+      "claimed_timestamp": {"value": "2030-01-02T10:00:00+00:00", "precision": "datetime"},
+      "include_in_replay": true
+    },
+    {
+      "id": "syn-b",
+      "title": "Synthetic article B",
+      "publisher": "Example Publisher",
+      "language": "english",
+      "url": "https://example.org/syn-b",
+      "relevance": "related",
+      "claimed_timestamp": {"value": "2030-01-03", "precision": "date"},
+      "include_in_replay": true,
+      "excerpt": "A synthetic excerpt supplied by the fixture file."
+    },
+    {
+      "id": "syn-c",
+      "title": "Synthetic article C",
+      "publisher": "Example Publisher",
+      "language": "english",
+      "url": "https://example.org/syn-c",
+      "relevance": "unrelated",
+      "duplicate_group": "SYN-COPY",
+      "duplicate_status": "confirmed"
+    },
+    {
+      "id": "syn-d",
+      "title": "Synthetic article D",
+      "publisher": "Example Publisher",
+      "language": "english",
+      "url": "https://example.org/syn-d",
+      "relevance": "unrelated",
+      "duplicate_group": "SYN-COPY",
+      "duplicate_status": "confirmed"
+    },
+    {
+      "id": "syn-e",
+      "title": "Synthetic article E",
+      "publisher": "Example Publisher",
+      "language": "english",
+      "relevance": "uncertain",
+      "inspected": false
+    }
+  ],
+  "uncertainties": [
+    {
+      "id": "syn-uncertainty",
+      "title": "A synthetic open question",
+      "detail": "Two synthetic pages disagree in an invented way; nothing here is real.",
+      "source_ids": ["syn-a", "syn-b"]
+    }
+  ]
+}

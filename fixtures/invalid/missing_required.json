@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "bad-fixture",
+  "articles": [
+    {
+      "id": "a-1",
+      "title": "T",
+      "publisher": "P",
+      "language": "english",
+      "relevance": "related"
+    }
+  ]
+}

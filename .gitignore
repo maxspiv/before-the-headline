@@ -4,6 +4,7 @@
 !/*.md
 !/requirements*.txt
 !/evidence_sources.json
+!/fixtures/
 !/templates/
 !/static/
 !/results/
@@ -43,6 +44,7 @@
 /.devin/
 /.venv/
 /.language-venv/
+/local_investigations/
 /cache/
 /historical/
 **/__pycache__/

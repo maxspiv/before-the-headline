@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signal / Noise — Import schema</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <a class="wordmark brand-link" href="/">← Investigations</a>
+      <span class="wordmark">Signal / Noise</span>
+      <span class="tagline">Before the Headline · Evidence lab</span>
+    </div>
+    <div class="header-right"><span class="cache-pill">Local · cached data only</span></div>
+  </div>
+</header>
+<main>
+  <section class="panel">
+    <div class="section-head"><p class="section-number">i</p><h2>Investigation import schema (version 1)</h2></div>
+    <p class="section-note">A self-contained JSON document describing an investigation: its articles, relevance labels, optional replay timeline and open uncertainties. Download a working example from <a href="/api/import/template">the template endpoint</a> (<code>GET /api/import/template</code>), then POST it to <code>POST /api/investigations/import</code> with <code>Content-Type: application/json</code>. Request bodies are limited to 1 MiB.</p>
+
+    <div class="dialog-section">
+      <h4>Top-level fields</h4>
+      <table id="schema-top">
+        <thead><tr><th>Field</th><th>Required</th><th>Rules</th></tr></thead>
+        <tbody>
+          <tr><td><code>schema_version</code></td><td>yes</td><td>Must equal <code>1</code>.</td></tr>
+          <tr><td><code>id</code></td><td>yes</td><td>Slug matching <code>^[a-z0-9][a-z0-9_-]{2,63}$</code>. Must not collide with a bundled or existing imported investigation.</td></tr>
+          <tr><td><code>title</code></td><td>yes</td><td>≤ 200 characters.</td></tr>
+          <tr><td><code>topic</code></td><td>yes</td><td>≤ 80 characters.</td></tr>
+          <tr><td><code>description</code></td><td>no</td><td>≤ 1000 characters.</td></tr>
+          <tr><td><code>story_label</code></td><td>no</td><td>≤ 60 characters; default <code>the story</code>. Used in card labels such as "Matches …".</td></tr>
+          <tr><td><code>coverage_status</code></td><td>no</td><td>Default <code>Incomplete observed coverage</code>.</td></tr>
+          <tr><td><code>kicker</code></td><td>no</td><td>Default <code>Imported investigation</code>.</td></tr>
+          <tr><td><code>aggregate_context</code></td><td>no</td><td>Optional object; if present all of <code>count</code> (integer ≥ 0), <code>date</code> (YYYY-MM-DD), <code>language</code>, <code>source</code>, <code>meaning</code> are required.</td></tr>
+          <tr><td><code>articles</code></td><td>yes</td><td>List of 1–500 article objects (below).</td></tr>
+          <tr><td><code>uncertainties</code></td><td>no</td><td>Up to 50 objects with <code>id</code>, <code>title</code>, <code>detail</code> and <code>source_ids</code> (≥ 1 existing article ids).</td></tr>
+          <tr><td><code>timeline_notes</code></td><td>no</td><td>Optional <code>context</code> (≤ 10 strings of ≤ 300 chars), <code>date_axis_meaning</code>, <code>empty_interval_meaning</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dialog-section">
+      <h4>Article fields</h4>
+      <table id="schema-articles">
+        <thead><tr><th>Field</th><th>Required</th><th>Rules</th></tr></thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>yes</td><td>Slug; unique within the file.</td></tr>
+          <tr><td><code>title</code></td><td>yes</td><td>≤ 200 characters.</td></tr>
+          <tr><td><code>publisher</code></td><td>yes</td><td>≤ 120 characters.</td></tr>
+          <tr><td><code>language</code></td><td>yes</td><td>Lowercase word, e.g. <code>english</code>; ≤ 40 characters.</td></tr>
+          <tr><td><code>relevance</code></td><td>yes</td><td>One of <code>related</code>, <code>unrelated</code>, <code>uncertain</code>.</td></tr>
+          <tr><td><code>url</code></td><td>no</td><td>≤ 2048 characters; must be a valid http(s) URL without userinfo. <code>javascript:</code>, <code>data:</code>, <code>file:</code> and other schemes are validation errors, not silently dropped.</td></tr>
+          <tr><td><code>origin_label</code></td><td>no</td><td>Default <code>Supplied by import</code>.</td></tr>
+          <tr><td><code>inspected</code></td><td>no</td><td>Boolean; default <code>true</code>.</td></tr>
+          <tr><td><code>duplicate_group</code></td><td>no</td><td>Default <code>UNASSESSED-&lt;article id&gt;</code>.</td></tr>
+          <tr><td><code>duplicate_status</code></td><td>no</td><td><code>confirmed</code> | <code>possible</code> | <code>unassessed</code> (default). <code>confirmed</code> requires ≥ 2 articles sharing the same <code>duplicate_group</code>, all marked confirmed.</td></tr>
+          <tr><td><code>claimed_timestamp</code></td><td>no</td><td>Object with <code>value</code> and <code>precision</code>: <code>date</code> requires YYYY-MM-DD exactly; <code>datetime</code> requires ISO 8601 with an explicit timezone offset (<code>Z</code> accepted) and is converted to UTC.</td></tr>
+          <tr><td><code>publisher_visible_timestamp</code></td><td>no</td><td>Free text; default <code>Not supplied</code>.</td></tr>
+          <tr><td><code>excerpt</code></td><td>no</td><td>≤ 2000 characters; displayed truncated at 900, marked as supplied-not-verified.</td></tr>
+          <tr><td><code>scope_notes</code></td><td>no</td><td>≤ 1000 characters.</td></tr>
+          <tr><td><code>syndication_assessment</code></td><td>no</td><td>≤ 1000 characters; default <code>Not assessed.</code>.</td></tr>
+          <tr><td><code>reported_event_timestamps_and_uncertainty</code></td><td>no</td><td>≤ 1000 characters.</td></tr>
+          <tr><td><code>include_in_replay</code></td><td>no</td><td>Boolean; default <code>false</code>. Requires <code>claimed_timestamp</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dialog-section">
+      <h4>Errors</h4>
+      <p>All validation problems are collected and returned together: <code>400 {"errors": ["articles[2].claimed_timestamp.value: ..."]}</code>. Unknown top-level or article fields are rejected as <code>unknown field</code> errors. Imported relevance and duplication labels are treated as <em>supplied</em>, never verified by this app; URLs are stored, never fetched.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

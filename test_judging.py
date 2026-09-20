@@ -4,8 +4,10 @@ import json
 import multiprocessing
 import os
 import queue
+import re
 import socket
 import sys
+import tempfile
 import time
 import unittest
 import urllib.error
@@ -63,6 +65,8 @@ class JudgingOfflineWalkthrough(unittest.TestCase):
         cls.base = 'http://127.0.0.1:' + str(cls.port)
         ctx = multiprocessing.get_context('spawn')
         cls.events = ctx.Queue()
+        cls.tmp = tempfile.TemporaryDirectory()
+        os.environ['SIGNAL_DATA_DIR'] = cls.tmp.name
         cls.server = ctx.Process(target=serve_fresh, args=(cls.port, cls.events), daemon=True)
         cls.server.start()
         deadline = time.monotonic() + 30
@@ -86,6 +90,8 @@ class JudgingOfflineWalkthrough(unittest.TestCase):
         cls.playwright.stop()
         cls.server.terminate()
         cls.server.join(timeout=5)
+        cls.tmp.cleanup()
+        os.environ.pop('SIGNAL_DATA_DIR', None)
 
     def test_exact_90_second_demo_path_and_reset(self):
         external, errors, captures = [], [], []
@@ -112,14 +118,22 @@ class JudgingOfflineWalkthrough(unittest.TestCase):
 
         try:
             page.goto(self.base, wait_until='networkidle')
+            expect(page.locator('.investigation-card')).to_have_count(1)
+            expect(page.locator('.investigation-card')).to_contain_text('Reported MSC Ulsan III / Novorossiysk booking suspension')
+            expect(page.locator('.investigation-card')).to_contain_text('Bundled')
+            expect(page.get_by_label(re.compile('saved investigations', re.I))).to_be_visible()
+            expect(page.locator('#import-text')).to_be_visible()
+            capture('00-investigations-home.png', 'Investigations home: bundled shipping case, search box and JSON import panel.')
+            page.locator('.investigation-card').get_by_role('link', name='Open').click()
             cards(13)
-            expect(page.locator('h1')).to_have_text('Inspect a news spike.')
-            expect(page.locator('.hero-copy')).to_have_text('Separate relevant coverage from unrelated matches and repeated reporting.')
+            expect(page.locator('h1')).to_have_text('Reported MSC Ulsan III / Novorossiysk booking suspension')
+            expect(page.locator('.hero-copy')).to_contain_text('Separate relevant coverage')
             expect(page.locator('.hero .cta')).to_have_count(1)
             expect(page.get_by_role('link', name='Begin investigation', exact=True)).to_be_visible()
             expect(page.locator('#aggregate-count')).to_have_text('694')
-            expect(page.locator('#aggregate-block')).to_contain_text('not representative')
-            expect(page.locator('#aggregate-block')).to_contain_text('English-language aggregate')
+            expect(page.locator('#aggregate-block')).to_contain_text('not a representative sample')
+            expect(page.locator('#aggregate-block')).to_contain_text('English')
+            expect(page.locator('#aggregate-block')).to_contain_text('2026-08-31')
             expect(page.get_by_text('Incomplete observed coverage', exact=True).first).to_be_visible()
             capture('01-opening.png', '694 aggregate matches are separate context, not the inspected sample size.')
 
@@ -183,6 +197,21 @@ class JudgingOfflineWalkthrough(unittest.TestCase):
             self.assertNotIn('no explicit offset', page.locator('#source-timestamps').inner_text())
             page.keyboard.press('Escape')
             expect(page.locator('#source-dialog')).not_to_be_visible()
+            page.goto(self.base, wait_until='networkidle')
+            page.locator('#import-text').fill((ROOT / 'fixtures/synthetic_investigation.json').read_text())
+            page.get_by_role('button', name='Validate and import').click()
+            expect(page.locator('.investigation-card')).to_have_count(2)
+            expect(page.locator('.investigation-card').last).to_contain_text('Synthetic fixture')
+            expect(page.locator('.investigation-card').last).to_contain_text('Imported')
+            capture('08-import-flow.png', 'Synthetic investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.')
+            page.locator('#import-result a').click()
+            page.locator('#include-uninspected').check()
+            expect(page.locator('#evidence-cards .evidence-card')).to_have_count(5)
+            status = page.evaluate(
+                "fetch('/api/investigations/synthetic-fixture', {method: 'DELETE'}).then(r => r.status)")
+            self.assertEqual(status, 204)
+            page.goto(self.base, wait_until='networkidle')
+            expect(page.locator('.investigation-card')).to_have_count(1)
             page.evaluate('window.scrollTo(0,0)')
             self.assertEqual(external, [])
             self.assertEqual(errors, [])
@@ -196,7 +225,7 @@ class JudgingOfflineWalkthrough(unittest.TestCase):
             self.assertFalse(any(e['kind'] == 'blocked_server_egress' for e in server_events))
             frozen = json.loads((OUT / 'protected_evidence_hashes.json').read_text())
             self.assertTrue(all(hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == sha for path, sha in frozen.items()))
-            report = {'status': 'passed', 'fresh_cli_start': True, 'entrypoint': 'app.main --port <unused loopback port>', 'isolated_browser_context': True, 'offline_definition': 'Server outbound sockets/DNS denied; browser requests restricted to this loopback origin. System-wide networking was not changed.', 'browser_external_attempts': external, 'javascript_errors': errors, 'server_events': server_events, 'walkthrough_card_counts': [13, 12, 3, 0, 3], 'replay_counts': [3, 2, 3], 'reset_verified': True, 'explicit_offset_missing_conversion_label_verified': True, 'protected_evidence_unchanged': True, 'screenshots': captures}
+            report = {'status': 'passed', 'fresh_cli_start': True, 'entrypoint': 'app.main --port <unused loopback port>', 'isolated_browser_context': True, 'offline_definition': 'Server outbound sockets/DNS denied; browser requests restricted to this loopback origin. System-wide networking was not changed.', 'browser_external_attempts': external, 'javascript_errors': errors, 'server_events': server_events, 'walkthrough_card_counts': [13, 12, 3, 0, 3], 'replay_counts': [3, 2, 3], 'import_flow_verified': True, 'reset_verified': True, 'explicit_offset_missing_conversion_label_verified': True, 'protected_evidence_unchanged': True, 'screenshots': captures}
             (OUT / 'offline_walkthrough.json').write_text(json.dumps(report, indent=2) + '\n')
             (OUT / 'screenshots.md').write_text('# Presentation fallback\n\nThese are actual screenshots from the fresh offline walkthrough, not synthetic examples. Follow in order while reading DEMO.md.\n\n' + '\n\n'.join('## ' + item['file'] + '\n\n' + item['caption'] + '\n\n![' + item['caption'] + '](' + item['file'] + ')' for item in captures) + '\n')
         finally:
