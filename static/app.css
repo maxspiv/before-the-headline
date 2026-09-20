@@ -297,6 +297,18 @@ button:hover { background: var(--lime); }
 .claim-panel .claim-value { font-weight: 700; display: block; }
 .claim-panel .claim-note { font-size: 12px; color: var(--muted); display: block; margin-top: 4px; }
 
+.technical-results details { border: 1px dashed var(--line); border-radius: 10px; padding: 0 22px 18px; background: var(--card); }
+.technical-results summary { cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; padding: 18px 0 14px; }
+.technical-results summary::-webkit-details-marker { display: none; }
+.technical-results summary .section-number { font-size: 28px; }
+.technical-results .details-title { font-family: var(--serif); font-size: 22px; }
+.technical-results .details-hint { font-size: 12px; color: var(--rust); font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; flex-basis: 100%; }
+.technical-results summary::after { content: 'Show results'; margin-left: auto; font-size: 13px; font-weight: 600; text-decoration: underline; }
+.technical-results details[open] summary::after { content: 'Hide results'; }
+.technical-results .counter { font-size: 12px; }
+.technical-results .counter strong { font-size: 20px; }
+.technical-results code { font-size: 12px; }
+
 @media (max-width: 700px) {
   .header-inner { padding: 10px 14px; gap: 6px; }
   .wordmark { font-size: 19px; }
