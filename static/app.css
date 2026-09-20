@@ -322,8 +322,9 @@ button:hover { background: var(--lime); }
 
 .brand-link { color: var(--ivory); text-decoration: none; margin-right: 12px; font-size: 16px; }
 .brand-link:hover { color: var(--lime); }
-.search-control { display: flex; flex-direction: column; gap: 6px; max-width: 520px; }
-.search-control input[type="search"] {
+.control.search-control, .control.import-paste { display: flex; flex-direction: column; align-items: stretch; gap: 6px; cursor: text; }
+.control.search-control { max-width: 520px; }
+.control.search-control input[type="search"] { width: 100%; height: auto;
   font-family: var(--sans); font-size: 15px; padding: 9px 12px;
   border: 1px solid var(--forest); border-radius: 6px; background: var(--card);
   color: var(--forest);
@@ -336,7 +337,7 @@ button:hover { background: var(--lime); }
   padding: 10px; border: 1px solid var(--line); border-radius: 8px;
   background: var(--card); color: var(--forest);
 }
-.import-paste { display: flex; flex-direction: column; gap: 6px; }
+.control.import-paste textarea { width: 100%; box-sizing: border-box; }
 .import-errors { color: var(--rust); font-size: 13px; }
 #import-result a { color: var(--rust); font-weight: 600; }
 .dialog-section table { border-collapse: collapse; width: 100%; font-size: 13px; }
