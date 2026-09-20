@@ -1,57 +1,57 @@
-# Presentation fallback
+# Screenshots
 
-These are actual screenshots from the fresh offline walkthrough, not synthetic examples. Follow in order while reading DEMO.md.
+Screenshots captured by test_judging.py from a fresh offline run.
 
-## 00-investigations-home.png
+## 00-home.png
 
-Investigations home: bundled shipping case, search box and JSON import panel.
+Investigations home: bundled shipping case, filter box and JSON import panel.
 
-![Investigations home: bundled shipping case, search box and JSON import panel.](00-investigations-home.png)
+![Investigations home: bundled shipping case, filter box and JSON import panel.](00-home.png)
 
-## 01-opening.png
+## 01-workspace.png
 
-694 aggregate matches are separate context, not the inspected sample size.
+Workspace hero: query context shows 694 aggregate matches kept separate from the reviewed pages.
 
-![694 aggregate matches are separate context, not the inspected sample size.](01-opening.png)
+![Workspace hero: query context shows 694 aggregate matches kept separate from the reviewed pages.](01-workspace.png)
 
-## 02-inspected-sample.png
+## 02-articles.png
 
-13 inspected pages: 3 MSC-related, 10 other; 6 Spanish GDELT-result pages and 7 external/contextual pages.
+13 reviewed pages: 3 on story, 10 other; 6 GDELT-result pages and 7 found elsewhere.
 
-![13 inspected pages: 3 MSC-related, 10 other; 6 Spanish GDELT-result pages and 7 external/contextual pages.](02-inspected-sample.png)
+![13 reviewed pages: 3 on story, 10 other; 6 GDELT-result pages and 7 found elsewhere.](02-articles.png)
 
-## 03-confirmed-copy-fold.png
+## 03-fold-copied-text.png
 
-One matching-text group contains two pages; folding removes one card, not an independent story.
+One matching-text group contains two pages; folding merges one card.
 
-![One matching-text group contains two pages; folding removes one card, not an independent story.](03-confirmed-copy-fold.png)
+![One matching-text group contains two pages; folding merges one card.](03-fold-copied-text.png)
 
-## 04-related-pages.png
+## 04-on-story.png
 
-Three retained MSC pages remain; all retain possible shared-reporting uncertainty.
+On-story filter applied: three pages, each marked with possible shared-reporting uncertainty.
 
-![Three retained MSC pages remain; all retain possible shared-reporting uncertainty.](04-related-pages.png)
+![On-story filter applied: three pages, each marked with possible shared-reporting uncertainty.](04-on-story.png)
 
-## 05-story-timeline.png
+## 05-timeline.png
 
-Publisher-claimed dates, not first publication; the Chinese page is date-only.
+Publisher-claimed dates; the Chinese page is date-only.
 
-![Publisher-claimed dates, not first publication; the Chinese page is date-only.](05-story-timeline.png)
+![Publisher-claimed dates; the Chinese page is date-only.](05-timeline.png)
 
-## 06-source-evidence.png
+## 06-source-details.png
 
-Cached source excerpt, date-only precision, provenance and unresolved direction details; no external link opened.
+Cached source excerpt, date-only precision, provenance and direction notes; no external link opened.
 
-![Cached source excerpt, date-only precision, provenance and unresolved direction details; no external link opened.](06-source-evidence.png)
+![Cached source excerpt, date-only precision, provenance and direction notes; no external link opened.](06-source-details.png)
 
-## 07-unresolved.png
+## 07-notes.png
 
-Route conflict, attack-time uncertainty, possible common upstream reporting and incomplete coverage remain unresolved.
+Notes: route conflict, attack-time uncertainty, possible common upstream reporting and incomplete coverage.
 
-![Route conflict, attack-time uncertainty, possible common upstream reporting and incomplete coverage remain unresolved.](07-unresolved.png)
+![Notes: route conflict, attack-time uncertainty, possible common upstream reporting and incomplete coverage.](07-notes.png)
 
-## 08-import-flow.png
+## 08-import.png
 
-Synthetic investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.
+Investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.
 
-![Synthetic investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.](08-import-flow.png)
+![Investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.](08-import.png)

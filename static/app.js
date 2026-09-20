@@ -1,7 +1,6 @@
 'use strict';
 
 const INV = document.body.dataset.investigationId;
-const STORY_LABEL = document.body.dataset.storyLabel || 'the story';
 const API = '/api/investigations/' + encodeURIComponent(INV);
 
 const els = {
@@ -11,8 +10,6 @@ const els = {
   retryEvidence: document.getElementById('retry-evidence'),
   summary: document.getElementById('summary-counters'),
   scopeNotice: document.getElementById('scope-notice'),
-  aggregateCount: document.getElementById('aggregate-count'),
-  aggregateMeta: document.getElementById('aggregate-meta'),
   controls: {
     unrelated: document.getElementById('show-unrelated'),
     possible: document.getElementById('show-possible'),
@@ -91,11 +88,11 @@ function evidenceUrl() {
 function renderSummary(summary) {
   els.summary.textContent = '';
   const items = [
-    [summary.inspected_total, 'inspected pages'],
-    [summary.related_inspected, 'story-related'],
+    [summary.inspected_total, 'reviewed pages'],
+    [summary.related_inspected, 'on story'],
     [summary.unrelated_inspected, 'other stories'],
     [summary.inspected_gdelt_pages, 'GDELT results'],
-    [summary.inspected_external_pages, 'external / contextual'],
+    [summary.inspected_external_pages, 'found elsewhere'],
   ];
   for (const [n, label] of items) {
     const box = el('div', 'counter');
@@ -108,10 +105,8 @@ function renderSummary(summary) {
 function renderCounts(counts) {
   els.resultCount.textContent =
     'Showing ' + counts.visible_count + ' of ' + counts.cohort_count +
-    ' cards (' + counts.visible_inspected + ' inspected, ' +
-    counts.visible_uninspected + ' uninspected) · ' +
-    counts.filtered_out_count + ' filtered out · ' +
-    counts.folded_copy_count + ' folded as confirmed copied text';
+    ' articles' +
+    (counts.folded_copy_count ? ' · ' + counts.folded_copy_count + ' folded' : '');
 }
 
 function cardFor(row) {
@@ -134,23 +129,19 @@ function cardFor(row) {
   if (!row.inspected) badges.appendChild(badge('Uninspected', 'uninspected'));
   card.appendChild(badges);
   if (row.claim_label) {
-    card.appendChild(el('p', 'card-meta', 'Publisher-claimed: ' + row.claim_label));
+    card.appendChild(el('p', 'card-meta', 'Claimed: ' + row.claim_label));
   }
-  const btn = el('button', 'inspect-btn',
-    row.inspected ? 'Inspect source' : 'Inspect inventory record');
+  const btn = el('button', 'inspect-btn', 'Details');
   btn.dataset.sourceId = row.id;
-  btn.setAttribute('aria-label', 'Inspect source: ' + row.title);
+  btn.setAttribute('aria-label', 'Details: ' + row.title);
   card.appendChild(btn);
   return card;
 }
 
 function renderEmpty() {
   const box = el('div', 'empty-state');
-  box.appendChild(el('p', null,
-    'No cards match the current filters. Hiding possible shared reporting ' +
-    'can hide retained ' + STORY_LABEL + ' pages, and hiding other stories removes ' +
-    'the contextual checks.'));
-  const btn = el('button', null, 'Reset filters');
+  box.appendChild(el('p', null, 'No articles match these filters.'));
+  const btn = el('button', null, 'Reset');
   btn.addEventListener('click', resetFilters);
   box.appendChild(btn);
   els.cards.appendChild(box);
@@ -158,9 +149,9 @@ function renderEmpty() {
 
 function renderEvidenceError(message) {
   els.cards.textContent = '';
-  els.resultCount.textContent = 'Current filtered results unavailable';
+  els.resultCount.textContent = '';
   els.status.setAttribute('role', 'alert');
-  els.status.textContent = 'Could not load cached evidence. ' + message;
+  els.status.textContent = 'Could not load articles. ' + message;
   els.retryEvidence.classList.remove('hidden');
 }
 
@@ -169,7 +160,7 @@ async function loadEvidence() {
   if (evidenceAbort) evidenceAbort.abort();
   evidenceAbort = new AbortController();
   els.status.setAttribute('role', 'status');
-  els.status.textContent = 'Loading cached evidence…';
+  els.status.textContent = 'Loading…';
   els.retryEvidence.classList.add('hidden');
   els.cards.setAttribute('aria-busy', 'true');
   try {
@@ -180,12 +171,6 @@ async function loadEvidence() {
     renderSummary(data.summary);
     renderCounts(data.counts);
     els.scopeNotice.textContent = data.scope_notice || '';
-    const aggregate = data.aggregate_context;
-    if (aggregate && els.aggregateCount && els.aggregateMeta) {
-      els.aggregateCount.textContent = aggregate.count;
-      els.aggregateMeta.textContent = aggregate.source + ' · ' +
-        aggregate.language + ' · ' + aggregate.date;
-    }
     renderHashes(data.artifact_hashes);
     renderUncertainties(data.uncertainties);
     els.cards.textContent = '';
@@ -214,6 +199,11 @@ function sourceLabel(src) {
 
 function renderUncertainties(list) {
   els.uncertainties.textContent = '';
+  if (!(list || []).length) {
+    els.uncertainties.appendChild(
+      el('div', 'empty-state', 'No notes for this investigation.'));
+    return;
+  }
   for (const u of list || []) {
     const card = el('article', 'evidence-card');
     card.appendChild(el('p', 'card-title', u.title));
@@ -235,7 +225,7 @@ function clearDialogContents() {
   document.getElementById('source-claim').textContent = '';
   const link = document.getElementById('source-external-link');
   link.removeAttribute('href');
-  link.textContent = 'Open original page (requires internet)';
+  link.textContent = 'Open original page';
   document.getElementById('source-url-text').textContent = '';
   document.getElementById('source-excerpt').textContent = '';
   document.getElementById('source-excerpt-caption').textContent = '';
@@ -301,8 +291,7 @@ function populateSource(s) {
     s.claim_label || 'No publisher-claimed timestamp');
   const claimNote = el('span', 'claim-note',
     'Publisher-visible timestamp: ' +
-    (s.publisher_visible_timestamp || 'unknown') +
-    ' · Not verified first publication');
+    (s.publisher_visible_timestamp || 'unknown'));
   claim.appendChild(claimValue);
   claim.appendChild(claimNote);
 
@@ -310,10 +299,10 @@ function populateSource(s) {
   const urlText = document.getElementById('source-url-text');
   if (s.external_url && isSafeUrl(s.external_url)) {
     link.href = s.external_url;
-    link.textContent = 'Open original page (requires internet)';
+    link.textContent = 'Open original page';
   } else {
     link.removeAttribute('href');
-    link.textContent = 'External link unavailable';
+    link.textContent = 'No link available';
   }
   urlText.textContent = s.url ? 'URL: ' + s.url : '';
 
@@ -321,12 +310,13 @@ function populateSource(s) {
   const capEl = document.getElementById('source-excerpt-caption');
   if (s.excerpt && s.excerpt.text) {
     excerptEl.textContent = s.excerpt.text;
-    capEl.textContent = 'Cached excerpt · ' + (s.excerpt.source_file || 'supplied with import') +
-      (s.excerpt.range_label ? ' lines ' + s.excerpt.range_label : '') +
-      (s.excerpt.truncated ? ' · truncated' : '') +
-      (s.excerpt.meaning ? ' · ' + s.excerpt.meaning : '');
+    capEl.textContent = s.excerpt.source_file
+      ? 'From ' + s.excerpt.source_file +
+        (s.excerpt.range_label ? ' lines ' + s.excerpt.range_label : '') +
+        (s.excerpt.truncated ? ' · truncated' : '')
+      : (s.excerpt.meaning || 'Supplied with import');
   } else {
-    capEl.textContent = 'No reviewed excerpt is cached for this record.';
+    capEl.textContent = 'No excerpt available.';
   }
 
   document.getElementById('source-scope').textContent =
@@ -336,6 +326,9 @@ function populateSource(s) {
     'Duplicate group ' + s.duplicate_group + ' — ' +
     (s.syndication_assessment || 'Not assessed.');
   const members = document.getElementById('source-group-members');
+  if ((s.confirmed_group_members || []).length) {
+    members.appendChild(el('p', 'caption', 'Same text as:'));
+  }
   for (const m of s.confirmed_group_members || []) {
     const b = el('button', 'group-member-btn', m.publisher + ' — ' + m.title);
     b.dataset.sourceId = m.id;
@@ -360,16 +353,14 @@ function populateSource(s) {
   }
 
   document.getElementById('source-seendate').textContent =
-    'GDELT seendate (platform observation): ' +
-    (s.gdelt_seendate || 'unavailable') +
+    'GDELT observed: ' + (s.gdelt_seendate || 'unavailable') +
     (s.gdelt_seendate_meaning ? ' — ' + s.gdelt_seendate_meaning : '');
   document.getElementById('source-retrieved').textContent =
-    'Captured by this project (retrieved_at_utc): ' +
-    (s.retrieved_at_utc || 'unavailable') +
+    'Captured: ' + (s.retrieved_at_utc || 'unavailable') +
     (s.retrieval_meaning ? ' — ' + s.retrieval_meaning : '');
   document.getElementById('source-gkg').textContent =
     (s.gkg_document_date || s.gkg_record_id)
-      ? 'GKG metadata labels (not verified publisher time): document-date field ' + (s.gkg_document_date || 'n/a') +
+      ? 'GKG record: document-date ' + (s.gkg_document_date || 'n/a') +
         ' · record ' + (s.gkg_record_id || 'n/a')
       : 'No GKG record fields for this source.';
 
@@ -494,9 +485,9 @@ function buildDayButtons(days) {
 
 function renderReplayError(message, day) {
   els.replayTimeline.textContent = '';
-  els.replayCount.textContent = 'Replay view unavailable';
+  els.replayCount.textContent = '';
   const box = el('div', 'empty-state');
-  box.appendChild(el('p', null, 'Could not load replay data. ' + message));
+  box.appendChild(el('p', null, 'Could not load the timeline. ' + message));
   const retry = el('button', null, 'Retry');
   retry.addEventListener('click', () => loadReplay(day));
   box.appendChild(retry);
@@ -518,13 +509,14 @@ async function loadReplay(day) {
     buildDayButtons(data.days);
     els.replayScope.textContent = data.filter_scope;
     els.replayCount.textContent = 'Showing ' + data.visible_count + ' of ' +
-      data.total_count + ' retained pages';
+      data.total_count + ' entries';
     const emptyMeaning = data.empty_interval_meaning || '';
     els.replayEmptyNote.textContent =
-      'Blank intervals before and after dated pages are ' +
+      'Gaps are ' +
       (emptyMeaning
         ? emptyMeaning.charAt(0).toLowerCase() + emptyMeaning.slice(1)
-        : emptyMeaning) + '. ' + (data.date_axis_meaning || '');
+        : 'unsearched or unavailable observations') + '. ' +
+      (data.date_axis_meaning || '');
     els.replayTimeline.textContent = '';
     const byDay = new Map();
     for (const ev of data.events) {
@@ -543,8 +535,8 @@ async function loadReplay(day) {
     if (!data.events.length) {
       els.replayTimeline.appendChild(el('div', 'empty-state',
         data.total_count === 0
-          ? 'No replay entries were supplied for this investigation.'
-          : 'No retained pages carry this publisher-claimed date.'));
+          ? 'This investigation has no timeline entries.'
+          : 'No entries on this date.'));
     }
   } catch (err) {
     if (err.name === 'AbortError' || seq !== replaySeq) return;

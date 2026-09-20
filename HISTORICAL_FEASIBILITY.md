@@ -1,4 +1,4 @@
-# Signal / Noise — historical language feasibility
+# Before the Headline — historical language feasibility
 
 ## Decision
 

@@ -9,8 +9,8 @@
   "server_events": [
     {
       "kind": "fresh_process",
-      "pid": 8664,
-      "entrypoint": "app.main --port 48471"
+      "pid": 14916,
+      "entrypoint": "app.main --port 52407"
     }
   ],
   "walkthrough_card_counts": [
@@ -31,49 +31,49 @@
   "protected_evidence_unchanged": true,
   "screenshots": [
     {
-      "file": "00-investigations-home.png",
-      "caption": "Investigations home: bundled shipping case, search box and JSON import panel.",
-      "sha256": "c601dfb275c56e95089990f121ea00074c58a84334c45b2f376ba6c4ad62d30a"
+      "file": "00-home.png",
+      "caption": "Investigations home: bundled shipping case, filter box and JSON import panel.",
+      "sha256": "4cf8d52632629ea25af6f79a2d513ba39557020acbeec5a31402d44b1f30cf6c"
     },
     {
-      "file": "01-opening.png",
-      "caption": "694 aggregate matches are separate context, not the inspected sample size.",
-      "sha256": "22237c58b2ac63844e88e393cba59f4247b61f78f7699576a9d66518d4dd4b35"
+      "file": "01-workspace.png",
+      "caption": "Workspace hero: query context shows 694 aggregate matches kept separate from the reviewed pages.",
+      "sha256": "ba334963b659040ed001e9dc5be476f15fe66ddd15351841f3c9c9c70772f0fd"
     },
     {
-      "file": "02-inspected-sample.png",
-      "caption": "13 inspected pages: 3 MSC-related, 10 other; 6 Spanish GDELT-result pages and 7 external/contextual pages.",
-      "sha256": "f8901ea2a2a94dfbb3e4ac4574c9db3efe3e23d554fa08716ba5a98406386f18"
+      "file": "02-articles.png",
+      "caption": "13 reviewed pages: 3 on story, 10 other; 6 GDELT-result pages and 7 found elsewhere.",
+      "sha256": "f10fa13f26665bfe205e68cb83bec8709cc2b0cd19e8e2169bc6bd296d6c2271"
     },
     {
-      "file": "03-confirmed-copy-fold.png",
-      "caption": "One matching-text group contains two pages; folding removes one card, not an independent story.",
-      "sha256": "b7aced71eaa72175c69622f872770763972bed375f24a7790ea8b8964f8e46f4"
+      "file": "03-fold-copied-text.png",
+      "caption": "One matching-text group contains two pages; folding merges one card.",
+      "sha256": "4144eac65f7ab6dcff8afd8db60ae7d1693142af22bf2b2d748f6b77c5bf011f"
     },
     {
-      "file": "04-related-pages.png",
-      "caption": "Three retained MSC pages remain; all retain possible shared-reporting uncertainty.",
-      "sha256": "fb99affef7ae1e1268e7f543ec58ca9cb16c88ca81847b07a626f92749656993"
+      "file": "04-on-story.png",
+      "caption": "On-story filter applied: three pages, each marked with possible shared-reporting uncertainty.",
+      "sha256": "975a5eeeafa6a058868f3841af27556eca7b0fa13c3b6e9f30d428d12e4a3d78"
     },
     {
-      "file": "05-story-timeline.png",
-      "caption": "Publisher-claimed dates, not first publication; the Chinese page is date-only.",
-      "sha256": "207b1e7b5843a78e6bd7a15e745465dac6fd2d8353f5716db10cdd22690706a3"
+      "file": "05-timeline.png",
+      "caption": "Publisher-claimed dates; the Chinese page is date-only.",
+      "sha256": "9cbce222aebacd108acc27225250f5d643860469166e7afdd468b352a8bc1a5b"
     },
     {
-      "file": "06-source-evidence.png",
-      "caption": "Cached source excerpt, date-only precision, provenance and unresolved direction details; no external link opened.",
-      "sha256": "a74f0df3324b15c547b85f9383d1fab26bebd632290b1b9dc1531613e6e35993"
+      "file": "06-source-details.png",
+      "caption": "Cached source excerpt, date-only precision, provenance and direction notes; no external link opened.",
+      "sha256": "7bc2d3105370890fd9cbbc5ce2306cebb334cba7987386f1a704a2331ed5b056"
     },
     {
-      "file": "07-unresolved.png",
-      "caption": "Route conflict, attack-time uncertainty, possible common upstream reporting and incomplete coverage remain unresolved.",
-      "sha256": "fe9158e114640d9306dac0e14e04f32c1de83c707de405dea1c216a1dfb3039a"
+      "file": "07-notes.png",
+      "caption": "Notes: route conflict, attack-time uncertainty, possible common upstream reporting and incomplete coverage.",
+      "sha256": "7c775f795749ec191250e76a233cef22fa562b3500a2613ee3c3b99a48856d0f"
     },
     {
-      "file": "08-import-flow.png",
-      "caption": "Synthetic investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.",
-      "sha256": "0ddd4b230287c9ce19258a05013983d4430640b981ff9a40acc4ae09c596bf19"
+      "file": "08-import.png",
+      "caption": "Investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.",
+      "sha256": "99e57e5ab4794a620fa2fbf7c094e2d71d93fd707682e214c534ed519efa21ca"
     }
   ]
 }

@@ -97,7 +97,7 @@ def load_dataset(root=ROOT):
         origin_label = 'GDELT result' if row['origin'].startswith('GDELT_artlist') else 'Bulk metadata only' if row['origin'] == 'GKG_metadata_hint_only' else 'External discovery'
         cards.append({
             **row, 'inspected': is_inspected, 'category': category,
-            'category_label': {'related': 'Matches MSC story', 'unrelated': 'Other story / not MSC', 'uncertain': 'Unresolved / uninspected'}[category],
+            'category_label': {'related': 'On story', 'unrelated': 'Other story', 'uncertain': 'Unresolved'}[category],
             'origin_label': origin_label, 'confirmed_duplicate': confirmed, 'possible_shared': possible,
             'duplicate_status': 'confirmed' if confirmed else 'possible' if possible else 'unassessed',
             'confirmed_group_size': duplicate_sizes[row['duplicate_group']] if confirmed else None,
@@ -116,15 +116,15 @@ def load_dataset(root=ROOT):
     return {'id': 'shipping-msc-2026',
             'title': 'Reported MSC Ulsan III / Novorossiysk booking suspension',
             'topic': 'Shipping · Black Sea',
-            'description': 'Separate relevant coverage from unrelated matches and repeated reporting. Explore cached GDELT-result and externally discovered pages around a reported MSC booking suspension. This is an evidence-inspection prototype, not a live feed.',
+            'description': 'Coverage of a reported MSC booking suspension for Ulsan III at Novorossiysk, collected from GDELT results and related pages. 13 pages were reviewed; 3 concern this story.',
             'kicker': 'Bundled case study',
-            'story_label': 'MSC story',
-            'coverage_status': 'Incomplete observed coverage',
+            'story_label': 'the MSC suspension',
+            'coverage_status': 'Incomplete coverage',
             'origin': 'bundled',
             'imported_at': None,
-            'classification_note': 'Relevance and copied-text labels are recorded, agent-assisted inspections from this project. Counts and folding are computed by the app.',
+            'classification_note': 'Relevance and copied-text labels were recorded during review of this collection. Counts and folding are computed by the app.',
             'persistence_note': 'Bundled with the app; cannot be removed.',
-            'records': cards, 'by_id': {r['id']: r for r in cards}, 'timeline': timeline, 'uncertainties': uncertainties, 'summary': summary, 'artifact_hashes': {key: hashlib.sha256(body).hexdigest() for key, body in blobs.items()}, 'aggregate_context': {'count': aggregate[0]['article_count'], 'date': '2026-08-31', 'language': 'English', 'source': 'GDELT TimelineVolRaw aggregate', 'meaning': 'Separate context only. This curated inspected set is not a representative sample of these matches. The retained pages do not explain or attribute the ' + str(aggregate[0]['article_count']) + '-match spike.'}, 'scope_notice': 'The reviewed set mixes GDELT results and externally discovered contextual pages, including other-topic checks. “Other story” means unrelated to this MSC suspension, not necessarily an invalid shipping-query match.'}
+            'records': cards, 'by_id': {r['id']: r for r in cards}, 'timeline': timeline, 'uncertainties': uncertainties, 'summary': summary, 'artifact_hashes': {key: hashlib.sha256(body).hexdigest() for key, body in blobs.items()}, 'aggregate_context': {'count': aggregate[0]['article_count'], 'date': '2026-08-31', 'language': 'English', 'source': 'GDELT TimelineVolRaw aggregate', 'meaning': 'Separate from the reviewed pages below, which are a curated set and do not explain or attribute these matches.'}, 'scope_notice': 'Includes GDELT results and pages found outside GDELT, including checks of other topics. “Other story” means unrelated to this suspension.'}
 
 
 def filter_records(dataset, include_unrelated=True, include_possible=True, fold_confirmed=False, include_uninspected=False):
@@ -156,9 +156,9 @@ def replay_view(dataset, day='all'):
     if timeline is None:
         if day != 'all':
             raise ValueError('Unknown publisher-claimed date')
-        return {'events': [], 'days': [], 'selected_day': day, 'visible_count': 0, 'total_count': 0, 'context': [], 'date_axis_meaning': 'No replay entries were supplied for this investigation.', 'empty_interval_meaning': 'unavailable/unsearched observations, not zero coverage', 'filter_scope': 'Replay always uses the retained story pages. Evidence-browser filters do not change this set.', 'lead_time': None, 'normalized_comparison': None}
+        return {'events': [], 'days': [], 'selected_day': day, 'visible_count': 0, 'total_count': 0, 'context': [], 'date_axis_meaning': 'Publisher-claimed dates.', 'empty_interval_meaning': 'unsearched or unavailable observations', 'filter_scope': 'Shows the pages marked as on-story regardless of filters.', 'lead_time': None, 'normalized_comparison': None}
     days = sorted({event['display_date'] for event in dataset['timeline']['events']})
     if day != 'all' and day not in days:
         raise ValueError('Unknown publisher-claimed date')
     events = [{**e, 'claim_label': dataset['by_id'][e['id']]['claim_label'], 'date_only': e['publisher_publication_utc_claim'] is None} for e in dataset['timeline']['events'] if day == 'all' or e['display_date'] == day]
-    return {'events': events, 'days': days, 'selected_day': day, 'visible_count': len(events), 'total_count': len(dataset['timeline']['events']), 'context': dataset['timeline']['context'], 'date_axis_meaning': dataset['timeline']['date_axis_meaning'], 'empty_interval_meaning': dataset['timeline']['empty_interval_meaning'], 'filter_scope': 'Replay always uses the retained story pages. Evidence-browser filters do not change this set.', 'lead_time': None, 'normalized_comparison': None}
+    return {'events': events, 'days': days, 'selected_day': day, 'visible_count': len(events), 'total_count': len(dataset['timeline']['events']), 'context': dataset['timeline']['context'], 'date_axis_meaning': dataset['timeline']['date_axis_meaning'], 'empty_interval_meaning': dataset['timeline']['empty_interval_meaning'], 'filter_scope': 'Shows the pages marked as on-story regardless of filters.', 'lead_time': None, 'normalized_comparison': None}

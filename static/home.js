@@ -29,9 +29,9 @@ function cardFor(inv) {
   badges.appendChild(el('span', 'badge unrelated',
     inv.origin === 'bundled' ? 'Bundled' : 'Imported'));
   card.appendChild(badges);
-  let meta = inv.inspected_count + ' inspected pages · ' +
-    inv.article_count + ' inventory records · ' + inv.related_count +
-    ' story-related';
+  let meta = inv.article_count + ' articles · ' +
+    inv.inspected_count + ' reviewed · ' + inv.related_count +
+    ' on story';
   if (inv.imported_at) meta += ' · imported ' + inv.imported_at.slice(0, 10);
   card.appendChild(el('p', 'card-meta', meta));
   const actions = el('div', 'card-actions');
@@ -72,7 +72,10 @@ async function refreshList() {
 
 function showErrors(errors) {
   errorsEl.textContent = '';
-  for (const message of errors) errorsEl.appendChild(el('li', null, message));
+  errorsEl.appendChild(el('p', null, 'Fix these and try again:'));
+  const list = el('ul');
+  for (const message of errors) list.appendChild(el('li', null, message));
+  errorsEl.appendChild(list);
 }
 
 submitEl.addEventListener('click', async () => {
@@ -89,7 +92,7 @@ submitEl.addEventListener('click', async () => {
     }
   }
   if (!body.trim()) {
-    showErrors(['Choose a .json file or paste investigation JSON first.']);
+    showErrors(['Choose a file or paste JSON.']);
     return;
   }
   submitEl.disabled = true;
@@ -102,8 +105,8 @@ submitEl.addEventListener('click', async () => {
     if (res.status === 201) {
       const data = await res.json();
       resultEl.textContent = '';
-      const p = el('p', null, 'Imported "' + data.summary.title + '". ');
-      const link = el('a', null, 'Open the investigation');
+      const p = el('p', null, 'Imported \u201c' + data.summary.title + '\u201d. ');
+      const link = el('a', null, 'Open');
       link.href = '/investigations/' + encodeURIComponent(data.id);
       p.appendChild(link);
       p.appendChild(document.createTextNode('.'));
@@ -112,7 +115,7 @@ submitEl.addEventListener('click', async () => {
       fileEl.value = '';
       await refreshList();
     } else if (res.status === 413) {
-      showErrors(['The file exceeds the 1 MiB import limit.']);
+      showErrors(['File is larger than 1 MiB.']);
     } else {
       const data = await res.json().catch(() => null);
       showErrors((data && data.errors) ||
@@ -129,7 +132,7 @@ cardsEl.addEventListener('click', async (e) => {
   const btn = e.target.closest('[data-remove]');
   if (!btn) return;
   const id = btn.dataset.remove;
-  if (!confirm('Remove investigation "' + id + '"? This deletes its local JSON file.')) return;
+  if (!confirm('Remove \u201c' + id + '\u201d? Its JSON file will be deleted.')) return;
   const res = await fetch('/api/investigations/' + encodeURIComponent(id),
     {method: 'DELETE'});
   if (res.status === 204) {

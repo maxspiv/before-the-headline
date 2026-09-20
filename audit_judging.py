@@ -66,7 +66,7 @@ def canonical(url):
 
 def run():
     OUT.mkdir(parents=True, exist_ok=True)
-    app_files = ['app.py', 'demo_data.py', 'templates/index.html', 'static/app.js', 'static/app.css', 'requirements.txt', 'requirements-dev.txt', 'DEMO.md', 'test_demo.py', 'test_demo_browser.py']
+    app_files = ['app.py', 'demo_data.py', 'investigations.py', 'templates/home.html', 'templates/investigation.html', 'templates/schema.html', 'static/app.js', 'static/home.js', 'static/app.css', 'requirements.txt', 'requirements-dev.txt', 'test_demo.py', 'test_demo_browser.py']
     backup = OUT / 'pre_judging_demo.zip'
     if not backup.exists():
         with zipfile.ZipFile(backup, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
