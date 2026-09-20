@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signal / Noise — Import schema</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="wordmark">Signal / Noise</span>
+      <span class="tagline">Before the Headline · Evidence lab</span>
+    </div>
+    <div class="header-right"><span class="cache-pill">Local · cached data only</span></div>
+  </div>
+</header>
+<main>
+  <section class="panel">
+    <div class="section-head"><p class="section-number">i</p><h2>Investigation import schema (version 1)</h2></div>
+    <p class="section-note">A JSON object describing a self-contained investigation. Download a working example from <a href="/api/import/template">the template endpoint</a>.</p>
+    <div class="dialog-section">
+      <h4>Top-level fields</h4>
+      <p><code>schema_version</code> (required, must equal 1); <code>id</code> (required slug, <code>^[a-z0-9][a-z0-9_-]{2,63}$</code>); <code>title</code>, <code>topic</code> (required); optional <code>description</code>, <code>story_label</code>, <code>coverage_status</code>, <code>aggregate_context</code>, <code>uncertainties</code>, <code>timeline_notes</code>.</p>
+    </div>
+    <div class="dialog-section">
+      <h4>articles (required, 1–500)</h4>
+      <p>Each article needs <code>id</code>, <code>title</code>, <code>publisher</code>, <code>language</code> (lowercase, e.g. "english") and <code>relevance</code> (<code>related</code> | <code>unrelated</code> | <code>uncertain</code>). Optional: <code>url</code> (http/https only), <code>origin_label</code>, <code>inspected</code>, <code>duplicate_group</code>, <code>duplicate_status</code>, <code>claimed_timestamp</code> ({value, precision: date|datetime}), <code>publisher_visible_timestamp</code>, <code>excerpt</code>, <code>scope_notes</code>, <code>syndication_assessment</code>, <code>reported_event_timestamps_and_uncertainty</code>, <code>include_in_replay</code>.</p>
+    </div>
+    <div class="dialog-section">
+      <h4>Validation</h4>
+      <p>Unknown fields are rejected. All validation errors are collected and returned together as <code>{errors: [...]}</code> with per-field paths. Requests are limited to 1 MiB.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

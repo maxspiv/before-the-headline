@@ -121,7 +121,7 @@ class DemoWebTests(unittest.TestCase):
             cls.client = cls.app.test_client()
 
     def test_html_assets_and_api_are_local(self):
-        for path in ('/', '/static/app.css', '/static/app.js', '/api/evidence', '/api/replay', '/healthz'):
+        for path in ('/', '/static/app.css', '/static/app.js', '/api/investigations/shipping-msc-2026/evidence', '/api/investigations/shipping-msc-2026/replay', '/healthz'):
             with self.subTest(path=path):
                 response = self.client.get(path)
                 try:
@@ -134,20 +134,20 @@ class DemoWebTests(unittest.TestCase):
         self.assertNotIn('https://fonts.', root)
         self.assertNotIn('unpkg.com', root)
         self.assertNotIn('cdn.jsdelivr', root)
-        self.assertEqual(self.client.get('/api/evidence').json['counts']['visible_count'], 13)
-        self.assertEqual(self.client.get('/api/evidence?unrelated=0').json['counts']['visible_count'], 3)
-        self.assertEqual(self.client.get('/api/evidence?fold=1').json['counts']['visible_count'], 12)
-        self.assertEqual(self.client.get('/api/evidence?inventory=1').json['counts']['visible_count'], 32)
+        self.assertEqual(self.client.get('/api/investigations/shipping-msc-2026/evidence').json['counts']['visible_count'], 13)
+        self.assertEqual(self.client.get('/api/investigations/shipping-msc-2026/evidence?unrelated=0').json['counts']['visible_count'], 3)
+        self.assertEqual(self.client.get('/api/investigations/shipping-msc-2026/evidence?fold=1').json['counts']['visible_count'], 12)
+        self.assertEqual(self.client.get('/api/investigations/shipping-msc-2026/evidence?inventory=1').json['counts']['visible_count'], 32)
 
     def test_invalid_filters_unknown_sources_and_file_routes_fail_closed(self):
-        for path in ('/api/evidence?possible=false', '/api/evidence?fold=9', '/api/evidence?unrelated=1&unrelated=0', '/api/replay?day=2026-09-13', '/api/replay?day=all&day=all'):
+        for path in ('/api/investigations/shipping-msc-2026/evidence?possible=false', '/api/investigations/shipping-msc-2026/evidence?fold=9', '/api/investigations/shipping-msc-2026/evidence?unrelated=1&unrelated=0', '/api/investigations/shipping-msc-2026/replay?day=2026-09-13', '/api/investigations/shipping-msc-2026/replay?day=all&day=all'):
             self.assertEqual(self.client.get(path).status_code, 400)
-        for path in ('/api/source/missing', '/cache/', '/results/msc_validation/evidence_table.json', '/static/../demo_data.py', '/api/source/../../demo_data.py'):
+        for path in ('/api/investigations/shipping-msc-2026/source/missing', '/cache/', '/results/msc_validation/evidence_table.json', '/static/../demo_data.py', '/api/source/../../demo_data.py'):
             self.assertEqual(self.client.get(path).status_code, 404)
         self.assertEqual(self.client.get('/', headers={'Host': 'untrusted.example'}).status_code, 400)
 
     def test_security_headers_and_source_panel_data(self):
-        response = self.client.get('/api/source/shipping_msc_zh')
+        response = self.client.get('/api/investigations/shipping-msc-2026/source/shipping_msc_zh')
         self.assertEqual(response.status_code, 200)
         csp = response.headers['Content-Security-Policy']
         self.assertIn("script-src 'self'", csp)
@@ -163,13 +163,17 @@ class DemoWebTests(unittest.TestCase):
         self.assertIn('驶往', data['excerpt']['text'])
 
     def test_untrusted_source_strings_stay_json_not_template_code(self):
+        import tempfile
         from app import create_app
+        from investigations import Store
         dataset = copy.deepcopy(load_dataset())
         source = dataset['by_id']['shipping_msc_en']
         source['title'] = '<img src=x onerror="alert(1)">{{7*7}}'
         source['excerpt']['text'] = '<script>alert(1)</script>'
-        client = create_app(dataset).test_client()
-        result = client.get('/api/source/shipping_msc_en')
+        with tempfile.TemporaryDirectory() as data_dir:
+            store = Store(Path(data_dir), bundled=[dataset])
+            client = create_app(store=store).test_client()
+            result = client.get('/api/investigations/shipping-msc-2026/source/shipping_msc_en')
         self.assertEqual(result.mimetype, 'application/json')
         self.assertEqual(result.json['title'], source['title'])
         self.assertEqual(result.json['excerpt']['text'], source['excerpt']['text'])

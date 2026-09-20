@@ -105,6 +105,7 @@ def load_dataset(root=ROOT):
             'claim_label': claim_label(event) if event else row['publisher_visible_timestamp'],
             'date_only': bool(event and event['publisher_publication_utc_claim'] is None),
             'uncertainty_ids': [u['id'] for u in UNCERTAINTIES if row['id'] in u['source_ids']],
+            'classification_source': 'recorded',
         })
     ranks = {value: i for i, value in enumerate(ORDER)}
     cards.sort(key=lambda row: (ranks.get(row['id'], len(ORDER)), next(i for i, original in enumerate(evidence) if original['id'] == row['id'])))
@@ -112,7 +113,18 @@ def load_dataset(root=ROOT):
     summary = {'inventory_total': len(cards), 'inspected_total': len(reviewed), 'uninspected_total': len(cards) - len(reviewed), 'related_inspected': sum(r['category'] == 'related' for r in reviewed), 'unrelated_inspected': sum(r['category'] == 'unrelated' for r in reviewed), 'confirmed_duplicate_pages': sum(r['confirmed_duplicate'] for r in reviewed), 'confirmed_duplicate_groups': len({r['duplicate_group'] for r in reviewed if r['confirmed_duplicate']}), 'possible_shared_inspected': sum(r['possible_shared'] for r in reviewed), 'inspected_gdelt_pages': sum(r['origin_label'] == 'GDELT result' for r in reviewed), 'inspected_external_pages': sum(r['origin_label'] == 'External discovery' for r in reviewed)}
     labels = {row['id']: {'id': row['id'], 'publisher': row['publisher'], 'language': row['language']} for row in cards}
     uncertainties = [{**u, 'sources': [labels[sid] for sid in u['source_ids']]} for u in UNCERTAINTIES]
-    return {'records': cards, 'by_id': {r['id']: r for r in cards}, 'timeline': timeline, 'uncertainties': uncertainties, 'summary': summary, 'artifact_hashes': {key: hashlib.sha256(body).hexdigest() for key, body in blobs.items()}, 'aggregate_context': {'count': aggregate[0]['article_count'], 'date': '2026-08-31', 'language': 'English', 'source': 'GDELT TimelineVolRaw aggregate', 'meaning': 'Separate context only. This curated inspected set is not a representative sample of these matches. The retained pages do not explain or attribute the ' + str(aggregate[0]['article_count']) + '-match spike.'}, 'scope_notice': 'The reviewed set mixes GDELT results and externally discovered contextual pages, including other-topic checks. “Other story” means unrelated to this MSC suspension, not necessarily an invalid shipping-query match.'}
+    return {'id': 'shipping-msc-2026',
+            'title': 'Reported MSC Ulsan III / Novorossiysk booking suspension',
+            'topic': 'Shipping · Black Sea',
+            'description': 'Separate relevant coverage from unrelated matches and repeated reporting. Explore cached GDELT-result and externally discovered pages around a reported MSC booking suspension. This is an evidence-inspection prototype, not a live feed.',
+            'kicker': 'Bundled case study',
+            'story_label': 'MSC story',
+            'coverage_status': 'Incomplete observed coverage',
+            'origin': 'bundled',
+            'imported_at': None,
+            'classification_note': 'Relevance and copied-text labels are recorded, agent-assisted inspections from this project. Counts and folding are computed by the app.',
+            'persistence_note': 'Bundled with the app; cannot be removed.',
+            'records': cards, 'by_id': {r['id']: r for r in cards}, 'timeline': timeline, 'uncertainties': uncertainties, 'summary': summary, 'artifact_hashes': {key: hashlib.sha256(body).hexdigest() for key, body in blobs.items()}, 'aggregate_context': {'count': aggregate[0]['article_count'], 'date': '2026-08-31', 'language': 'English', 'source': 'GDELT TimelineVolRaw aggregate', 'meaning': 'Separate context only. This curated inspected set is not a representative sample of these matches. The retained pages do not explain or attribute the ' + str(aggregate[0]['article_count']) + '-match spike.'}, 'scope_notice': 'The reviewed set mixes GDELT results and externally discovered contextual pages, including other-topic checks. “Other story” means unrelated to this MSC suspension, not necessarily an invalid shipping-query match.'}
 
 
 def filter_records(dataset, include_unrelated=True, include_possible=True, fold_confirmed=False, include_uninspected=False):
@@ -136,10 +148,15 @@ def source_detail(dataset, source_id):
         raise KeyError(source_id)
     row = dataset['by_id'][source_id]
     members = [r for r in dataset['records'] if r['id'] != source_id and r['confirmed_duplicate'] and row['confirmed_duplicate'] and r['duplicate_group'] == row['duplicate_group']]
-    return {**row, 'confirmed_group_members': [{'id': r['id'], 'title': r['title'], 'publisher': r['publisher']} for r in members], 'uncertainties': [u for u in dataset['uncertainties'] if u['id'] in row['uncertainty_ids']], 'replay_event': next((e for e in dataset['timeline']['events'] if e['id'] == source_id), None)}
+    return {**row, 'confirmed_group_members': [{'id': r['id'], 'title': r['title'], 'publisher': r['publisher']} for r in members], 'uncertainties': [u for u in dataset['uncertainties'] if u['id'] in row['uncertainty_ids']], 'replay_event': next((e for e in (dataset.get('timeline') or {}).get('events', []) if e['id'] == source_id), None)}
 
 
 def replay_view(dataset, day='all'):
+    timeline = dataset.get('timeline')
+    if timeline is None:
+        if day != 'all':
+            raise ValueError('Unknown publisher-claimed date')
+        return {'events': [], 'days': [], 'selected_day': day, 'visible_count': 0, 'total_count': 0, 'context': [], 'date_axis_meaning': 'No replay entries were supplied for this investigation.', 'empty_interval_meaning': 'unavailable/unsearched observations, not zero coverage', 'filter_scope': 'Replay always uses the retained story pages. Evidence-browser filters do not change this set.', 'lead_time': None, 'normalized_comparison': None}
     days = sorted({event['display_date'] for event in dataset['timeline']['events']})
     if day != 'all' and day not in days:
         raise ValueError('Unknown publisher-claimed date')

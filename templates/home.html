@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signal / Noise — Investigations</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="wordmark">Signal / Noise</span>
+      <span class="tagline">Before the Headline · Evidence lab</span>
+    </div>
+    <div class="header-right">
+      <span class="cache-pill">Local · cached data only</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="kicker">A HackMIT 2026 evidence desk</p>
+    <h1>Investigations</h1>
+    <p class="hero-copy">Each investigation is a cached, inspectable set of pages. Open one to inspect matches and replay the story.</p>
+  </section>
+
+  <section class="panel">
+    <div class="card-grid">
+      {% for inv in investigations %}
+      <article class="evidence-card">
+        <p class="card-title">{{ inv.title }}</p>
+        <p class="card-meta">{{ inv.topic }}</p>
+        <div class="badges">
+          <span class="badge uncertain">{{ inv.coverage_status }}</span>
+          <span class="badge unrelated">{{ 'Bundled' if inv.origin == 'bundled' else 'Imported' }}</span>
+        </div>
+        <p class="card-meta">{{ inv.inspected_count }} inspected pages · {{ inv.article_count }} inventory records</p>
+        <a class="cta" href="/investigations/{{ inv.id }}">Open</a>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="control-note">{{ persistence_note }} Directory: {{ persistence_directory }}</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>Evidence-inspection prototype · Story replay only. Early warning is unvalidated future work.</p>
+</footer>
+</body>
+</html>
