@@ -308,8 +308,8 @@ button:hover { background: var(--lime); }
 .technical-results summary .section-number { font-size: 28px; }
 .technical-results .details-title { font-family: var(--serif); font-size: 22px; }
 .technical-results .details-hint { font-size: 12px; color: var(--rust); font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; flex-basis: 100%; order: 2; }
-.technical-results summary::after { content: 'Show results'; margin-left: auto; font-size: 13px; font-weight: 600; text-decoration: underline; order: 1; }
-.technical-results details[open] summary::after { content: 'Hide results'; }
+.technical-results summary::after { content: 'Show'; margin-left: auto; font-size: 13px; font-weight: 600; text-decoration: underline; order: 1; }
+.technical-results details[open] summary::after { content: 'Hide'; }
 .technical-results .counter { font-size: 12px; }
 .technical-results .counter strong { font-size: 20px; }
 .technical-results code { font-size: 12px; }
