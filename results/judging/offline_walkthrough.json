@@ -9,8 +9,8 @@
   "server_events": [
     {
       "kind": "fresh_process",
-      "pid": 12471,
-      "entrypoint": "app.main --port 55051"
+      "pid": 14916,
+      "entrypoint": "app.main --port 52407"
     }
   ],
   "walkthrough_card_counts": [
@@ -33,17 +33,17 @@
     {
       "file": "00-home.png",
       "caption": "Investigations home: bundled shipping case, filter box and JSON import panel.",
-      "sha256": "31e8e568aff42af99ef5dbf34c9a8c6a4f514a0415c4f426ac96020710e8e91d"
+      "sha256": "4cf8d52632629ea25af6f79a2d513ba39557020acbeec5a31402d44b1f30cf6c"
     },
     {
       "file": "01-workspace.png",
       "caption": "Workspace hero: query context shows 694 aggregate matches kept separate from the reviewed pages.",
-      "sha256": "45530a921484ce69cb97e3ed5a216f4ce11c825ca98bcc1161d8fa6df3feac4b"
+      "sha256": "ba334963b659040ed001e9dc5be476f15fe66ddd15351841f3c9c9c70772f0fd"
     },
     {
       "file": "02-articles.png",
       "caption": "13 reviewed pages: 3 on story, 10 other; 6 GDELT-result pages and 7 found elsewhere.",
-      "sha256": "431954c15a1e91ef1ef548f8855c0031706094c149887dba1d560fe6cd7e81f3"
+      "sha256": "f10fa13f26665bfe205e68cb83bec8709cc2b0cd19e8e2169bc6bd296d6c2271"
     },
     {
       "file": "03-fold-copied-text.png",
@@ -53,7 +53,7 @@
     {
       "file": "04-on-story.png",
       "caption": "On-story filter applied: three pages, each marked with possible shared-reporting uncertainty.",
-      "sha256": "66866844aef2f2431cda892818f53837a1e7d9e4a2d6ac24d23ca46d71680834"
+      "sha256": "975a5eeeafa6a058868f3841af27556eca7b0fa13c3b6e9f30d428d12e4a3d78"
     },
     {
       "file": "05-timeline.png",
@@ -73,7 +73,7 @@
     {
       "file": "08-import.png",
       "caption": "Investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.",
-      "sha256": "852ba0e5bebd21ebe1dc6c2a562043a78b626fb25f94324aa613b41fbffd93da"
+      "sha256": "99e57e5ab4794a620fa2fbf7c094e2d71d93fd707682e214c534ed519efa21ca"
     }
   ]
 }
