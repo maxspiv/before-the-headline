@@ -188,7 +188,7 @@ class ApiTests(unittest.TestCase):
     def test_template_endpoint_serves_attachment(self):
         res = self.client.get('/api/import/template')
         self.assertEqual(res.status_code, 200)
-        self.assertIn('signal-noise-investigation-template.json',
+        self.assertIn('before-the-headline-investigation-template.json',
                       res.headers['Content-Disposition'])
         validate_import(json.loads(res.get_data()))
 

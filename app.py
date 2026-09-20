@@ -26,6 +26,9 @@ def _commit():
         return 'unknown'
 
 
+STARTED_COMMIT = _commit()
+
+
 def create_app(data_dir=None, store=None):
     app = Flask(__name__)
     app.config.update(MAX_CONTENT_LENGTH=MAX_BODY_BYTES,
@@ -75,7 +78,7 @@ def create_app(data_dir=None, store=None):
     @app.get('/healthz')
     def health():
         return jsonify(status='ok', mode='cached-offline',
-                       product='Before the Headline', commit=_commit(),
+                       product='Before the Headline', commit=STARTED_COMMIT,
                        investigations=len(store.list()))
 
     @app.get('/api/investigations')
@@ -149,7 +152,7 @@ def create_app(data_dir=None, store=None):
             body, mimetype='application/json',
             headers={'Content-Disposition':
                      'attachment; filename='
-                     'signal-noise-investigation-template.json'})
+                     'before-the-headline-investigation-template.json'})
 
     @app.errorhandler(RequestEntityTooLarge)
     def too_large(_error):
