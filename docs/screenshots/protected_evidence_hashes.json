@@ -1,0 +1,19 @@
+{
+  "fixtures/shipping-msc-2026/evidence_sources.json": "6f483ae5379e6047bb89e9adcd0a0bc4514d1e13b8f81704522c0370c41d17a7",
+  "fixtures/shipping-msc-2026/evidence_table.json": "ca321f0cf0162ea2ac431fa1124bbb554eb05536ee54a0e66cb0b91a308f1414",
+  "fixtures/shipping-msc-2026/pages/energy_yaroslavl_oilprice_en.txt": "fd0e1eb479e7d73111f98c2ab28035c4bd87130059da56c766210715de0fb6ca",
+  "fixtures/shipping-msc-2026/pages/gdelt_iran_diariovasco_es.txt": "559c92c0efa68e20a676835f51844c94991091bf53ee754f3e9554b6496e8adc",
+  "fixtures/shipping-msc-2026/pages/gdelt_iran_laverdad_es.txt": "a4fb79507c634107c0118c7012301344d5517b22de22cc64f738319542238ca9",
+  "fixtures/shipping-msc-2026/pages/gdelt_larak_es.txt": "647f4c226bae857b776f328e4a7d4daa6bcf6f76f75bf954a32a13eac8d84f72",
+  "fixtures/shipping-msc-2026/pages/gdelt_outlook_es.txt": "9cdf49efd1e6cdb6b3ecf01586985d33225c195cb3615e0cbebafd2781f9ae0a",
+  "fixtures/shipping-msc-2026/pages/gdelt_panama_es.txt": "7c5411b994fd9728e0999ff728703efc9c514e9704e37a11340c7c21e4c92752",
+  "fixtures/shipping-msc-2026/pages/gdelt_quito_es.txt": "ba942e3bad6bf8f569b52c2855975d97144ab73593549296c8083807859b44aa",
+  "fixtures/shipping-msc-2026/pages/semiconductors_exports_en.txt": "79a0ced6ce46b0540a1c836bf2cd40c92b5b303fcf959d404c93993b3fc4d4ea",
+  "fixtures/shipping-msc-2026/pages/shipping_hormuz_en.txt": "5f270be0c83613f68270d1dd9e0510f482218bed096fbd2743285db74264f0a7",
+  "fixtures/shipping-msc-2026/pages/shipping_msc_en.txt": "baefed8a4829dbeaefc3f777bcb395f158af1838fea8de31f29f308f6aac2ac7",
+  "fixtures/shipping-msc-2026/pages/shipping_msc_es.txt": "987062ae8ac79c159ae3449be5271abe4c9f5586ec97dd9ae76d6739792ab010",
+  "fixtures/shipping-msc-2026/pages/shipping_msc_zh.txt": "d5d3b9989862d5fc9deab6bd2ec1e6cb7339e08cae0786e0931810aebf575fdf",
+  "fixtures/shipping-msc-2026/pages/shipping_typhoon_en.txt": "90e64d53d0fa82b3b68e172525afc6ded7fafaeee616f880550e52e3e946fd89",
+  "fixtures/shipping-msc-2026/raw_candidates.json": "2b216b61ceedee9c3f160d523fb2131897a6cc23c48e31d3fd1c8e3c03cf829b",
+  "fixtures/shipping-msc-2026/timeline_data.json": "3dab97bb3c29832f08bafeb93b2968cd93c25484d12d41678ad111281ed6f9f6"
+}
