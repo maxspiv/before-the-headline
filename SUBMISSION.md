@@ -2,7 +2,7 @@
 
 ## One-sentence pitch
 
-**Signal / Noise is an evidence-inspection prototype that helps investigators inspect a news spike and separate relevant coverage, repeated reporting, and uncertainty using traceable cached sources.**
+**Signal / Noise is an evidence workbench for investigating news spikes across sources and languages: it helps an investigator separate relevant coverage, repeated reporting and uncertainty using traceable cached sources.**
 
 ## Problem
 
@@ -21,6 +21,14 @@ The local demo follows one complete investigation around the **reported MSC Ulsa
 5. Open source panels containing cached excerpts, URLs, timestamp provenance, relevance rationale and unresolved details.
 
 The relevance and text-sharing judgments are recorded, agent-assisted inspections of this case—not an automatic multilingual event classifier. No live LLM is used by the application.
+
+An optional, collapsed **Technical results** panel (outside the demo path) summarises the separate historical experiment described below.
+
+## Separate historical experiment: multilingual data feasibility
+
+Independently of the MSC case, we checked whether GDELT’s separate *translated* GKG stream carries usable historical source-language labels. Six translated GKG files (00:00 and 00:15 UTC on 1 March 2015, 2017 and 2019) were downloaded, size/MD5-verified and parsed: **14,725 records, 60 distinct reported source-language code values, 14,320 distinct typed document identifiers**. A frozen 96-URL article-body check confirmed several non-English bodies (Russian, Arabic, Finnish, Ukrainian, Spanish, French) by manual review.
+
+This establishes that usable multilingual historical data exists. It does **not** establish detection: the native GKG sample had every language field blank (unknown, not English), so a comparable English denominator remains unvalidated; no 28-day corpus was downloaded; and no detector, alert threshold or held-out false-alarm evaluation was completed. Full details, evidence paths and the recommended next experiment are in [HISTORICAL_FEASIBILITY.md](HISTORICAL_FEASIBILITY.md).
 
 ## Actual data and sample sizes
 
@@ -41,7 +49,7 @@ Supporting feasibility data includes 24 returned daily bins for English shipping
 
 ## Technical architecture
 
-- **Python + Flask 3.1.2**, Jinja template, local CSS and plain browser JavaScript. No Node build step, API keys, database service or LLM runtime dependency.
+- **Python + Flask 3.1.2**, Jinja template, local CSS and plain browser JavaScript. No Node build step, API keys, database service or LLM runtime dependency. Setup, start and test commands are in [README.md](README.md).
 - Frozen JSON artifacts and cached publisher-text excerpts are loaded locally. Python supplies deterministic filters and counts; the client renders results without recalculating population statistics.
 - Source excerpts are rendered as text, never executed as publisher HTML. HTTP(S)-only source links, a restrictive Content Security Policy, loopback binding and disabled debug mode limit the local demo’s exposure.
 - The original response cache preserves request URLs, timestamps, HTTP outcomes and SHA-256 hashes. The judging audit checked cached bodies, extracted text, displayed excerpts, timestamp fields and the aggregate’s source bin.
@@ -60,14 +68,17 @@ The audit verifies provenance and faithful presentation of the cached reporting.
 
 ## Verification and judging readiness
 
-**17 tests passed:** 10 data/API tests, 6 browser regression tests and one fresh-start offline judging-path test. They cover artifact counts, all filter combinations, confirmed-versus-possible sharing, timestamp precision, source panels, focus restoration, mobile layout, literal rendering of hostile source text and the documented reset procedure.
+**17 tests passed on the final checkout:** 10 data/API tests, 6 browser regression tests and one fresh-start offline judging-path test. They cover artifact counts, all filter combinations, confirmed-versus-possible sharing, timestamp precision, source panels, focus restoration, mobile layout, literal rendering of hostile source text and the documented reset procedure.
 
 The fresh-start run recorded no external browser requests, no blocked outbound server attempts and no JavaScript errors. It also checked that protected cached evidence was unchanged. Presentation fallback screenshots capture the actual walkthrough states—not synthetic mockups.
 
+- [Setup, tests, architecture and limitations](README.md)
 - [90-second walkthrough and startup/reset instructions](DEMO.md)
 - [Presentation fallback screenshots](results/judging/screenshots.md)
-- [Cache-only claim and candidate audit](results/judging/claim_audit.md)
 - [Machine-readable offline verification](results/judging/offline_walkthrough.json)
+- [Protected evidence hashes](results/judging/protected_evidence_hashes.json)
+
+The cache-only claim/candidate audit was run against raw caches that are not part of the repository; its conclusions are stated in “Verified findings” above.
 
 ## Limitations and future work
 
@@ -81,6 +92,6 @@ One non-story record has a raw `+0900` timestamp whose legacy derived UTC field 
 
 ## How Devin contributed
 
-Under the user’s scope and evidence constraints, Devin explored GDELT’s contracts and Voloridge’s tools; authored and ran reproducible cached feasibility probes; inspected publisher evidence and recorded provisional classifications; implemented the Flask investigation flow; wrote and ran count, timestamp, security and offline tests; and prepared the judging audit, walkthrough and fallback screenshots.
+Under the user’s scope and evidence constraints, Devin explored GDELT’s contracts and Voloridge’s tools; authored and ran reproducible cached feasibility probes and the historical translated-stream verification; inspected publisher evidence and recorded provisional classifications; implemented the Flask investigation flow; wrote and ran count, timestamp, security and offline tests; prepared the judging audit, walkthrough and fallback screenshots; and in the final pass set up a fresh environment, fixed CJK rendering, added the technical-results panel and finalized the documentation.
 
 Devin was a development and analysis assistant, **not a live news-analysis dependency or an independent fact-checking authority**. The user set the product direction and required the separation between observed evidence and unsupported early-warning claims.

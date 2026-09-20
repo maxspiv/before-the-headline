@@ -1,12 +1,12 @@
 # Signal / Noise — HackMIT judging guide
 
-An evidence-inspection prototype using frozen cached sources. **Early warning is unvalidated future work.**
+An evidence workbench for investigating news spikes across sources and languages, running on frozen cached sources. **Early warning is unvalidated future work.** Setup and architecture are in [README.md](README.md); this file is the presentation guide.
 
 ## Fresh checkout / Devin Cloud handoff
 
 The Git checkout includes the Python source, pinned dependencies, local web assets, documentation, and the 3 JSON + 13 publisher-text fixtures needed by the offline Flask demo. Raw HTTP caches, historical bulk data, publisher crawl caches, virtual environments, logs, screenshots and local backups are intentionally not transferred. Original fixture text and source-line references are preserved; no HTTP headers or credentials are required by the demo.
 
-Run from the repository root in Devin Cloud using Python 3.9 or later:
+Run from the repository root using Python 3.9 or later (verified on 3.10):
 
 ```sh
 python3 -m venv .venv
@@ -15,9 +15,11 @@ python3 -m venv .venv
 .venv/bin/python app.py --port 8765
 ```
 
+The Chinese page title and excerpt need a CJK font on the presenting machine (e.g. `fonts-noto-cjk`); without one they render as boxes.
+
 The app then runs offline at `http://127.0.0.1:8765/`. Use a browser inside the Cloud machine, or an authenticated port-forward/reverse proxy that preserves the localhost Host header. The app deliberately remains loopback-only with its trusted-host checks; no public binding or security relaxation is needed for this handoff. Dependencies require internet on the first installation, but the demo itself does not.
 
-Historical collection/evaluation scripts and reports are included for continued development, but their large caches are not. Full research replay/audit tests and the old screenshot links require those excluded artifacts; they are not the portable-demo acceptance command. Do not run network collectors merely to start the demo. The isolated language-analysis environment and its optional dependencies are separate from the Flask runtime.
+Historical collection/evaluation scripts and reports are included for continued development, but their large caches are not. `audit_judging.py` and the research replay scripts require those excluded artifacts (`results/requests/`, `results/source_manifest.json`, `results/article_evidence.json`) and cannot run from this checkout; they are not the portable-demo acceptance command. The fresh-start judging test, screenshots and protected-evidence hashes do run from the checkout. Do not run network collectors merely to start the demo. The isolated language-analysis environment and its optional dependencies are separate from the Flask runtime.
 
 ## Start the prepared demo
 
@@ -87,6 +89,7 @@ The cache-only audit screened all **19 remaining inventory candidates**. Sixteen
 5. [Publisher-claimed story timeline](results/judging/05-story-timeline.png)
 6. [Cached source evidence and date-only precision](results/judging/06-source-evidence.png)
 7. [Unresolved details](results/judging/07-unresolved.png)
+8. [Optional technical-results panel (separate historical experiment)](results/judging/08-technical-results.png) — only if asked about multilingual data
 
 If the browser demo is unavailable, advance through these images while giving the same narration. Do not present the screenshots as live news or a complete historical coverage record.
 
@@ -101,18 +104,22 @@ If the browser demo is unavailable, advance through these images while giving th
 - All three publisher bodies were captured September 19. Publisher claims, GDELT observation labels, GKG record metadata and capture time are different clocks. No article is established as “first.”
 - The DOC September 13 endpoint is not a proven GDELT-wide halt: later bulk records exist, but completeness and the DOC-specific cause remain unresolved.
 
+## If asked about multilingual or historical data
+
+Expand the collapsed **04 Technical results** panel at the bottom of the page (not in the navigation). Say: “Separately, we verified six translated GDELT GKG files — 14,725 records with 60 reported source-language code values — and manual review confirmed several non-English article bodies. That shows usable multilingual historical data exists. It does not validate detection: a comparable English denominator is missing and no held-out alert evaluation was run.” Do not connect it to the MSC replay.
+
 ## Verification and audit
 
 **17 tests passed**: 10 data/API tests, 6 browser regressions and the fresh-start offline judging-path test. The fresh run used a new application process via the real CLI entry point and a new browser context. Outbound server connections/DNS and non-local browser requests were denied; loopback HTTP was allowed. No external requests, blocked server attempts or JavaScript errors were recorded. System-wide network settings were not changed.
 
-Run the exact fresh-start judging path using the already installed Chrome:
+Run the exact fresh-start judging path using installed Chrome:
 
 ```sh
-.venv/bin/python audit_judging.py
+.venv/bin/python -m pip install -r requirements-dev.txt
 SIGNAL_BROWSER_CHANNEL=chrome .venv/bin/python -m unittest -v test_judging.py
 ```
 
-The judging test starts and stops its own server on an unused loopback port, without stopping an existing demo. It verifies the reset procedure, refreshes the seven fallback images, and writes [offline verification](results/judging/offline_walkthrough.json).
+The judging test starts and stops its own server on an unused loopback port, without stopping an existing demo. It verifies the reset procedure, checks the 17 evidence fixtures against [protected hashes](results/judging/protected_evidence_hashes.json), refreshes the seven fallback images, and writes [offline verification](results/judging/offline_walkthrough.json). If Playwright cannot find Chrome, run `.venv/bin/python -m playwright install chrome` once (network required).
 
 For all demo regressions, start the regular server separately, then:
 
@@ -120,15 +127,13 @@ For all demo regressions, start the regular server separately, then:
 SIGNAL_BROWSER_CHANNEL=chrome .venv/bin/python -m unittest -v test_demo.py test_demo_browser.py test_judging.py
 ```
 
-The prepared environment already has the test dependencies and uses installed Chrome. Do not install packages or browsers during offline judging. Test dependency pins are in `requirements-dev.txt`.
+Do not install packages or browsers during offline judging. Test dependency pins are in `requirements-dev.txt`.
 
-- [Submission draft](SUBMISSION.md)
-- [Claim and additional-candidate audit](results/judging/claim_audit.md)
-- [Machine-readable claim audit](results/judging/claim_audit.json)
+- [Submission](SUBMISSION.md)
 - [Protected evidence hashes](results/judging/protected_evidence_hashes.json)
-- [Pre-judging app backup](results/judging/pre_judging_demo.zip)
+- [Fallback screenshots](results/judging/screenshots.md)
 
-The backup preserves the previous working app code, styles, tests and guide. Cached evidence and frozen classifications were not changed. This preparation altered presentation wording and corrected an unsupported timestamp fallback label; it did not reopen collection or add new product features.
+The original cache-only claim audit (`claim_audit.md/.json`) and the pre-judging backup zip were produced from the excluded raw caches and are not in this checkout; its conclusions are summarised in the two “If asked…” sections above and in SUBMISSION.md. Cached evidence and frozen classifications were not changed in the final polish pass; it altered presentation wording, display casing of language labels, added the optional technical-results panel and committed the judging artifacts.
 
 ## Remaining issues to disclose
 

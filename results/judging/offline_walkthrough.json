@@ -9,8 +9,8 @@
   "server_events": [
     {
       "kind": "fresh_process",
-      "pid": 7118,
-      "entrypoint": "app.main --port 57201"
+      "pid": 9582,
+      "entrypoint": "app.main --port 56705"
     }
   ],
   "walkthrough_card_counts": [
