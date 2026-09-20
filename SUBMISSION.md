@@ -46,7 +46,7 @@ These are different populations and must not be treated as a funnel:
 
 ## Methodology
 
-**Review method.** Each reviewed page was opened and read; relevance and copied-text labels were recorded by hand. Counts and folding are computed by the app from those recorded labels.
+**Review method.** Each reviewed page was opened and read; relevance and copied-text labels were recorded during a manual, agent-assisted review (Devin under human direction). Counts and folding are computed by the app from those recorded labels.
 
 **Timestamps.** Article dates are publisher-claimed; date-only entries have no time or timezone. GDELT observation times and capture times are shown separately in source details.
 

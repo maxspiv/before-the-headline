@@ -690,7 +690,7 @@ def import_template():
         'topic': 'Topic · Region',
         'description': 'What this investigation examines.',
         'story_label': 'the story',
-        'coverage_status': 'Incomplete observed coverage',
+        'coverage_status': 'Incomplete coverage',
         'articles': [
             {
                 'id': 'example-a',
