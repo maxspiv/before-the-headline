@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signal / Noise — Before the Headline</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="wordmark">Signal / Noise</span>
+      <span class="tagline">Before the Headline · Evidence lab</span>
+    </div>
+    <div class="header-right">
+      <span class="cache-pill">Local · cached data only</span>
+      <span class="coverage-warning">Incomplete observed coverage</span>
+      <nav class="site-nav">
+        <a href="#inspect">Inspect</a>
+        <a href="#replay">Replay</a>
+        <a href="#unresolved">Unresolved</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="kicker">A HackMIT 2026 evidence desk</p>
+    <h1>Inspect a news spike.</h1>
+    <p class="hero-copy">Separate relevant coverage from unrelated matches and repeated reporting.</p>
+    <p class="section-note">Explore cached GDELT-result and externally discovered pages around a reported MSC booking suspension. This is an evidence-inspection prototype, not a live feed.</p>
+    <p><a class="cta" id="begin-investigation" href="#inspect">Begin investigation</a></p>
+    <aside class="aggregate-block" id="aggregate-block">
+      <p class="aggregate-copy"><strong>Broad-query context, not sample size.</strong> <span id="aggregate-count">—</span> aggregate matches.</p>
+      <p class="aggregate-copy">The inspected sample combines Spanish GDELT-result pages with externally discovered evidence. It is not representative of this English-language aggregate, and we have not established what caused the spike.</p>
+      <p class="aggregate-meta" id="aggregate-meta">GDELT TimelineVolRaw
+      aggregate · English shipping · 31 Aug 2026</p>
+    </aside>
+  </section>
+
+  <section id="inspect" class="panel">
+    <div class="section-head">
+      <p class="section-number">01</p>
+      <h2>Inspect the matches</h2>
+    </div>
+    <p class="section-note" id="scope-notice">The reviewed set mixes GDELT
+    results and externally discovered contextual pages, including other-topic
+    checks. It is not every GDELT match.</p>
+    <p class="control-note">Entire inspected set · before browser filters</p>
+    <div class="summary-counters" id="summary-counters" aria-live="polite"></div>
+
+    <form class="controls" id="filter-controls">
+      <label class="control"><input type="checkbox" id="show-unrelated" checked>
+        <span>Show other stories</span></label>
+      <label class="control"><input type="checkbox" id="show-possible" checked>
+        <span>Show possible shared reporting</span></label>
+      <label class="control"><input type="checkbox" id="fold-confirmed">
+        <span>Fold confirmed copied text</span></label>
+      <label class="control"><input type="checkbox" id="include-uninspected">
+        <span>Include uninspected inventory</span></label>
+      <div class="control-buttons">
+        <button type="button" id="focus-msc">Focus on MSC story</button>
+        <button type="button" id="reset-filters">Reset filters</button>
+      </div>
+    </form>
+    <p class="control-note">Confirmed copied text means matching inspected passages. Possible shared reporting is unconfirmed. Folding counts cards, not independent stories.</p>
+    <p id="result-count" aria-live="polite"></p>
+    <div id="evidence-status" class="status-line" role="status"></div>
+    <p><button type="button" id="retry-evidence" class="hidden">Retry loading evidence</button></p>
+    <div id="evidence-cards" class="card-grid"></div>
+  </section>
+
+  <section id="replay" class="panel">
+    <div class="section-head">
+      <p class="section-number">02</p>
+      <h2>Replay the story</h2>
+    </div>
+    <p class="section-note">Publisher-claimed calendar dates; date-only
+    observations are not ordered within a day.</p>
+    <p class="section-note" id="replay-scope"></p>
+    <div class="day-buttons" id="day-buttons" role="group"
+         aria-label="Select publisher-claimed day">
+      <button type="button" data-day="all" class="day-btn active">All observed pages</button>
+      <button type="button" data-day="2026-08-31" class="day-btn">31 Aug</button>
+      <button type="button" data-day="2026-09-01" class="day-btn">1 Sep</button>
+    </div>
+    <p id="replay-count" aria-live="polite"></p>
+    <div id="replay-timeline" class="replay-timeline"></div>
+    <p class="section-note" id="replay-empty-note"></p>
+  </section>
+
+  <section id="unresolved" class="panel">
+    <div class="section-head">
+      <p class="section-number">03</p>
+      <h2>What remains unresolved</h2>
+    </div>
+    <div id="uncertainty-cards" class="card-grid uncertainty-grid"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>Evidence-inspection prototype · Story replay only. Early warning is unvalidated future work. No first-publication or cross-language lead claim is made.</p>
+  <details class="provenance"><summary>Artifact provenance</summary>
+    <dl id="artifact-hashes"></dl>
+  </details>
+</footer>
+
+<dialog id="source-dialog" class="source-dialog" aria-labelledby="source-title">
+  <div class="dialog-inner">
+    <div class="dialog-head">
+      <span class="coverage-warning">Incomplete observed coverage</span>
+      <button type="button" id="dialog-close" aria-label="Close source panel">Close</button>
+    </div>
+    <h3 id="source-title"></h3>
+    <p id="source-meta" class="dialog-meta"></p>
+    <div class="claim-panel" id="source-claim"></div>
+    <p><a id="source-external-link" target="_blank"
+          rel="noopener noreferrer">Open original page (requires internet)</a>
+       <span id="source-url-text" class="caption"></span></p>
+    <div class="dialog-section">
+      <h4>Cached excerpt</h4>
+      <p id="source-excerpt-caption" class="caption"></p>
+      <blockquote id="source-excerpt"></blockquote>
+    </div>
+    <div class="dialog-section">
+      <h4>Relevance and scope</h4>
+      <p id="source-scope"></p>
+    </div>
+    <div class="dialog-section">
+      <h4>Duplication assessment</h4>
+      <p id="source-syndication"></p>
+      <div id="source-group-members"></div>
+    </div>
+    <div class="dialog-section">
+      <h4>Reported event timestamps and uncertainty</h4>
+      <p id="source-event-times"></p>
+    </div>
+    <details class="dialog-section" id="timestamp-details">
+      <summary>All publisher-embedded timestamps</summary>
+      <table id="source-timestamps">
+        <thead><tr><th>Field</th><th>Value</th><th>UTC conversion (cached)</th>
+          <th>Meaning / location</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </details>
+    <div class="dialog-section">
+      <h4>Observation vs capture</h4>
+      <p id="source-seendate"></p>
+      <p id="source-retrieved"></p>
+      <p id="source-gkg"></p>
+    </div>
+    <div class="dialog-section" id="source-uncertainty-section">
+      <h4>Open uncertainties for this source</h4>
+      <ul id="source-uncertainties"></ul>
+    </div>
+  </div>
+</dialog>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

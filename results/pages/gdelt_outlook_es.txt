@@ -1,0 +1,173 @@
+¿Outlook no funciona? Por qué no hay mucho que puedas hacer y qué recomienda Microsoft
+Diario Expreso en Facebook
+Diario Expreso en Instagram
+Diario Expreso en X
+Diario Expreso en YouTube
+Diario Expreso en tiktok
+Diario Expreso en Whatsapp
+Diario Expreso en Threads
+SUSCRÍBETE
+Menú
+Diario Expreso Ecuador
+Iniciar Sesión
+LO ÚLTIMO
+política
+economía
+opinión
+Ecuador
+Guayaquil
+quito
+Deportes
+ocio
+mundo
+premium
+ahora
+Noboa en Estados Unidos
+Mazar, en riesgo para la generación eléctrica
+Editorial | Turismo sin seguridad, ciudad sin futuro
+Buscar
+suscríbete
+últimas noticias
+Política
+Economía y negocios
+Justicia
+ecuador
+guayaquil
+Quito
+Cuenca
+Opinión
+Premium
+Internacional
+Trámites y servicios
+Sociedad
+deportes
+Ciencia y Tecnología
+Entretenimiento
+buena vida
+Pódcast
+Video
+Judicial y Clasificados
+EspecialEs
+Ciencia y Tecnología
+¿Outlook no funciona? Por qué no hay mucho que puedas hacer y qué recomienda Microsoft
+La falla de Outlook y Exchange Online se prolonga este 31 de agosto. Microsoft trabaja en un problema de autenticación dentro de su infraestructura
+Usuarios enfrentan problemas para acceder a Outlook durante la interrupción de los servicios de Microsoft este 31 de agosto de 2026.
+Generada con ChatGPT - EXPRESO
+Sígueme en:
+Google News
+Google Discover
+Whatsapp
+Publicado por
+Giannella Espinoza
+Editora de contenidos digitales
+Creado:
+31.08.2026 | 16:23
+Actualizado:
+31.08.2026 | 16:23
+En:
+microsoft
+correo
+tecnología
+Si este lunes 31 de agosto de 2026 Outlook no abre, los correos no salen, los mensajes no llegan o aparece un error al iniciar sesión, probablemente
+el problema no está en tu computadora, tu conexión a internet ni en tu contraseña
+.
+Microsoft confirmó una interrupción de Exchange Online
+, la plataforma en la nube que sostiene buena parte de las funciones de correo electrónico de Outlook para empresas y organizaciones. Los afectados pueden experimentar retrasos o fallos al enviar y recibir mensajes, errores de autenticación y problemas en diferentes operaciones de los buzones.
+Y hay una diferencia importante frente a otros problemas habituales de Outlook: esta vez el origen está en la infraestructura de
+Microsoft
+. Por eso, para los usuarios afectados por este incidente, no existe hasta ahora una acción desde su computadora que garantice recuperar el servicio.
+Ciencia y Tecnología
+Outlook sigue caído este 31 de agosto: Microsoft revela qué estaría causando las fallas
+Giannella Espinoza
+¿Qué hacer si Outlook no funciona este 31 de agosto?
+Poco, al menos mientras el problema continúe del lado de Microsoft.
+La propia documentación de Microsoft recomienda que, cuando
+existen problemas con un servicio en la nube
+, primero se consulte el estado de Microsoft 365 para determinar si se trata de una incidencia conocida que ya está en proceso de resolución, antes de contactar con soporte técnico o dedicar tiempo a intentar solucionar el problema.
+Eso significa que
+cambiar la contraseña, reinstalar Outlook o modificar la configuración del correo
+no debería ser el primer paso si los problemas comenzaron durante esta interrupción y coinciden con los síntomas reconocidos por Microsoft.
+Una prueba desde otro navegador, dispositivo o desde la aplicación puede servir para saber si alguna vía de acceso todavía funciona. Pero si el correo tampoco sincroniza allí,
+el usuario dependerá de que Microsoft
+restablezca su infraestructura.
+Para las cuentas corporativas, los administradores pueden consultar el centro de administración de Microsoft 365. Allí Microsoft publica los incidentes activos y las actualizaciones sobre la investigación, mitigación y posterior restauración de los servicios.
+Ciencia y Tecnología
+BMW iX3 llega a Ecuador: tecnología, diseño y hasta 805 km de autonomía en un SUV eléctrico
+Carlos Alvear
+Microsoft confirma que el problema está en su infraestructura
+La compañía comenzó informando que investigaba problemas relacionados con Exchange Online bajo el identificador
+EX1464935
+.
+Después confirmó que los usuarios podían experimentar una degradación de diferentes funciones y señaló que
+analizaba la telemetría y los datos
+de diagnóstico para encontrar el origen.
+La investigación condujo posteriormente hasta un componente de autenticación.
+Microsoft desarrolló una estrategia de remediación
+y comenzó a probarla en una parte de su infraestructura antes de extender cualquier corrección.
+El problema resultó tener un alcance mayor. Microsoft confirmó que el componente de autenticación también estaba afectando otros servicios de Microsoft 365, aunque Exchange Online seguía siendo el predominantemente afectado.
+Los problemas han incluido retrasos o fallos en el envío y recepción de correos, errores de autenticación, dificultades para utilizar herramientas administrativas y fallos intermitentes en operaciones de los buzones.
+Usuarios enfrentan problemas para acceder a Outlook durante la interrupción de los servicios de Microsoft este 31 de agosto de 2026.
+Generada con ChatGPT - EXPRESO
+Usuarios cuestionan las horas que lleva la falla de Outlook
+La duración de la interrupción también
+comenzó a generar críticas en redes sociales
+, especialmente entre usuarios que dependen de Exchange Online para trabajar.
+Uno de ellos cuestionó directamente la estrategia seguida para recuperar el servicio después de que el incidente superara las cinco horas: “
+Dado que el correo electrónico es un componente central del negocio, apreciaríamos una resolución acelerada
+”, escribió en X.
+Otros usuarios han recurrido a la misma red social para expresar sus molestias y reportar problemas durante la interrupción. Los testimonios coinciden con
+reportes recogidos durante la jornada sobre aplicaciones que no abren
+, correos que permanecen en la bandeja de salida y mensajes que dejan de sincronizarse.
+Ciencia y Tecnología
+Fallo contra Meta: ¿qué deberá cambiar en Facebook e Instagram para proteger a menores?
+Madelayne Iveth Lynch Lucas
+También administradores de sistemas han reportado problemas simultáneos en diferentes organizaciones. En discusiones especializadas aparecen
+casos de clientes independientes afectados al mismo tiempo por errores de envío y recepción,
+lo que llevó a usuarios a señalar directamente el incidente EX1464935.
+La molestia tiene un componente adicional:
+Outlook y Exchange Online forman parte de la infraestructura cotidiana de empresas
+que dependen del correo para comunicarse internamente, atender clientes, intercambiar documentos y continuar sus operaciones.
+¿Cuándo volverá a funcionar Outlook?
+Esa es precisamente la pregunta que el usuario no puede resolver desde su computadora.
+Microsoft continúa trabajando sobre su infraestructura. Las actualizaciones más recientes disponibles señalan que
+la compañía ha seguido realizando pruebas
+para asegurarse de que su estrategia de mitigación resuelva el problema sin generar nuevas afectaciones y, paralelamente, estudia alternativas para reducir el impacto.
+La compañía había identificado además
+un patrón común en las solicitudes afectadas de Exchange Online
+relacionado con autenticación y conectividad de protocolos, mientras continuaba analizando la telemetría para determinar el origen subyacente y validar las posibles soluciones.
+Por eso, mientras Microsoft no confirme la restauración, que Outlook funcione para un usuario no significa necesariamente que la interrupción haya terminado para todos.
+Para quienes continúan sin correo, l
+a respuesta es incómoda pero sencilla: si el problema corresponde a esta interrupción general, no hay una configuración, botón o cambio de contraseña que garantice solucionarlo
+. La recuperación depende de Microsoft.
+Para seguir leyendo EXPRESO sin restricciones, ¡SUSCRÍBETE AQUÍ!
+Facebook
+Twitter
+Whatsapp
+Whatsapp
+Copiar enlace
+Más historias
+Una descarga dejó a un trabajador colgado de un poste en Sauces 9
+Sevilla vs FC Barcelona EN VIVO: aquí las alineaciones, dónde ver y detalles | LaLiga 2026-27
+¿Por qué otro juez se inhibió de conocer el caso Goleada, donde es procesado Aquiles Álvarez?
+Arsenal cayó 3-0 ante Brighton: perdió el invicto y el liderato en la Premier League 2026-27
+Incendio en el cerro Casitagua llega a su tercer día y mantiene una línea de fuego activa
+Más visto
+Cinemómetros en Guayaquil: así funcionan los nuevos controles de velocidad de la ATM
+Primera convocatoria de Marcelo Gallardo en Ecuador: fecha y detalles
+Miss Grand International 2026: ¿Cómo votar por Shyare Andrade, representante de Ecuador?
+Panelista argentino critica a Marcelo Gallardo y compara a Ecuador con Etiopía
+Fiorella Ycaza: de los negocios a buscar la Alcaldía para continuar el proyecto de Aquiles Álvarez
+Diario Expreso en Facebook
+Diario Expreso en Instagram
+Diario Expreso en X
+Diario Expreso en YouTube
+Diario Expreso en tiktok
+Diario Expreso en Whatsapp
+Diario Expreso en Threads
+Código de ética
+Requerimientos oficiales
+Editores
+Media kit
+Políticas de calidad
+Quiénes Somos
+Todos los derechos reservados ©2026. queda expresamente prohibido, tanto directa como indirectamente, ceder o transmitir a terceros toda o parte de la información aquí presentada, sin la correspondiente licencia o autorización por parte de Gráficos Nacionales S.A.

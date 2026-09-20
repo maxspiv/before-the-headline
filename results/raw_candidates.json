@@ -1,0 +1,22 @@
+[
+  {
+    "topic": "shipping",
+    "language": "english",
+    "date": "20260831T000000Z",
+    "article_count": 694,
+    "baseline_mean_count": 190.57142857142858,
+    "baseline_sd_count": 66.1560204941247,
+    "threshold_count": 389.0394900538027,
+    "baseline_dates": [
+      "20260824T000000Z",
+      "20260825T000000Z",
+      "20260826T000000Z",
+      "20260827T000000Z",
+      "20260828T000000Z",
+      "20260829T000000Z",
+      "20260830T000000Z"
+    ],
+    "ratio_to_threshold": 1.7838806027224188,
+    "interpretation": "within-language aggregate-count increase only; not normalized and not cross-language comparable"
+  }
+]

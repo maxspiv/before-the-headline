@@ -1,0 +1,66 @@
+{
+  "mode": "incomplete_evidence_only",
+  "title": "Reported MSC Ulsan III / Novorossiysk booking suspension",
+  "start_date": "2026-08-25",
+  "end_date": "2026-09-19",
+  "date_axis_meaning": "Publisher-claimed calendar dates of selected cached pages, not real-time observation or first publication. Date-only Chinese page is not ordered within September 1.",
+  "empty_interval_meaning": "Unavailable/unsearched observations, not zero coverage",
+  "doc_cutoff_date": "2026-09-13",
+  "doc_cutoff_scope": "Earlier broad-query DOC daily responses only, not an MSC story cutoff or a demonstrated GDELT-wide outage",
+  "events": [
+    {
+      "id": "shipping_msc_en",
+      "display_date": "2026-08-31",
+      "publisher": "India Shipping News",
+      "language": "english",
+      "title": "MSC suspends Russian Port of Novorossiysk’s bookings after attack on MSC Ulsan III - India Shipping News",
+      "url": "https://indiashippingnews.com/international-shipping/msc-suspends-russian-port-of-novorossiysks-bookings-after-attack-on-msc-ulsan-iii/",
+      "publisher_publication_utc_claim": "2026-08-31T03:33:33+00:00",
+      "precision": "publisher metadata with explicit offset",
+      "retrieved_at_utc": "2026-09-19T18:00:19.841523+00:00",
+      "gdelt_seendate": null,
+      "duplicate_group": "MSC-EN",
+      "syndication": "Upstream independence unknown; adviser attribution for attack date does not independently verify the suspension.",
+      "role": "direct_suspension"
+    },
+    {
+      "id": "shipping_msc_es",
+      "display_date": "2026-09-01",
+      "publisher": "Prensa Latina",
+      "language": "spanish",
+      "title": "Navieras suspenden operaciones con Rusia por riesgos en Mar Negro - Noticias Prensa Latina",
+      "url": "https://www.prensa-latina.cu/2026/09/01/navieras-suspenden-operaciones-con-rusia-por-riesgos-en-mar-negro-2/",
+      "publisher_publication_utc_claim": "2026-09-01T10:02:45+00:00",
+      "precision": "publisher metadata with explicit offset",
+      "retrieved_at_utc": "2026-09-19T18:00:21.028730+00:00",
+      "gdelt_seendate": null,
+      "duplicate_group": "MSC-ES",
+      "syndication": "Kommersant explicitly attributed; overlap with other upstream reporting is unknown.",
+      "role": "roundup_suspension"
+    },
+    {
+      "id": "shipping_msc_zh",
+      "display_date": "2026-09-01",
+      "publisher": "JCtrans",
+      "language": "chinese",
+      "title": "MSC暂停新罗西斯克港订舱！旗下集装箱船遭无人机袭击-JCtrans杰西圈",
+      "url": "https://www.jctrans.com/cn/news/14074/",
+      "publisher_publication_utc_claim": null,
+      "precision": "date only; timezone and time unknown",
+      "retrieved_at_utc": "2026-09-19T18:00:21.721595+00:00",
+      "gdelt_seendate": null,
+      "duplicate_group": "MSC-ZH",
+      "syndication": "Explicitly compiles Bloomberg and Lloyd’s List; not independent confirmation of original reporting.",
+      "role": "direct_suspension"
+    }
+  ],
+  "context": [
+    "Spanish roundup attributes suspension to August 26; this is a retrospective event claim, not an observed article from that day.",
+    "English page attributes attack to August 25; Chinese page says exact attack time unclear. Vessel travel direction conflicts.",
+    "All three pages were actually captured September 19. Carrier notice and upstream originals were not verified.",
+    "Exact URLs deduplicated. No verified duplicate among the retained pages; shared upstream derivation remains possible. No independent-source count is claimed."
+  ],
+  "lead_time": null,
+  "normalized_comparison": null,
+  "decision": "story_replay"
+}

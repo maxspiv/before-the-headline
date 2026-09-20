@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" font-family="Helvetica, Arial, sans-serif">
+<rect x="0" y="0" width="1200" height="820" fill="#ffffff"/>
+<text x="600.0" y="34" text-anchor="middle" font-size="24" font-weight="bold" fill="#b91c1c">INCOMPLETE EVIDENCE-ONLY REPLAY</text>
+<text x="600.0" y="60" text-anchor="middle" font-size="16" fill="#111827">Reported MSC Ulsan III / Novorossiysk booking suspension</text>
+<text x="600.0" y="84" text-anchor="middle" font-size="14" font-weight="bold" fill="#6b7280">Publisher-claimed dates, not first publication or real-time observation</text>
+<rect x="180" y="170" width="940" height="80" fill="#f3f4f6"/>
+<text x="20" y="214" font-size="13" fill="#111827">India Shipping News</text>
+<text x="20" y="232" font-size="13" fill="#111827">english</text>
+<rect x="180" y="290" width="940" height="80" fill="#f3f4f6"/>
+<text x="20" y="334" font-size="13" fill="#111827">Prensa Latina</text>
+<text x="20" y="352" font-size="13" fill="#111827">spanish</text>
+<rect x="180" y="410" width="940" height="80" fill="#f3f4f6"/>
+<text x="20" y="454" font-size="13" fill="#111827">JCtrans</text>
+<text x="20" y="472" font-size="13" fill="#111827">chinese</text>
+<line x1="180.00" y1="140" x2="180.00" y2="520" stroke="#e5e7eb" stroke-width="1"/>
+<text x="180.00" y="540" text-anchor="middle" font-size="12" fill="#374151">2026-08-25</text>
+<line x1="330.40" y1="140" x2="330.40" y2="520" stroke="#e5e7eb" stroke-width="1"/>
+<text x="330.40" y="540" text-anchor="middle" font-size="12" fill="#374151">2026-08-29</text>
+<line x1="480.80" y1="140" x2="480.80" y2="520" stroke="#e5e7eb" stroke-width="1"/>
+<text x="480.80" y="540" text-anchor="middle" font-size="12" fill="#374151">2026-09-02</text>
+<line x1="631.20" y1="140" x2="631.20" y2="520" stroke="#e5e7eb" stroke-width="1"/>
+<text x="631.20" y="540" text-anchor="middle" font-size="12" fill="#374151">2026-09-06</text>
+<line x1="781.60" y1="140" x2="781.60" y2="520" stroke="#e5e7eb" stroke-width="1"/>
+<text x="781.60" y="540" text-anchor="middle" font-size="12" fill="#374151">2026-09-10</text>
+<line x1="932.00" y1="140" x2="932.00" y2="520" stroke="#e5e7eb" stroke-width="1"/>
+<text x="932.00" y="540" text-anchor="middle" font-size="12" fill="#374151">2026-09-14</text>
+<line x1="1120.00" y1="140" x2="1120.00" y2="520" stroke="#e5e7eb" stroke-width="1"/>
+<text x="1120.00" y="540" text-anchor="middle" font-size="12" fill="#374151">2026-09-19</text>
+<line x1="894.40" y1="110" x2="894.40" y2="520" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="6,4"/>
+<text x="894.40" y="104" text-anchor="middle" font-size="12" fill="#374151">Sep 13: prior broad DOC endpoint (not a story cutoff)</text>
+<a href="https://indiashippingnews.com/international-shipping/msc-suspends-russian-port-of-novorossiysks-bookings-after-attack-on-msc-ulsan-iii/">
+<circle cx="405.60" cy="210" r="7" fill="#2563eb"/>
+<text x="375.60" y="232" font-size="12" fill="#111827">India Shipping News</text>
+<text x="375.60" y="247" font-size="12" fill="#374151">direct suspension</text>
+<text x="375.60" y="262" font-size="12" fill="#6b7280">2026-08-31T03:33:33+00:00</text>
+</a>
+<a href="https://www.prensa-latina.cu/2026/09/01/navieras-suspenden-operaciones-con-rusia-por-riesgos-en-mar-negro-2/">
+<circle cx="443.20" cy="330" r="7" fill="#2563eb"/>
+<text x="413.20" y="352" font-size="12" fill="#111827">Prensa Latina</text>
+<text x="413.20" y="367" font-size="12" fill="#374151">roundup suspension</text>
+<text x="413.20" y="382" font-size="12" fill="#6b7280">2026-09-01T10:02:45+00:00</text>
+</a>
+<a href="https://www.jctrans.com/cn/news/14074/">
+<rect x="437.20" y="444" width="12" height="12" fill="#ffffff" stroke="#d97706" stroke-width="2" transform="rotate(45 443.20 450)"/>
+<text x="413.20" y="472" font-size="12" fill="#111827">JCtrans</text>
+<text x="413.20" y="487" font-size="12" fill="#374151">direct suspension</text>
+<text x="413.20" y="502" font-size="12" fill="#6b7280">2026-09-01 (date only; time/timezone unknown)</text>
+</a>
+<circle cx="186" cy="581" r="7" fill="#2563eb"/>
+<text x="200" y="585" font-size="13" fill="#374151">publisher metadata with claimed UTC time</text>
+<rect x="660" y="574" width="12" height="12" fill="#ffffff" stroke="#d97706" stroke-width="2" transform="rotate(45 666 580)"/>
+<text x="680" y="585" font-size="13" fill="#374151">date-only page; time/timezone unknown</text>
+<text x="180" y="615" font-size="13" font-weight="bold" fill="#374151">Blank intervals = unavailable/unsearched, NOT zero coverage.</text>
+<text x="180" y="637" font-size="13" fill="#374151">All three pages captured September 19; GDELT observation times for these URLs remain unavailable.</text>
+<text x="600.0" y="680" text-anchor="middle" font-size="13" fill="#6b7280">Exact URLs deduplicated. Shared upstream reporting remains possible; do not assume three independent origins.</text>
+<text x="600.0" y="702" text-anchor="middle" font-size="13" fill="#6b7280">Carrier notice and upstream originals unverified. Vessel direction and attack-date details remain uncertain.</text>
+<text x="600.0" y="724" text-anchor="middle" font-size="13" fill="#6b7280">No normalized comparison, first-publication claim, language lead, or early-warning result.</text>
+</svg>

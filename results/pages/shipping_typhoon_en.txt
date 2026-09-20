@@ -1,0 +1,372 @@
+4.31M TEU Is Waiting to Berth as China Ports Recover From Saudel | Tradlinx Blogs
+Skip to content
+Products
+Products
+Ocean Visibility
+Unified global cargo visibility platform
+Container Tracking
+B/L Tracking
+Booking No. Tracking
+Vessel Tracking
+Demurrage & Detention
+Add-Ons
+Pricing
+Integrations
+APIs and embedded widgets for your stack
+Shipment Tracking API
+Vessel Tracking API
+Embedded Mapview
+D&D Monitoring API
+Port Congestion API
+Solutions
+Shipper
+Optimize supply chain and cost with data-driven insights
+LSP
+Differentiate service with end-to-end visibility
+Intelligence
+Port Congestion
+Check current port congestion at major hubs.
+B/L Tracking
+Track your Bill of Lading for precise cargo movements and delivery updates.
+Container Tracking
+Track container movements door-to-door with high-accuracy data.
+Vessel Tracking
+Search any vessel by name or IMO for live route and status.
+Resources
+Market Insights
+Global trends and ocean freight analysis.
+Blog
+Logistics insights, trends, and expert takes.
+Product Comparison
+Compare features and find your best-fit solution.
+Ocean Visibility Showcase
+Watch how our tracking works in action.
+Tradlinx FAQ
+Clear, concise answers to what you ask most.
+Client Spotlights
+See how customers use Tradlinx in action.
+English
+English
+한국어
+Schedule Demo
+Schedule Demo
+Products
+Products
+Ocean Visibility
+Unified global cargo visibility platform
+Container Tracking
+B/L Tracking
+Booking No. Tracking
+Vessel Tracking
+Demurrage & Detention
+Add-Ons
+Pricing
+Integrations
+APIs and embedded widgets for your stack
+Shipment Tracking API
+Vessel Tracking API
+Embedded Mapview
+D&D Monitoring API
+Port Congestion API
+Solutions
+Shipper
+Optimize supply chain and cost with data-driven insights
+LSP
+Differentiate service with end-to-end visibility
+Intelligence
+Port Congestion
+Check current port congestion at major hubs.
+B/L Tracking
+Track your Bill of Lading for precise cargo movements and delivery updates.
+Container Tracking
+Track container movements door-to-door with high-accuracy data.
+Vessel Tracking
+Search any vessel by name or IMO for live route and status.
+Resources
+Market Insights
+Global trends and ocean freight analysis.
+Blog
+Logistics insights, trends, and expert takes.
+Product Comparison
+Compare features and find your best-fit solution.
+Ocean Visibility Showcase
+Watch how our tracking works in action.
+Tradlinx FAQ
+Clear, concise answers to what you ask most.
+Client Spotlights
+See how customers use Tradlinx in action.
+Languages
+English
+한국어
+Schedule Demo
+Global Watch
+4.31M TEU Is Waiting to Berth as China Ports Recover From Saudel
+A record 4.31m TEU is now waiting to berth worldwide as repeated typhoon disruption compounds congestion across Chinese gateways. Shanghai and Ningbo have reopened, but vessel schedules are still being rewritten.
+Tradlinx
+August 31, 2026
+8–12 minutes
+China ports
+,
+Container Shipping
+,
+Gemini Cooperation
+,
+Hapag-Lloyd
+,
+Ningbo-Zhoushan Port
+,
+Ocean Freight
+,
+Port Closures
+,
+Port congestion
+,
+Shanghai port
+,
+Shipping Delays
+,
+supply chain disruption
+,
+Typhoon Saudel
+,
+vessel delays
+Shanghai’s Yangshan resumed operations at 14:00 on 28 August, followed by Ningbo-Zhoushan terminals at 15:00, 43 hours after suspending all operations ahead of Typhoon Saudel.
+Reopening restores terminal operations. It says nothing about the queue that accumulated over those two days, or about which vessels will still call once terminals begin working through it. For a container already booked, the second question matters more.
+What Closed, and for How Long
+Facility
+Suspended
+Resumed
+Duration
+Ningbo terminals
+(all operations)
+20:00, 26 Aug
+15:00, 28 Aug
+43 hours
+Ningbo
+container yards
+06:00, 27 Aug
+12:00, 28 Aug
+30 hours
+Ningbo
+warehouses
+14:00, 27 Aug
+08:00, 28 Aug
+18 hours
+Shanghai Yangshan
+(all operations)
+06:00, 27 Aug
+14:00, 28 Aug
+32 hours
+Shanghai Waigaoqiao
+(empty container operations)
+14:00, 27 Aug
+12:00, 28 Aug
+22 hours
+Terminal and yard suspensions during Typhoon Saudel, per Kuehne+Nagel China customer advisories. Shanghai container yards resumed at 12:00 on 28 August; the advisory does not state when they suspended.
+Saudel made two landfalls in Zhejiang on the morning of 28 August, first near Taizhou at around 08:05 and then near Wenzhou at around 09:10, before weakening as it moved inland. Peak sustained winds had reached roughly 162 km/h the previous day.
+Barge feeder recovery lagged the terminals. Taicang resumed at 12:00 on 28 August, while Taizhou, Wenzhou and Jiaxing remained suspended. Zhenjiang, Nanjing, Nantong and Changzhou stayed open throughout. Yangtze River Delta inland moves therefore restart on a different clock from the deepwater terminals.
+Two Days Down Is Not Two Days Behind
+Drewry published a figure this week that explains why a short closure produces a long queue. A container terminal running at 90% utilisation takes around a week to recover from a single day of disruption. The same terminal at 75% utilisation recovers in about two days.
+Drewry’s framing of that gap is commercial rather than operational. The difference between those two operating points, in a normal year, is the difference between a competitive and an uncompetitive return on capital. Terminals run hot on purpose. Running hot is also what makes recovery slow, because there is little spare capacity to absorb a backlog.
+That figure is for one day of disruption. Ningbo lost closer to two.
+The wider trend is visible in Drewry’s regional averages. West Africa has gone from 50 hours of average vessel delay in 2025 to over 70 hours. South Asia is approaching 60 hours, up from around 35 hours in 2023. China has moved from under 30 hours to roughly 35, which is now the global average. In week 32, typhoons put average waits for a berth in China at 3.6 days.
+There is a live disagreement about the cause. Maersk chief executive Vincent Clerc has argued that port capacity is simply insufficient, pointing to roughly 15 years of lagging terminal investment since the financial crisis. Drewry rejects that reading and attributes the increase since the pandemic to disruption absorbing terminal and vessel capacity, citing tariff disruption, geopolitical issues and port strikes alongside weather. The practical difference for a shipper is timeline. An investment problem resolves over years. A slack problem resolves when the disruptions stop arriving.
+The Disruptions Have Not Stopped Arriving
+Chinese container gateways have been hit repeatedly this summer. Typhoon Noul closed ports in southern China in late July. Typhoon Bavi forced closures at Shanghai, Ningbo and Qingdao. Typhoon Dolphin shut Shanghai and Ningbo from 7 to 10 August and was described as the strongest of three typhoons to hit China inside five weeks. Late August then brought another cluster of weather disruption, including Narra, Gaenari and Saudel.
+Set that sequence against Drewry’s recovery curve and the problem becomes clear. A high-utilisation terminal can need about a week to clear one day of disruption. New weather events have been arriving before the network has fully absorbed the effects of earlier ones, allowing queues and schedule disruption to compound.
+Linerlytica put the result at
+4.31m TEU
+waiting to berth worldwide in the week of 24 August, past the previous peak of 4.0m TEU set in 2022. North Asia accounted for roughly half of global anchorage backlogs at about 2.2m TEU, with over 1.5m TEU at anchor off Shanghai alone. Portcast counted 139 vessels queued at Shanghai and 77 at Ningbo, both highs not seen across 2025 or 2026.
+The record deserves one qualification that most coverage skipped. At 4.31m TEU, congested tonnage is 12.6% of a 34.4m TEU global fleet. The 2022 peak of 4.0m TEU was 15.7% of a fleet that then stood at 25.3m TEU. Bigger in absolute tonnage, smaller in proportion.
+That qualification matters because it changes what the number is evidence of. Relative to fleet size, the congestion burden is smaller than at the 2022 peak. In absolute capacity waiting to berth, however, it has never been higher. Both are true, and a headline that only carries the first half will mislead a capacity plan built on it.
+This is a different measurement from the one we covered earlier this month in
+our look at the 1.7m TEU that vessel delays are absorbing
+. That figure is Sea-Intelligence’s delay absorption calculation measured against a historical baseline. Linerlytica’s 4.31m TEU counts capacity waiting to berth. Different providers, different methods, and the two should not be spliced into a single trend line.
+What a Carrier Does With a Queue This Long
+The answer is published weekly, and it is more aggressive than most shippers assume.
+Hapag-Lloyd’s Asia and Oceania operational update for week 34, issued 18 August in the aftermath of Dolphin, names
+more than twenty individual vessel calls omitting Shanghai
+across its Gemini and non-Gemini services. Seven more omit Ningbo. That is one carrier group, one week, before Saudel had formed.
+The omissions are not evenly distributed. Asia to North Europe, Asia to South Europe, Pacific Southwest, US East Coast, Latin America, Mexico and West Africa services all carry Shanghai omissions in the same week. On the Andex and Asia Mexico Express loops the pattern is near-continuous, with six consecutive Andex Sling 2 sailings dropping Shanghai.
+What happens to the cargo is the part worth reading closely.
+Vessel
+Service
+Omits
+Where the cargo actually goes
+AL ZUBARA
+V.628W
+Gemini NE1
+Shanghai
+Exports carried on NE2 Bangkok Express V.628W, connections made at Tanjung Pelepas
+Estelle Maersk
+634W
+Gemini SE2
+Shanghai
+Imports discharged Singapore, transshipped onto Antonia Maersk 628E
+Maersk Stepnica
+631E
+Gemini WC3
+Shanghai
+Imports discharged Busan, transshipped onto WC2 Gunhilde Maersk 632E
+Humboldt Express
+2617W 2629E
+Andex Sling 1
+Shanghai
+All Shanghai imports transshipped via Hong Kong
+MSC Elenoire
+FA629A
+Andex Sling 2
+Shanghai
+All Shanghai cargo discharged Busan westbound
+Posorja Express
+2620W 2633E
+Asia Mexico Express
+Shanghai
+Laden transshipped via Busan westbound; empties discharged at Ningbo
+Tihama
+V.632W
+Gemini NE2
+Yantian
+Imports discharged Tanjung Pelepas for onward transshipment, connecting vessel to be advised
+Selected omissions and cargo recovery routings from Hapag-Lloyd’s Asia and Oceania Operational Update, week 34, last updated 18 August 2026.
+A container booked for discharge at Shanghai gets discharged at Singapore, Busan, Hong Kong or Tanjung Pelepas and shuttled back on a second vessel. The bill of lading still names Shanghai. The original ETA describes a call that will not happen. In two of the week 34 entries the carrier states that the connecting vessel is still to be advised, which means at publication it did not yet know which ship would complete the move.
+Published waiting times also differed materially between Gemini and non-Gemini services. In the same update, Yangshan waits ran to 5 to 6 days for Gemini services and 7 to 8 days for non-Gemini. Ningbo ran 3 to 4 days for Gemini and around 3 days for non-Gemini. Three weeks earlier, in week 31, Hapag-Lloyd had Ningbo at 48 hours for both. The Ningbo wait roughly doubled between those two updates, and both readings predate Saudel entirely.
+The obvious response is to divert to a nearby gateway. The same update prices that option, and it is not free.
+Alternative gateway
+Average waiting time
+Qingdao
+72 hours
+Busan
+37 hrs PNC · 30 hrs PNIT · 10 hrs HPNT · 6 hrs GWCT
+Singapore
+12 hrs Gemini · 60 hrs non-Gemini
+Tanjung Pelepas
+10 hrs Gemini · 3 hrs non-Gemini
+Yantian
+6 hrs for vessels under 300m LOA · 72 hrs over 300m
+Average vessel waiting times, Hapag-Lloyd Asia and Oceania Operational Update, week 34, last updated 18 August 2026. Figures reflect the Typhoon Dolphin closure of 7 to 10 August and predate Typhoon Saudel.
+Qingdao at 72 hours is the same wait Hapag-Lloyd reported there in week 31. Busan’s PNC terminal runs more than six times the wait of its GWCT terminal. A diversion decision made at port level rather than terminal level can land a box in a queue as long as the one it left.
+None of this necessarily arrives as a change to your booking. It can arrive as a container that did not move when it was supposed to, discharged somewhere it was never routed through, waiting on a connecting vessel that may not have been named yet. When a booking’s discharge port changes without the booking changing, the gap is usually the days between the omission happening and someone noticing.
+Walk through how ops teams catch a diverted box from container events rather than from a schedule notice
+.
+What to Check This Week
+Check the call, not the ETA.
+An omission may not surface first as a revised arrival time. It can surface as a discharge event at a port that is not on the booking.
+Know whether your service is Gemini or non-Gemini at Yangshan.
+The published waits differed by two days at the same terminal in the same week.
+Divert at terminal level, not port level.
+Busan’s spread ran from 6 to 37 hours across four terminals in a single update.
+Ask your ports about spare capacity, not total capacity.
+Drewry’s curve says the terminal with the least slack recovers slowest, regardless of how much throughput it handles.
+Check the Yangtze River Delta barge legs separately.
+Taizhou, Wenzhou and Jiaxing were still suspended when the deepwater terminals reopened.
+Do not assume reopening resets the schedule.
+Repeated weather disruption has been arriving faster than high-utilisation terminals can necessarily clear the resulting backlog.
+Further Reading
+Typhoon Saudel makes landfall; East China ports reopen as storm weakens
+, Kuehne+Nagel, updated 28 August 2026
+Week 34 Asia & Oceania Operational Update
+, Hapag-Lloyd, last updated 18 August 2026
+Port congestion not caused by a failure to invest in terminals: Drewry
+, Seatrade Maritime News, 28 August 2026
+Global port congestion at new high as more typhoons hit China
+, The Loadstar
+Container port congestion smashes covid-era record
+, Splash247
+Port Congestion Sets New Record at 4.3M TEU in Stranded Volume
+, The Maritime Executive, 25 August 2026
+Global port congestion hits record 4.3 million TEUs
+, Port Technology International
+Asia container freight faces delays due to typhoon, tight capacity
+, ICIS, 12 August 2026
+Port operational updates from around the world (12 to 18 August 2026)
+, Kuehne+Nagel
+Terminal suspension and resumption times are from Kuehne+Nagel China customer advisories dated 26 to 28 August 2026. Vessel omissions, cargo recovery routings and port waiting times are from Hapag-Lloyd’s Asia & Oceania Operational Update for week 34, last updated 18 August 2026; those waiting times reflect the Typhoon Dolphin closure of 7 to 10 August and predate Typhoon Saudel. Terminal utilisation recovery figures and regional delay averages are Drewry Ports and Terminals Insight data as reported 28 August 2026. Congestion tonnage figures are Linerlytica calculations for the week of 24 August 2026; vessel queue counts are Portcast data for the same week. Waiting times, queue lengths and vessel rotations change daily. Confirm the actual vessel plan for your booking with your carrier or forwarder before acting on any figure here.
+Need help interpreting this disruption or your shipment?
+For a quick question, chat with Tradlinx on
+WhatsApp
+. For a deeper discussion, book a time below.
+Prefer email? Contact us directly at min.so@tradlinx.com (Americas), sondre.lyndon@tradlinx.com (Europe), or henry.jo@tradlinx.com (EMEA/Asia).
+Share this:
+Share on WhatsApp (Opens in new window)
+WhatsApp
+Tweet
+More
+Email a link to a friend (Opens in new window)
+Email
+Leave a Reply
+Cancel reply
+Author
+Written by
+Tradlinx
+Recent Posts
+Logistics Insight
+New Report: The Future of SCM, and Why Visibility Alone Is No Longer Enough
+Tradlinx
+Tradlinx News
+[TRADLINX Report] 2026 Shipping Market Outlook: Falling Rates, Rising Risks
+Tradlinx
+Global Watch
+German Port Workers Vote on Indefinite Strikes: What Shippers Need to Watch
+Tradlinx
+Global Watch
+,
+Logistics Insight
+,
+Logistics Trends
+Carrier Reliability Diverged Sharply in August 2026
+Tradlinx
+Logistics Insight
+How Far Back Can You Challenge Demurrage Charges? FMC Clarifies the Rule
+Tradlinx
+Categories
+AI in Logistics
+Client Spotlights
+Español
+Global Watch
+Logistics Insight
+Logistics Trends
+LSP Alert
+Port Congestion
+Tracking Success
+Tradlinx News
+Trending
+Global Watch
+German Port Workers Vote on Indefinite Strikes: What Shippers Need to Watch
+Tradlinx
+Global Watch
+,
+Logistics Insight
+,
+Logistics Trends
+Carrier Reliability Diverged Sharply in August 2026
+Tradlinx
+Logistics Insight
+How Far Back Can You Challenge Demurrage Charges? FMC Clarifies the Rule
+Tradlinx
+Global Watch
+,
+Logistics Trends
+LA–Long Beach Rail Dwell Reaches 6.75 Days, Up 36% From Last August
+Tradlinx
+Typhoon, Strike, Sanction. Be the First to Know.
+Get breaking news, crucial updates, and practical insights that protect your bottom line—straight to your inbox.
+Type your email…
+Subscribe
+Join 21.7K other subscribers
+10, 123, Teheran-ro, Gangnam-gu, Seoul, Republic of Korea
+© 2026 Tradlinx Inc. All rights reserved.
+Blog
+Support
+Terms of Service
+Privacy Policy
+Discover more from Tradlinx Blogs
+Subscribe now to keep reading and get access to the full archive.
+Type your email…
+Subscribe
+Continue reading
+Loading Comments...
+Write a Comment...
+Email (Required)
+Name (Required)
+Website
