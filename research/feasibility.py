@@ -15,7 +15,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from html.parser import HTMLParser
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / 'cache'
 OUT = ROOT / 'results'
 API = 'https://api.gdeltproject.org/api/v2/doc/doc'
@@ -380,7 +380,7 @@ class PageText(HTMLParser):
 
 
 def sources(offline=False, refresh=False):
-    plan = json.loads((ROOT / 'evidence_sources.json').read_text())
+    plan = json.loads((ROOT / 'fixtures/shipping-msc-2026/evidence_sources.json').read_text())
     manifest = []
     for source in plan:
         meta, body = fetch(source['url'], offline, refresh)

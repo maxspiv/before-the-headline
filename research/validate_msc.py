@@ -11,9 +11,9 @@ from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 
-from feasibility import save_json
+from research.feasibility import save_json
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'results' / 'msc_validation'
 CORE = ('shipping_msc_en', 'shipping_msc_es', 'shipping_msc_zh')
 REVIEWS = {

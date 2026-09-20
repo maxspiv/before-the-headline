@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-import feasibility as f
+from research import feasibility as f
 
 
 class AnalyticalContractTests(unittest.TestCase):

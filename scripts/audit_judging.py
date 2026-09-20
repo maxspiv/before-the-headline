@@ -7,11 +7,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from demo_data import EXTRA_RANGES, EXCERPTS, load_dataset
-from feasibility import PageText
-from validate_msc import Metadata, json_dates
+from before_the_headline.demo_data import EXTRA_RANGES, EXCERPTS, load_dataset
+from research.feasibility import PageText
+from research.validate_msc import Metadata, json_dates
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'results/judging'
 SUPPORT = {
     'shipping_msc_en': ['MSC Ulsan III', 'Novorossiysk', 'bookings', 'Aug. 25'],
@@ -66,14 +66,14 @@ def canonical(url):
 
 def run():
     OUT.mkdir(parents=True, exist_ok=True)
-    app_files = ['app.py', 'demo_data.py', 'investigations.py', 'templates/home.html', 'templates/investigation.html', 'templates/schema.html', 'static/app.js', 'static/home.js', 'static/app.css', 'requirements.txt', 'requirements-dev.txt', 'test_demo.py', 'test_demo_browser.py']
+    app_files = ['app.py', 'before_the_headline/app.py', 'before_the_headline/demo_data.py', 'before_the_headline/investigations.py', 'templates/home.html', 'templates/investigation.html', 'templates/schema.html', 'static/app.js', 'static/home.js', 'static/app.css', 'requirements.txt', 'requirements-dev.txt', 'tests/test_demo.py', 'tests/test_demo_browser.py']
     backup = OUT / 'pre_judging_demo.zip'
     if not backup.exists():
         with zipfile.ZipFile(backup, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
             for name in app_files:
                 archive.write(ROOT / name, name)
     dataset = load_dataset()
-    evidence = json.loads((ROOT / 'results/msc_validation/evidence_table.json').read_text())
+    evidence = json.loads((ROOT / 'fixtures/shipping-msc-2026/evidence_table.json').read_text())
     source_manifest = json.loads((ROOT / 'results/source_manifest.json').read_text())
     sources = {s['id']: s for s in source_manifest}
     cache = []
@@ -136,8 +136,8 @@ def run():
         assert selected.startswith(shown)
         assert row['excerpt']['truncated'] == (len(shown) < len(selected))
         audit_rows.append({'id': row['id'], 'title': row['title'], 'url': row['url'], 'publisher': row['publisher'], 'language': row['language'], 'title_provenance': title_provenance, 'relevance': row['relevance'], 'rationale': row['scope_notes'], 'support_terms': SUPPORT[row['id']], 'duplicate_group': row['duplicate_group'], 'confirmed_copied_text': row['confirmed_duplicate'], 'possible_shared_reporting': row['possible_shared'], 'body_hash_verified': True, 'extracted_text_matches_body': True, 'excerpt_prefix_and_omissions_verified': True, 'timestamp_fields_verified': len(row['publisher_embedded_timestamps']), 'capture_matches_cache_metadata': row['retrieved_at_utc'] == meta['completed_at_utc'], 'source_text': row['text_file']})
-    a = (ROOT / 'results/pages/gdelt_iran_laverdad_es.txt').read_text().splitlines()[166:188]
-    b = (ROOT / 'results/pages/gdelt_iran_diariovasco_es.txt').read_text().splitlines()[136:158]
+    a = (ROOT / 'fixtures/shipping-msc-2026/pages/gdelt_iran_laverdad_es.txt').read_text().splitlines()[166:188]
+    b = (ROOT / 'fixtures/shipping-msc-2026/pages/gdelt_iran_diariovasco_es.txt').read_text().splitlines()[136:158]
     assert a == b
     raw = json.loads((ROOT / 'results/requests/shipping_english.json').read_text())
     daily = {p['date']: p for p in raw['data']['timeline'][0]['data']}
@@ -156,13 +156,13 @@ def run():
     assert not any(r['successful_publisher_body_available'] for r in candidates)
     protected = set(p['body_file'] for p in cache) | set(p['metadata_file'] for p in cache)
     protected.update(r['text_file'] for r in evidence if r['text_file'])
-    protected.update(['results/msc_validation/evidence_table.json', 'results/msc_validation/timeline_data.json', 'results/raw_candidates.json', 'results/requests/shipping_english.json', 'results/article_evidence.json'])
+    protected.update(['fixtures/shipping-msc-2026/evidence_table.json', 'fixtures/shipping-msc-2026/timeline_data.json', 'fixtures/shipping-msc-2026/raw_candidates.json', 'results/requests/shipping_english.json', 'results/article_evidence.json'])
     frozen = {name: digest(ROOT / name) for name in sorted(protected)}
-    baseline = OUT / 'protected_evidence_hashes.json'
+    baseline = ROOT / 'docs/screenshots/protected_evidence_hashes.json'
     if baseline.exists():
         assert json.loads(baseline.read_text()) == frozen, 'Cached evidence changed during judging preparation'
     else:
-        save('protected_evidence_hashes.json', frozen)
+        (ROOT / 'docs/screenshots/protected_evidence_hashes.json').write_text(json.dumps(frozen, indent=2) + '\n')
     result = {'summary': dataset['summary'], 'inspected_language_counts': dict(Counter(r['language'] for r in inspected)), 'aggregate_count': 694, 'aggregate_date': '2026-08-31', 'aggregate_language': 'english', 'aggregate_source': 'cached TimelineVolRaw, not search-list length', 'daily_bins_returned': len(daily), 'daily_last_bin': max(daily), 'copied_text_evidence': {'sources': ['gdelt_iran_laverdad_es', 'gdelt_iran_diariovasco_es'], 'equal_lines_in_reviewed_spans': len(a), 'ranges': ['167–188', '137–158'], 'meaning': 'Matching cached passages, not an assertion about who copied whom or every byte of both documents'}, 'additional_candidates_reviewed': len(candidates), 'additional_inspected_pages_added': 0, 'expansion_decision': 'No expansion: remaining candidate records lack successful cached publisher bodies. Metadata classifications remain uncertain; no synthetic examples or new fetches.', 'scope': 'Audit checks provenance and faithful representation of publisher claims, not the truth of publishers’ reporting.', 'network_requests': 0, 'timestamp_caveats': timestamp_caveats, 'inspected_rows': audit_rows, 'candidate_reviews': candidates, 'cached_response_records_checked': len(cache), 'protected_evidence_files': len(frozen)}
     save('claim_audit.json', result)
     lines = ['# Judging claim audit — cache only', '', 'No new publisher or GDELT requests. Original cached evidence and classification artifacts are unchanged. This audit verifies provenance and faithful representation of publisher claims, not their independent factual truth.', '', '## Visible claim families', '', '| Claim | Evidence / disposition |', '|---|---|', '| 694 matches | Cached English shipping TimelineVolRaw bin for 2026-08-31. Separate from the inspected set; attribution to MSC is unestablished. |', '| 13 inspected / 3 related / 10 other | Counts and membership checked against the frozen evidence table and reviewed bodies. “Other” is relative to MSC, not necessarily an invalid broad shipping match. |', '| 6 GDELT / 7 external | The 6 inspected GDELT-result pages are Spanish; the 694 aggregate is English. These populations must not be conflated. |', '| 32 inventory / 19 uninspected | 16 additional GDELT metadata records, 2 cached HTTP 401 publisher failures, and 1 GKG metadata hint. |', '| Confirmed copied text | Two pages have 22 identical extracted lines in reviewed spans. One group; folding removes one card, not one independent story. |', '| Possible shared reporting | Three MSC pages have unverified upstream independence; two other inventory headlines carry possible-syndication flags. No promotion to confirmed duplicates. |', '| Excerpts | All 13 inspected cached HTML hashes and their text extraction verified; displayed excerpts are source prefixes with explicit omissions/truncation. |', '| Timestamps | Every raw embedded timestamp checked against cached HTML/JSON-LD; supplied UTC conversions independently checked. Legacy artifacts omit some parseable +0900 conversions, so the UI must say “Not supplied in cached artifact,” not “no explicit offset.” Chinese remains date-only. Event dates, platform labels and prototype capture time stay separate. |', '| Unresolved details | English/Chinese route conflict; adviser-attributed attack date versus uncertain Chinese timing; secondary citations and unavailable original carrier notice; incomplete DOC intervals with later bulk data. |', '| Headline/product claims | Evidence-inspection prototype and story replay only. No validated warning, language lead, earliest publication, precision/recall or false-alarm result. |', '', '## Additional cached candidate review', '', 'All remaining 19 records were screened. No successful publisher body exists in the response cache (including mobile-URL aliases) for any of them; no inspected-set expansion is defensible. The matching-headline pair below is documented as a possible metadata-level relation only; frozen UI classifications and counts are preserved.', '', '| Candidate | Available evidence and classification |', '|---|---|']

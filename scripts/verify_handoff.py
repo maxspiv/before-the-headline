@@ -6,7 +6,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
             issues.append((name, 'file larger than 2 MB'))
         if any(re.search(pattern, content) for pattern in patterns):
             issues.append((name, 'possible credential signature; value not printed'))
-        if name.startswith('results/') and re.search(rb'(?i)(authorization:|set-cookie:|/Users/|/home/)', content):
+        if name.startswith('fixtures/') and re.search(rb'(?i)(authorization:|set-cookie:|/Users/|/home/)', content):
             issues.append((name, 'unsanitized fixture metadata or absolute user path'))
     if issues:
         raise SystemExit(json.dumps({'blocked_files': issues}, indent=2))
@@ -39,9 +39,9 @@ def main():
             path.write_bytes(content)
         env = dict(os.environ)
         env.pop('PYTHONPATH', None)
-        check = "import socket,unittest; from unittest.mock import patch; block=AssertionError('Handoff demo test must be offline'); p1=patch('socket.socket.connect',side_effect=block); p2=patch('socket.getaddrinfo',side_effect=block); p1.start(); p2.start(); result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.discover('.',pattern='test_demo.py')); raise SystemExit(not result.wasSuccessful())"
+        check = "import socket,unittest; from unittest.mock import patch; block=AssertionError('Handoff demo test must be offline'); p1=patch('socket.socket.connect',side_effect=block); p2=patch('socket.getaddrinfo',side_effect=block); p1.start(); p2.start(); result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.discover('.', pattern='test_demo.py')); raise SystemExit(not result.wasSuccessful())"
         subprocess.run([sys.executable, '-c', check], cwd=target, env=env, check=True)
-    print(json.dumps({'staged_files': len(files), 'total_bytes': sum(map(len, files.values())), 'largest_file_bytes': max(map(len, files.values())), 'runtime_json_fixtures': 3, 'runtime_publisher_text_fixtures': len([name for name in names if name.startswith('results/pages/')]), 'credential_signature_scan': 'no matches; not a guarantee against every secret format', 'isolated_staged_checkout_demo_tests': 'passed with network blocked'}, indent=2))
+    print(json.dumps({'staged_files': len(files), 'total_bytes': sum(map(len, files.values())), 'largest_file_bytes': max(map(len, files.values())), 'runtime_json_fixtures': 3, 'runtime_publisher_text_fixtures': len([name for name in names if name.startswith('fixtures/shipping-msc-2026/pages/')]), 'credential_signature_scan': 'no matches; not a guarantee against every secret format', 'isolated_staged_checkout_demo_tests': 'passed with network blocked'}, indent=2))
 
 
 if __name__ == '__main__':

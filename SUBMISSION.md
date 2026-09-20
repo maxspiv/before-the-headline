@@ -61,7 +61,7 @@ The reviewed sample is small, curated, incomplete and mixed-provenance. The orig
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt -r requirements-dev.txt
-.venv/bin/python -m unittest test_demo.py test_investigations.py
+.venv/bin/python -m unittest tests.test_demo tests.test_investigations
 .venv/bin/python app.py --port 8765          # then open http://127.0.0.1:8765/
 ```
 

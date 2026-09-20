@@ -23,7 +23,7 @@ The initial unsigned `gdelt-open-data` sample retained 18 size-listed, uncompres
 - 1,636 GKG record IDs referred to different document identifiers. Do not deduplicate documents by record ID alone; retain raw object + physical row provenance.
 - Exact collection/URL matching linked 42,495 of 42,514 web-mention rows to same-batch GKG records. This is a many-to-many event/document relationship, not proof of source independence or complete coverage.
 
-See [native quality report](historical/results/quality_report.json), [raw download manifest](historical/results/download_manifest.json) and [missing-bin report](historical/results/missing_bins.json). All 96 nominal object bins were listed on each of the three diagnostic dates for each table; only two consecutive bins per date were content-inspected.
+See [native quality report](../historical/results/quality_report.json), [raw download manifest](../historical/results/download_manifest.json) and [missing-bin report](../historical/results/missing_bins.json). All 96 nominal object bins were listed on each of the three diagnostic dates for each table; only two consecutive bins per date were content-inspected.
 
 ### Separate translated stream
 
@@ -43,7 +43,7 @@ Results:
 
 The codebook calls `srclc` the original source-language code and `eng` the translation-engine citation, **not an English-language label**. Reported codes are retained as supplied, including legacy/provider-specific values such as `axe`; 60 code values are not a separately validated census of 60 languages.
 
-Evidence: [stream inventory](historical/language_recovery/results/stream_inventory.json), [bounded manifest scan](historical/language_recovery/results/manifest_scan.json), [translated download manifest](historical/language_recovery/results/translated_download_manifest.json), [quality report](historical/language_recovery/results/translated_quality.json), [record-level identifiers and URLs](historical/language_recovery/results/translated_records.jsonl).
+Evidence: [stream inventory](../historical/language_recovery/results/stream_inventory.json), [bounded manifest scan](../historical/language_recovery/results/manifest_scan.json), [translated download manifest](../historical/language_recovery/results/translated_download_manifest.json), [quality report](../historical/language_recovery/results/translated_quality.json), [record-level identifiers and URLs](../historical/language_recovery/results/translated_records.jsonl).
 
 ### Timestamp meanings
 
@@ -81,11 +81,11 @@ All 29 model-scored native extracts were English. **43 native selections remaine
 
 Manual inspection supported six substantial non-English bodies in the translated subsample: Russian, Arabic, Finnish, Ukrainian, Spanish and French. The Italian model result is excluded as adequate article-body evidence.
 
-[Per-publisher failure rates](historical/language_recovery/results/failure_rates_by_publisher.csv) and [rates by stream, inferred language and archived metadata language](historical/language_recovery/results/page_quality_summary.json) retain the denominators. Publisher groups usually have only one selected URL. Retrieval failure rates **by inferred language are unidentifiable** when no text was recovered; they are null, not zero. Rates by archived language can be calculated for the 24 translated selections with prior `srclc` labels, but are very small-sample diagnostics.
+[Per-publisher failure rates](../historical/language_recovery/results/failure_rates_by_publisher.csv) and [rates by stream, inferred language and archived metadata language](../historical/language_recovery/results/page_quality_summary.json) retain the denominators. Publisher groups usually have only one selected URL. Retrieval failure rates **by inferred language are unidentifiable** when no text was recovered; they are null, not zero. Rates by archived language can be calculated for the 24 translated selections with prior `srclc` labels, but are very small-sample diagnostics.
 
 ### Manual audit and disagreements
 
-The [15-case stratified audit](historical/language_recovery/results/manual_audit.json) covered every non-English model result, both metadata disagreements, English examples from all three years and rejected cases.
+The [15-case stratified audit](../historical/language_recovery/results/manual_audit.json) covered every non-English model result, both metadata disagreements, English examples from all three years and rejected cases.
 
 - **MTV Lebanon, page-046:** substantial Arabic body, model `ar`, HTML `en`. Body inspection supports Arabic; no usable structured publication date was recovered.
 - **HuffPost Quebec archive, page-079:** French body, model `fr`, HTML `en`. The migrated archive has 2019 publication/modification claims. HTML appears to reflect a template, not the article language.
@@ -95,7 +95,7 @@ The [15-case stratified audit](historical/language_recovery/results/manual_audit
 
 No model/manual language disagreement was found among the **11 substantive bodies reviewed**. This was a purposive, unblinded diagnostic audit—not an accuracy estimate. The observed extraction failure demonstrates why high model scores alone are insufficient.
 
-Full source identifiers, URLs, raw scores, lengths, dates, input hashes and explicit outcomes are in [page evidence CSV](historical/language_recovery/results/page_language_evidence.csv), [adjudicated records](historical/language_recovery/results/adjudicated_page_results.json), [model configuration](historical/language_recovery/results/language_model.json) and [review packets](historical/language_recovery/results/review_packets/).
+Full source identifiers, URLs, raw scores, lengths, dates, input hashes and explicit outcomes are in [page evidence CSV](../historical/language_recovery/results/page_language_evidence.csv), [adjudicated records](../historical/language_recovery/results/adjudicated_page_results.json), [model configuration](../historical/language_recovery/results/language_model.json) and [review packets](../historical/language_recovery/results/review_packets/).
 
 ### Can current pages represent historical articles?
 
@@ -127,7 +127,7 @@ The native window has all 2,688 expected bins listed. Six translated update bins
 
 Storage: retaining these ZIPs requires about **1.54 GB plus manifests and projections**. Fully expanded TSV storage is roughly **8.61 GB**, extrapolated from one native/translated sample per table—not measured for the full window. Stream parsing avoids retaining that expanded duplicate. Measure projection growth during the pilot before setting a final disk reservation.
 
-Evidence: [corpus transfer estimates](historical/language_recovery/results/corpus_transfer_estimates.json), [native window inventory](historical/language_recovery/results/native_metadata_window.json), [verified metadata candidate](historical/language_recovery/results/metadata_corpus_candidate.json), [missing-object probes](historical/language_recovery/results/candidate_missing_object_probes.json).
+Evidence: [corpus transfer estimates](../historical/language_recovery/results/corpus_transfer_estimates.json), [native window inventory](../historical/language_recovery/results/native_metadata_window.json), [verified metadata candidate](../historical/language_recovery/results/metadata_corpus_candidate.json), [missing-object probes](../historical/language_recovery/results/candidate_missing_object_probes.json).
 
 ### Required gates before an attention test
 
@@ -143,37 +143,37 @@ The immediate recommendation is the language-provenance/metadata pilot, not fitt
 
 Research response-body ledgers total **315,857,196 bytes**: 202,855,221 initially, 100,639,004 for recovery bulk/manifests/package-provenance metadata, and 12,362,971 for publisher requests. Cached software artifacts add **41,092,519 bytes** separately. These are retained response-body/artifact sizes, not HTTP/TLS wire accounting. Both data passes stayed below their declared 250 MB limits; the overall 5 GB limit was not approached. No DOC API, paid infrastructure or runtime LLM was used.
 
-The original Flask `.venv`, application requirements, templates and evidence were preserved. Language dependencies are isolated and exactly pinned in [requirements-language.txt](requirements-language.txt); package hashes/release ages are recorded. `urllib3` emits an import-time LibreSSL compatibility warning on this Python build; it was not used for publisher fetching, and extraction/classification were network-blocked. TLS verification was not disabled.
+The original Flask `.venv`, application requirements, templates and evidence were preserved. Language dependencies are isolated and exactly pinned in [requirements-language.txt](../research/requirements-language.txt); package hashes/release ages are recorded. `urllib3` emits an import-time LibreSSL compatibility warning on this Python build; it was not used for publisher fetching, and extraction/classification were network-blocked. TLS verification was not disabled.
 
 ### Cached analysis — no network required
 
 Run from the repository root:
 
 ```sh
-.venv/bin/python language_recovery.py audit --offline
-.venv/bin/python language_recovery.py estimate --offline
-.venv/bin/python language_recovery.py candidate-check --offline
-OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .language-venv/bin/python language_pages.py classify --offline
-.language-venv/bin/python language_pages.py summarize --offline
-.venv/bin/python language_recovery.py findings --offline
-.language-venv/bin/python -m unittest -v test_language_recovery.py
-OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .language-venv/bin/python verify_language_offline.py
+.venv/bin/python -m research.language_recovery audit --offline
+.venv/bin/python -m research.language_recovery estimate --offline
+.venv/bin/python -m research.language_recovery candidate-check --offline
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .language-venv/bin/python -m research.language_pages classify --offline
+.language-venv/bin/python -m research.language_pages summarize --offline
+.venv/bin/python -m research.language_recovery findings --offline
+.language-venv/bin/python -m unittest -v tests.test_language_recovery
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .language-venv/bin/python -m research.verify_language_offline
 ```
 
-The verification harness blocks socket connections, DNS and urllib HTTP calls, runs cached analysis twice, compares derived bytes, checks raw-cache/ledger immutability and verifies the preserved demo hashes. It does not disable system-wide networking. [Verification record](historical/language_recovery/results/offline_verification.json).
+The verification harness blocks socket connections, DNS and urllib HTTP calls, runs cached analysis twice, compares derived bytes, checks raw-cache/ledger immutability and verifies the preserved demo hashes. It does not disable system-wide networking. [Verification record](../historical/language_recovery/results/offline_verification.json).
 
 ### Collection commands and dependency restoration
 
 The completed collector is cache-first. Re-running it reuses retained responses; no fresh crawling is needed to reproduce the findings.
 
 ```sh
-.venv/bin/python language_recovery.py inspect
-.venv/bin/python language_recovery.py manifest
-.venv/bin/python language_recovery.py download
-.venv/bin/python language_recovery.py audit --offline
-.venv/bin/python language_recovery.py plan-pages --offline
-.language-venv/bin/python language_pages.py fetch
-.language-venv/bin/python language_pages.py retry-technical
+.venv/bin/python -m research.language_recovery inspect
+.venv/bin/python -m research.language_recovery manifest
+.venv/bin/python -m research.language_recovery download
+.venv/bin/python -m research.language_recovery audit --offline
+.venv/bin/python -m research.language_recovery plan-pages --offline
+.language-venv/bin/python -m research.language_pages fetch
+.language-venv/bin/python -m research.language_pages retry-technical
 ```
 
 To restore the isolated language environment from retained package files:
@@ -184,6 +184,6 @@ python3 -m venv .language-venv
 .language-venv/bin/python -m pip install --no-index --no-build-isolation --find-links historical/language_recovery/packages -r requirements-language.txt
 ```
 
-The cached binary wheels target the tested macOS ARM64/Python 3.9 environment. Other platforms need compatible wheels with the same vetted versions. The source collection and full-window sizing commands are in `historical_experiment.py` and `language_recovery.py`; no command in this milestone downloads the proposed full 28-day corpus.
+The cached binary wheels target the tested macOS ARM64/Python 3.9 environment. Other platforms need compatible wheels with the same vetted versions. The source collection and full-window sizing commands are in `research/historical_experiment.py` and `research/language_recovery.py`; no command in this milestone downloads the proposed full 28-day corpus.
 
-[Machine-readable findings](historical/language_recovery/results/findings_summary.json) · [quality figure](historical/language_recovery/results/language_feasibility.svg)
+[Machine-readable findings](../historical/language_recovery/results/findings_summary.json) · [quality figure](../historical/language_recovery/results/language_feasibility.svg)

@@ -3,13 +3,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from app import create_app
-from demo_data import filter_records, load_dataset, replay_view
-from investigations import (InvestigationImportError, Store,
+from before_the_headline.app import create_app
+from before_the_headline.demo_data import filter_records, load_dataset, replay_view
+from before_the_headline.investigations import (InvestigationImportError, Store,
                             build_investigation, import_template,
                             validate_import)
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / 'fixtures'
 
 
@@ -180,7 +180,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(res.status_code, 413)
 
     def test_schema_page_documents_every_field(self):
-        from investigations import ARTICLE_KEYS, TOP_LEVEL_KEYS
+        from before_the_headline.investigations import ARTICLE_KEYS, TOP_LEVEL_KEYS
         html = self.client.get('/import/schema').get_data(as_text=True)
         for key in TOP_LEVEL_KEYS | ARTICLE_KEYS:
             self.assertIn('<code>%s</code>' % key, html, key)

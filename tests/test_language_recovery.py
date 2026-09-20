@@ -4,11 +4,11 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-import historical_experiment as historical
-import language_pages as pages
-import language_recovery as recovery
+from research import historical_experiment as historical
+from research import language_pages as pages
+from research import language_recovery as recovery
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 CORPUS = 'unit-test-only-corpus'
 
 

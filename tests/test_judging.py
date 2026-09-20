@@ -18,8 +18,8 @@ from urllib.parse import urlsplit
 
 from playwright.sync_api import expect, sync_playwright
 
-ROOT = Path(__file__).resolve().parent
-OUT = ROOT / 'results/judging'
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / 'docs/screenshots'
 
 
 def serve_fresh(port, events):
@@ -47,7 +47,8 @@ def serve_fresh(port, events):
         check(host)
         return real_getaddrinfo(host, *args, **kwargs)
 
-    with (OUT / 'fresh_start_server.log').open('w') as log, contextlib.redirect_stdout(log), contextlib.redirect_stderr(log):
+    (ROOT / 'results').mkdir(exist_ok=True)
+    with (ROOT / 'results/fresh_start_server.log').open('w') as log, contextlib.redirect_stdout(log), contextlib.redirect_stderr(log):
         with patch.object(socket.socket, 'connect', connect), patch.object(socket.socket, 'connect_ex', connect_ex), patch.object(socket, 'getaddrinfo', getaddrinfo):
             from app import main
             sys.argv = ['app.py', '--port', str(port)]
@@ -79,7 +80,7 @@ class JudgingOfflineWalkthrough(unittest.TestCase):
                 if not cls.server.is_alive() or time.monotonic() >= deadline:
                     cls.server.terminate()
                     cls.server.join(timeout=5)
-                    raise RuntimeError('Fresh offline server failed; see results/judging/fresh_start_server.log')
+                    raise RuntimeError('Fresh offline server failed; see results/fresh_start_server.log')
                 time.sleep(0.1)
         cls.playwright = sync_playwright().start()
         cls.browser = cls.playwright.chromium.launch(channel=os.environ.get('SIGNAL_BROWSER_CHANNEL', 'chrome'), headless=True)

@@ -4,7 +4,7 @@
 
 Before the Headline is a local web app for looking closely at a burst of news coverage. Load a collection of articles about one event, see which pages are actually about it, which ones repeat each other, what each publisher claims about timing, and what is still unclear. It ships with one reviewed collection — coverage of a reported MSC booking suspension at Novorossiysk — and accepts new collections as JSON.
 
-![Investigations home](results/judging/00-home.png)
+![Investigations home](docs/screenshots/00-home.png)
 
 ## Capabilities
 
@@ -15,7 +15,7 @@ Before the Headline is a local web app for looking closely at a burst of news co
 - **Notes** — open questions attached to the collection (conflicting accounts, possible shared upstream reporting, gaps in observation).
 - **Import** — JSON collections validated field by field and stored as local files.
 
-![Shipping investigation workspace](results/judging/01-workspace.png)
+![Shipping investigation workspace](docs/screenshots/01-workspace.png)
 
 ## Quick start
 
@@ -58,35 +58,38 @@ Validation covers required fields, unique IDs, article references, timestamp pre
 
 Imported collections are saved as JSON files under `local_investigations/` (override with `SIGNAL_DATA_DIR`) and can be removed from the home page. Bundled collections cannot be removed. `fixtures/synthetic_investigation.json` is a synthetic test fixture and is never listed by default.
 
-## Architecture and data
+## Repository layout
 
 ```
-app.py             Flask routes: /, /investigations/<id>, /import/schema, /healthz,
-                   /api/investigations[/import|/<id>], /api/investigations/<id>/{evidence,source/<sid>,replay}
-demo_data.py       loads the bundled collection from frozen JSON + cached page text; filters and counts
-investigations.py  import validation, investigation model, JSON-file store
-templates/, static/   Jinja templates, plain CSS and browser JS (no build step, no framework)
-fixtures/          synthetic import fixture and invalid examples used by tests
-results/msc_validation/  evidence_table.json, timeline_data.json — the bundled collection's reviewed labels
-results/raw_candidates.json, evidence_sources.json, results/pages/*.txt — inventory, manifest, cached page text
-results/judging/   screenshots, offline walkthrough record, SHA-256 hashes of the evidence files
+app.py                     thin entry point (python app.py --port 8765)
+before_the_headline/       app package: create_app, data loading, import validation and store
+templates/, static/        Jinja templates, plain CSS and browser JS (no build step, no framework)
+tests/                     product tests + research tests
+research/                  the scripts that produced the frozen artifacts and historical check
+scripts/                   audit_judging.py, verify_handoff.py (run as python -m scripts.<name>)
+fixtures/                  synthetic import fixture, invalid examples, and shipping-msc-2026/
+                           (evidence_table.json, timeline_data.json, raw_candidates.json,
+                           evidence_sources.json, pages/*.txt — the bundled collection)
+docs/                      HISTORICAL_FEASIBILITY.md, feasibility_report.md, msc_validation/,
+                           screenshots/ (walkthrough PNGs, offline record, evidence hashes)
+results/                   generated output only (git-ignored)
 ```
 
 Python computes all filters and counts; the browser only renders. Excerpts are rendered as text, never as publisher HTML, under a `'self'`-only Content Security Policy.
 
-Bundled data comes from the GDELT DOC 2.0 API (one English shipping TimelineVolRaw response — the 694-match aggregate — and one Spanish ArticleList response), pages found outside GDELT results, and publisher pages captured on 19 September 2026. Relevance and copied-text labels were recorded during a manual, agent-assisted review of each cached page and frozen in `results/msc_validation/evidence_table.json`; `test_judging.py` fails if any evidence file changes.
+Bundled data comes from the GDELT DOC 2.0 API (one English shipping TimelineVolRaw response — the 694-match aggregate — and one Spanish ArticleList response), pages found outside GDELT results, and publisher pages captured on 19 September 2026. Relevance and copied-text labels were recorded during a manual, agent-assisted review of each cached page and frozen in `fixtures/shipping-msc-2026/evidence_table.json`; `tests/test_judging.py` fails if any evidence file changes.
 
-The other Python scripts (`validate_msc.py`, `feasibility.py`, `historical_experiment.py`, `language_recovery.py`, `language_pages.py`, `bounded_recovery.py`, `render_charts.py`, `audit_judging.py`) produced the frozen artifacts and a separate historical data check ([HISTORICAL_FEASIBILITY.md](HISTORICAL_FEASIBILITY.md), [feasibility_report.md](feasibility_report.md)). They need raw caches that are not in the repository and are not required to run the app. [SUBMISSION.md](SUBMISSION.md) has the write-up.
+The research scripts under `research/` produced the frozen artifacts and a separate historical data check ([docs/HISTORICAL_FEASIBILITY.md](docs/HISTORICAL_FEASIBILITY.md), [docs/feasibility_report.md](docs/feasibility_report.md)); run them as modules (e.g. `python -m research.feasibility`). They need raw caches that are not in the repository and are not required to run the app. [SUBMISSION.md](SUBMISSION.md) has the write-up.
 
 ## Tests
 
 ```sh
 .venv/bin/python -m pip install -r requirements-dev.txt
-.venv/bin/python -m unittest -v test_demo.py test_investigations.py        # data, API, import
+.venv/bin/python -m unittest -v tests.test_demo tests.test_investigations   # data, API, import
 .venv/bin/python -m playwright install chrome                               # if Chrome is missing
-SIGNAL_BROWSER_CHANNEL=chrome .venv/bin/python -m unittest -v test_demo_browser.py   # needs server on 8765
-SIGNAL_BROWSER_CHANNEL=chrome .venv/bin/python -m unittest -v test_judging.py        # fresh process, network blocked, refreshes screenshots
-.venv/bin/python verify_handoff.py                                          # checkout carries only needed files
+SIGNAL_BROWSER_CHANNEL=chrome .venv/bin/python -m unittest -v tests.test_demo_browser   # needs server on 8765
+SIGNAL_BROWSER_CHANNEL=chrome .venv/bin/python -m unittest -v tests.test_judging        # fresh process, network blocked, refreshes screenshots
+.venv/bin/python -m scripts.verify_handoff                                  # checkout carries only needed files
 ```
 
 ## Limitations

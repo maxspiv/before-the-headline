@@ -3,7 +3,7 @@ import math
 from html import escape
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
 OUT = RESULTS / "charts"
 

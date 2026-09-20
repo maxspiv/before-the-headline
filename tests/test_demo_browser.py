@@ -12,7 +12,7 @@ from urllib.parse import urlsplit
 
 from playwright.sync_api import expect, sync_playwright
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 BASE = os.environ.get('SIGNAL_DEMO_URL', 'http://127.0.0.1:8765')
 SHIPPING = '/investigations/shipping-msc-2026'
 PAYLOAD = '<img data-payload="yes" src="https://bad.invalid/pixel" onerror="window.__signalNoiseXSS=1">'

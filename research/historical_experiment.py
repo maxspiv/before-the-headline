@@ -13,7 +13,7 @@ from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / 'historical'
 OUT = BASE / 'results'
 HTTP = BASE / 'raw'
@@ -208,8 +208,8 @@ def object_bin(key):
 
 
 def preserve_demo():
-    paths = ['app.py', 'demo_data.py', 'investigations.py', 'templates/home.html', 'templates/investigation.html', 'templates/schema.html', 'static/app.js', 'static/home.js', 'static/app.css', 'requirements.txt', 'requirements-dev.txt', 'SUBMISSION.md', 'results/msc_validation/evidence_table.json', 'results/msc_validation/timeline_data.json', 'results/raw_candidates.json']
-    paths += [str(p.relative_to(ROOT)) for p in sorted((ROOT / 'results/pages').glob('*.txt'))]
+    paths = ['app.py', 'before_the_headline/app.py', 'before_the_headline/demo_data.py', 'before_the_headline/investigations.py', 'before_the_headline/paths.py', 'templates/home.html', 'templates/investigation.html', 'templates/schema.html', 'static/app.js', 'static/home.js', 'static/app.css', 'requirements.txt', 'requirements-dev.txt', 'SUBMISSION.md', 'fixtures/shipping-msc-2026/evidence_table.json', 'fixtures/shipping-msc-2026/timeline_data.json', 'fixtures/shipping-msc-2026/raw_candidates.json']
+    paths += [str(p.relative_to(ROOT)) for p in sorted((ROOT / 'fixtures/shipping-msc-2026/pages').glob('*.txt'))]
     hashes = {name: sha(ROOT / name) for name in paths}
     path = BASE / 'preserved_demo_hashes.json'
     if path.exists():

@@ -10,9 +10,9 @@ from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 
-from feasibility import NoRedirect, save_json
+from research.feasibility import NoRedirect, save_json
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'results' / 'msc_validation'
 CACHE = ROOT / 'cache' / 'recovery_msc'
 STATE = OUT / 'recovery_state.json'

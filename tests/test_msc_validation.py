@@ -8,8 +8,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-import bounded_recovery as recovery
-import validate_msc as validation
+from research import bounded_recovery as recovery
+from research import validate_msc as validation
 
 
 class EvidenceTests(unittest.TestCase):

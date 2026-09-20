@@ -5,9 +5,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from demo_data import EXCERPTS, claim_label, filter_records, load_dataset, replay_view, safe_external_url, source_detail
+from before_the_headline.demo_data import EXCERPTS, claim_label, filter_records, load_dataset, replay_view, safe_external_url, source_detail
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class DemoDataTests(unittest.TestCase):
@@ -16,7 +16,7 @@ class DemoDataTests(unittest.TestCase):
         cls.data = load_dataset()
 
     def test_counts_and_membership_match_frozen_artifacts(self):
-        rows = json.loads((ROOT / 'results/msc_validation/evidence_table.json').read_text())
+        rows = json.loads((ROOT / 'fixtures/shipping-msc-2026/evidence_table.json').read_text())
         view = filter_records(self.data)
         self.assertEqual(self.data['summary']['inventory_total'], len(rows))
         self.assertEqual(self.data['summary']['inventory_total'], 32)
@@ -85,7 +85,7 @@ class DemoDataTests(unittest.TestCase):
         self.assertIn('[…]', chinese)
 
     def test_replay_preserves_precision_and_is_independent_of_card_filters(self):
-        artifact = json.loads((ROOT / 'results/msc_validation/timeline_data.json').read_text())
+        artifact = json.loads((ROOT / 'fixtures/shipping-msc-2026/timeline_data.json').read_text())
         replay = replay_view(self.data)
         self.assertEqual({e['id'] for e in replay['events']}, {e['id'] for e in artifact['events']})
         self.assertEqual(replay['visible_count'], 3)
@@ -114,7 +114,7 @@ class DemoDataTests(unittest.TestCase):
 class DemoWebTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from app import create_app
+        from before_the_headline.app import create_app
         with patch('urllib.request.OpenerDirector.open', side_effect=AssertionError('No network allowed')):
             cls.app = create_app()
             cls.app.testing = True
@@ -142,7 +142,7 @@ class DemoWebTests(unittest.TestCase):
     def test_invalid_filters_unknown_sources_and_file_routes_fail_closed(self):
         for path in ('/api/investigations/shipping-msc-2026/evidence?possible=false', '/api/investigations/shipping-msc-2026/evidence?fold=9', '/api/investigations/shipping-msc-2026/evidence?unrelated=1&unrelated=0', '/api/investigations/shipping-msc-2026/replay?day=2026-09-13', '/api/investigations/shipping-msc-2026/replay?day=all&day=all'):
             self.assertEqual(self.client.get(path).status_code, 400)
-        for path in ('/api/investigations/shipping-msc-2026/source/missing', '/cache/', '/results/msc_validation/evidence_table.json', '/static/../demo_data.py', '/api/source/../../demo_data.py'):
+        for path in ('/api/investigations/shipping-msc-2026/source/missing', '/cache/', '/fixtures/shipping-msc-2026/evidence_table.json', '/static/../app.py', '/api/source/../../app.py'):
             self.assertEqual(self.client.get(path).status_code, 404)
         self.assertEqual(self.client.get('/', headers={'Host': 'untrusted.example'}).status_code, 400)
 
@@ -164,8 +164,8 @@ class DemoWebTests(unittest.TestCase):
 
     def test_untrusted_source_strings_stay_json_not_template_code(self):
         import tempfile
-        from app import create_app
-        from investigations import Store
+        from before_the_headline.app import create_app
+        from before_the_headline.investigations import Store
         dataset = copy.deepcopy(load_dataset())
         source = dataset['by_id']['shipping_msc_en']
         source['title'] = '<img src=x onerror="alert(1)">{{7*7}}'

@@ -21,10 +21,10 @@ from html.parser import HTMLParser
 from pathlib import Path
 from unittest.mock import patch
 
-import language_recovery as recovery
-from historical_experiment import backoff, preserve_demo, save, sha
+from research import language_recovery as recovery
+from research.historical_experiment import backoff, preserve_demo, save, sha
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 BASE = recovery.BASE
 OUT = recovery.OUT
 PAGES = BASE / 'pages'

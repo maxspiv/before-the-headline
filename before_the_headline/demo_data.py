@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlsplit
 
-ROOT = Path(__file__).resolve().parent
+from .paths import ROOT
 INSPECTED_CLASSES = {'direct_suspension', 'roundup_suspension', 'different_story_verified'}
 POSSIBLE_SHARED_IDS = {'shipping_msc_en', 'shipping_msc_es', 'shipping_msc_zh'}
 EXCERPTS = {
@@ -57,7 +57,7 @@ def claim_label(event):
 
 def load_dataset(root=ROOT):
     root = Path(root)
-    paths = {'evidence': root / 'results/msc_validation/evidence_table.json', 'timeline': root / 'results/msc_validation/timeline_data.json', 'aggregate': root / 'results/raw_candidates.json'}
+    paths = {'evidence': root / 'fixtures/shipping-msc-2026/evidence_table.json', 'timeline': root / 'fixtures/shipping-msc-2026/timeline_data.json', 'aggregate': root / 'fixtures/shipping-msc-2026/raw_candidates.json'}
     blobs = {key: path.read_bytes() for key, path in paths.items()}
     evidence, timeline, candidates = (json.loads(blobs[key]) for key in ('evidence', 'timeline', 'aggregate'))
     if len({r['id'] for r in evidence}) != len(evidence):
@@ -80,8 +80,8 @@ def load_dataset(root=ROOT):
         excerpt = None
         if is_inspected and row['id'] in EXCERPTS:
             filename, start, end = EXCERPTS[row['id']]
-            expected = 'results/pages/' + filename
-            if row['text_file'] != expected:
+            expected = 'fixtures/shipping-msc-2026/pages/' + filename
+            if Path(row['text_file']).name != filename:
                 raise ValueError('Excerpt path differs from the reviewed source mapping')
             source = root / expected
             content = source.read_text().splitlines()

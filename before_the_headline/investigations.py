@@ -5,9 +5,8 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-from demo_data import safe_external_url
-
-ROOT = Path(__file__).resolve().parent
+from .demo_data import safe_external_url
+from .paths import ROOT
 log = logging.getLogger(__name__)
 
 SCHEMA_VERSION = 1

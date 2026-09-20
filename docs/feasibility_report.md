@@ -11,8 +11,8 @@ There is one measured candidate increase, an independently cross-checked English
 From this directory, using Python 3.9+ (standard library only):
 
 ```sh
-python3 feasibility.py replay
-python3 -m unittest -v test_feasibility.py
+python3 -m research.feasibility replay
+python3 -m unittest -v tests.test_feasibility
 ```
 
 `replay` reconstructs the request snapshots, analysis, evidence exports, source-page extracts, cache audit and SVG charts from cached response bytes. It never refreshes the network. The report and `results/story_review.json` are the manual review of this frozen capture, not automatically updated conclusions for future live runs.
@@ -22,22 +22,22 @@ Verification passed: all **7 unit tests**, Python compilation, XML parsing of al
 Online collection is explicit and sequential:
 
 ```sh
-python3 feasibility.py docs
-python3 feasibility.py collect
-python3 feasibility.py analyze
-python3 feasibility.py evidence
-python3 feasibility.py sources
-python3 feasibility.py audit
-python3 render_charts.py
+python3 -m research.feasibility docs
+python3 -m research.feasibility collect
+python3 -m research.feasibility analyze
+python3 -m research.feasibility evidence
+python3 -m research.feasibility sources
+python3 -m research.feasibility audit
+python3 -m research.render_charts
 ```
 
 Cached successes **and failures** are reused by default. A bounded retry of selected failed requests is available:
 
 ```sh
-python3 feasibility.py retry-failed --only denominator_english denominator_spanish semiconductors_english energy_english
+python3 -m research.feasibility retry-failed --only denominator_english denominator_spanish semiconductors_english energy_english
 ```
 
-Each name is a file stem in `results/requests/`. A retry makes at most one new attempt per selected failed request and preserves the older response. Re-run analysis/evidence after new data arrives. `--refresh` explicitly makes new requests; do not use it for frozen replay. Do not run network collectors concurrently. The experiment's dates and topic queries are fixed in `feasibility.py` to avoid a moving-window reproduction.
+Each name is a file stem in `results/requests/`. A retry makes at most one new attempt per selected failed request and preserves the older response. Re-run analysis/evidence after new data arrives. `--refresh` explicitly makes new requests; do not use it for frozen replay. Do not run network collectors concurrently. The experiment's dates and topic queries are fixed in `research/feasibility.py` to avoid a moving-window reproduction.
 
 ## Experiment and challenge context
 
@@ -153,8 +153,8 @@ If DOC access remains unreliable, a separately scoped bulk-data/warehouse approa
 
 ## Artifacts and provenance
 
-- `feasibility.py`: collection, immutable per-attempt caching, analysis, bounded retries, source extraction, audit and offline replay.
-- `test_feasibility.py`: synthetic unit-test fixtures confined to temporary directories; tests for preceding-only baselines, future-value invariance, missing-bin handling, fail-closed denominators and separation of article lists from aggregate counts.
+- `research/feasibility.py`: collection, immutable per-attempt caching, analysis, bounded retries, source extraction, audit and offline replay.
+- `tests/test_feasibility.py`: synthetic unit-test fixtures confined to temporary directories; tests for preceding-only baselines, future-value invariance, missing-bin handling, fail-closed denominators and separation of article lists from aggregate counts.
 - `results/timeline.csv` / `.json`: aligned daily grid, raw counts where obtained, null unavailable values and explicit states.
 - `results/charts/raw_shipping_english.svg`: measured raw timeline, candidate marker, excluded latest bin and gap shading. **Within-language audit only.**
 - `results/charts/shipping.svg`, `semiconductors.svg`, `energy.svg`: shared-grid comparison outputs explicitly withheld because normalization is unavailable.

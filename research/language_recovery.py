@@ -15,9 +15,9 @@ from datetime import datetime, timedelta, timezone
 from collections import Counter
 from pathlib import Path
 
-from historical_experiment import backoff, original_language, preserve_demo, save, sha
+from research.historical_experiment import backoff, original_language, preserve_demo, save, sha
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / 'historical/language_recovery'
 OUT = BASE / 'results'
 RAW = BASE / 'raw'
