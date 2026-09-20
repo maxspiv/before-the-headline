@@ -53,6 +53,10 @@ function badge(text, cls) {
   return el('span', 'badge ' + cls, text);
 }
 
+function langLabel(code) {
+  return code ? code.charAt(0).toUpperCase() + code.slice(1) : '';
+}
+
 function isSafeUrl(value) {
   try {
     const u = new URL(value);
@@ -108,7 +112,7 @@ function cardFor(row) {
   const card = el('article', 'evidence-card');
   card.appendChild(el('p', 'card-title', row.title));
   card.appendChild(el('p', 'card-meta',
-    row.publisher + ' · ' + row.language + ' · ' + row.origin_label));
+    row.publisher + ' · ' + langLabel(row.language) + ' · ' + row.origin_label));
   const badges = el('div', 'badges');
   badges.appendChild(badge(row.category_label,
     row.category === 'related' ? 'related' :
@@ -197,7 +201,7 @@ function renderHashes(hashes) {
 }
 
 function sourceLabel(src) {
-  return src.publisher + ' (' + src.language + ')';
+  return src.publisher + ' (' + langLabel(src.language) + ')';
 }
 
 function renderUncertainties(list) {
@@ -280,7 +284,7 @@ async function openSource(id, opener) {
 function populateSource(s) {
   document.getElementById('source-title').textContent = s.title;
   document.getElementById('source-meta').textContent =
-    s.publisher + ' · ' + s.language + ' · ' + s.origin_label +
+    s.publisher + ' · ' + langLabel(s.language) + ' · ' + s.origin_label +
     (s.inspected ? ' · inspected' : ' · uninspected');
 
   const claim = document.getElementById('source-claim');
@@ -490,9 +494,12 @@ async function loadReplay(day) {
     els.replayScope.textContent = data.filter_scope;
     els.replayCount.textContent = 'Showing ' + data.visible_count + ' of ' +
       data.total_count + ' retained pages';
+    const emptyMeaning = data.empty_interval_meaning || '';
     els.replayEmptyNote.textContent =
       'Blank intervals before and after dated pages are ' +
-      data.empty_interval_meaning + '. ' + data.date_axis_meaning;
+      (emptyMeaning
+        ? emptyMeaning.charAt(0).toLowerCase() + emptyMeaning.slice(1)
+        : emptyMeaning) + '. ' + data.date_axis_meaning;
     els.replayTimeline.textContent = '';
     const byDay = new Map();
     for (const ev of data.events) {

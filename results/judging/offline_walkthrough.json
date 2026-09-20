@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "fresh_cli_start": true,
+  "entrypoint": "app.main --port <unused loopback port>",
+  "isolated_browser_context": true,
+  "offline_definition": "Server outbound sockets/DNS denied; browser requests restricted to this loopback origin. System-wide networking was not changed.",
+  "browser_external_attempts": [],
+  "javascript_errors": [],
+  "server_events": [
+    {
+      "kind": "fresh_process",
+      "pid": 9582,
+      "entrypoint": "app.main --port 56705"
+    }
+  ],
+  "walkthrough_card_counts": [
+    13,
+    12,
+    3,
+    0,
+    3
+  ],
+  "replay_counts": [
+    3,
+    2,
+    3
+  ],
+  "reset_verified": true,
+  "explicit_offset_missing_conversion_label_verified": true,
+  "protected_evidence_unchanged": true,
+  "screenshots": [
+    {
+      "file": "01-opening.png",
+      "caption": "694 aggregate matches are separate context, not the inspected sample size.",
+      "sha256": "02a2c5b98f3367e3f353827901bd8444b73df233c58f1634b8ff695e8313a460"
+    },
+    {
+      "file": "02-inspected-sample.png",
+      "caption": "13 inspected pages: 3 MSC-related, 10 other; 6 Spanish GDELT-result pages and 7 external/contextual pages.",
+      "sha256": "20f2dcb152d0679ebaacc8be7aa3f1e20b546c43933288d0b276372d8fe7956a"
+    },
+    {
+      "file": "03-confirmed-copy-fold.png",
+      "caption": "One matching-text group contains two pages; folding removes one card, not an independent story.",
+      "sha256": "c13b44e89e82fc6752bf45cb26dce79da260247196167e1f0d44ed5b25f051d9"
+    },
+    {
+      "file": "04-related-pages.png",
+      "caption": "Three retained MSC pages remain; all retain possible shared-reporting uncertainty.",
+      "sha256": "1c965a82c54cc81dc6c9370894de00430333089a37ae8f7d8257f76d48b948a2"
+    },
+    {
+      "file": "05-story-timeline.png",
+      "caption": "Publisher-claimed dates, not first publication; the Chinese page is date-only.",
+      "sha256": "8e5c0cdb59da782f473f47d1725e328a6d21877e5c68376aa5c785dfaa579ef6"
+    },
+    {
+      "file": "06-source-evidence.png",
+      "caption": "Cached source excerpt, date-only precision, provenance and unresolved direction details; no external link opened.",
+      "sha256": "646ade1d4a16d728a032da5603dcae169e2e8be92cc62e162bb375404922c4dc"
+    },
+    {
+      "file": "07-unresolved.png",
+      "caption": "Route conflict, attack-time uncertainty, possible common upstream reporting and incomplete coverage remain unresolved.",
+      "sha256": "d4094cd7d9647e93a245a0aaf8a6504bb73dc17194c7c1f2b21be1b3ccfe8a9c"
+    }
+  ]
+}

@@ -98,6 +98,39 @@
     </div>
     <div id="uncertainty-cards" class="card-grid uncertainty-grid"></div>
   </section>
+
+  <section id="technical-results" class="panel technical-results">
+    <details>
+      <summary>
+        <span class="section-number">04</span>
+        <span class="details-title">Technical results — separate historical multilingual experiment</span>
+        <span class="details-hint">Optional · not part of the MSC case study · feasibility, not validated detection</span>
+      </summary>
+      <p class="section-note">A bounded check of whether GDELT's separate <em>translated</em> GKG stream carries usable historical source-language labels. It is independent of the MSC replay above and did not build or evaluate a detector.</p>
+      <div class="summary-counters">
+        <div class="counter"><strong>6</strong>translated GKG files verified</div>
+        <div class="counter"><strong>14,725</strong>GKG records</div>
+        <div class="counter"><strong>60</strong>reported source-language code values</div>
+        <div class="counter"><strong>14,320</strong>distinct typed document identifiers</div>
+        <div class="counter"><strong>6</strong>non-English article bodies confirmed by manual review</div>
+      </div>
+      <div class="card-grid results-grid">
+        <article class="evidence-card">
+          <p class="card-title">What was established</p>
+          <p class="card-meta">Six translated GKG ZIPs for 00:00 and 00:15 UTC on 1 March 2015, 2017 and 2019 returned HTTP 200 and matched manifest sizes and MD5s. Every record carried an explicit <code>srclc</code> source-language code and a translated-record marker. Codes are retained as supplied; 60 code values are not a validated census of 60 languages.</p>
+        </article>
+        <article class="evidence-card">
+          <p class="card-title">Article-body language check</p>
+          <p class="card-meta">A frozen, topic-independent sample of 96 URLs (72 native, 24 translated) was fetched with caching and robots checks. 49 returned HTTP success; 35 diagnostic body-language candidates remained after review. Manual inspection supported six substantial non-English bodies: Russian, Arabic, Finnish, Ukrainian, Spanish and French. Current pages are not guaranteed to match 2015–2019 text.</p>
+        </article>
+        <article class="evidence-card">
+          <p class="card-title">What is not established</p>
+          <p class="card-meta">The native GKG sample (15,339 records) had every language field blank; blank is unknown, not English, so a comparable English denominator remains unvalidated. No 28-day corpus was downloaded (the listed compressed GKG window exceeds 50 GB). No detector, alert threshold, lead time or held-out false-alarm rate was evaluated — these are not evaluated, not zero.</p>
+        </article>
+      </div>
+      <p class="control-note">Details, evidence paths and the recommended next experiment: HISTORICAL_FEASIBILITY.md in the repository. The raw historical caches are not part of this checkout.</p>
+    </details>
+  </section>
 </main>
 
 <footer class="site-footer">

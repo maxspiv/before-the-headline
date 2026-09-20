@@ -12,6 +12,12 @@
 !/results/raw_candidates.json
 !/results/msc_validation/
 !/results/pages/
+!/results/judging/
+/results/judging/*
+!/results/judging/*.png
+!/results/judging/screenshots.md
+!/results/judging/offline_walkthrough.json
+!/results/judging/protected_evidence_hashes.json
 /results/msc_validation/*
 !/results/msc_validation/evidence_table.json
 !/results/msc_validation/timeline_data.json
