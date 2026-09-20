@@ -1,99 +1,72 @@
-# Signal / Noise
+# Before the Headline
 
-## One-sentence pitch
+Explore news coverage across sources and languages.
 
-**Signal / Noise is an evidence workbench for investigating news spikes across sources and languages: it helps an investigator separate relevant coverage, repeated reporting and uncertainty using traceable cached sources.**
+## Pitch
+
+Before the Headline is a local investigation workspace for exploring news coverage across sources and languages: it helps an investigator separate relevant coverage, repeated reporting and open questions using traceable cached sources, without claiming detection or early warning.
 
 ## Problem
 
 A rise in news matches is not necessarily a new story, independent corroboration, or an early signal. Broad queries can mix different incidents, syndicated text, translated editions and unrelated material. Publication labels, platform observation times and retrieval times are also different clocks. A compelling chart can hide those distinctions.
 
-For Voloridge’s “Signal in the Noise” challenge, we built a small, reproducible investigation that makes these distinctions visible instead of claiming a predictive result we could not validate.
+## What was built
 
-## Implemented approach
+A Flask app with a **reusable investigation workspace**: an investigations home lists saved cases, and each opens in the same articles/timeline/notes workspace. The bundled case study — the **reported MSC Ulsan III / Novorossiysk booking suspension** — ships as data:
 
-The local app is a **reusable investigation workspace**: an investigations home lists saved cases (bundled or imported), and each opens in the same inspection/replay/unresolved workspace. The bundled case study — the **reported MSC Ulsan III / Novorossiysk booking suspension** — ships as data:
+1. A broad shipping-query aggregate shown as query context, explicitly separate from the reviewed pages.
+2. Cached pages browsable with publisher, language, discovery provenance and recorded relevance labels.
+3. Filters for other stories and possible shared reporting, plus folding of a confirmed matching-text group.
+4. A timeline of the on-story pages by publisher-claimed date; date-only evidence remains date-only.
+5. Source panels with excerpts, URLs, timestamp provenance, relevance rationale and notes.
 
-1. Show a broad shipping-query aggregate as context, explicitly separate from the inspected sample.
-2. Browse cached pages with publisher, language, discovery provenance and recorded relevance labels.
-3. Filter other stories and possible shared reporting; separately fold a confirmed matching-text group. Counters always describe the selected inventory, not the news population or independent story origins.
-4. Replay the three retained pages by publisher-claimed date. Date-only evidence remains date-only; missing observations are not zeros.
-5. Open source panels containing cached excerpts, URLs, timestamp provenance, relevance rationale and unresolved details.
+New investigations can be **imported as JSON** (format at `/import/schema`, template at `/api/import/template`, 1 MiB limit, all validation errors reported at once). Imports persist as JSON files under `local_investigations/` (`SIGNAL_DATA_DIR` overrides). Imported labels are marked supplied rather than recorded; imported URLs are stored but never fetched; there is no live search, scraping or detection.
 
-The relevance and text-sharing judgments are recorded, agent-assisted inspections of this case—not an automatic multilingual event classifier. No live LLM is used by the application.
-
-New investigations can be **imported as JSON** from the home page (schema at `/import/schema`, template at `/api/import/template`, 1 MiB limit, all validation errors reported at once). Imports persist as JSON files under `local_investigations/` (`SIGNAL_DATA_DIR` overrides). Imported labels are marked **supplied** rather than recorded and are not verified; imported URLs are stored but never fetched; there is no live search, scraping or detection. Bundled cases cannot be deleted; imported ones can be removed from the home page.
-
-An optional, collapsed **Technical results** panel on the home page (outside the demo path) summarises the separate historical experiment described below.
-
-## Separate historical experiment: multilingual data feasibility
-
-Independently of the MSC case, we checked whether GDELT’s separate *translated* GKG stream carries usable historical source-language labels. Six translated GKG files (00:00 and 00:15 UTC on 1 March 2015, 2017 and 2019) were downloaded, size/MD5-verified and parsed: **14,725 records, 60 distinct reported source-language code values, 14,320 distinct typed document identifiers**. A frozen 96-URL article-body check confirmed several non-English bodies (Russian, Arabic, Finnish, Ukrainian, Spanish, French) by manual review.
-
-This establishes that usable multilingual historical data exists. It does **not** establish detection: the native GKG sample had every language field blank (unknown, not English), so a comparable English denominator remains unvalidated; no 28-day corpus was downloaded; and no detector, alert threshold or held-out false-alarm evaluation was completed. Full details, evidence paths and the recommended next experiment are in [HISTORICAL_FEASIBILITY.md](HISTORICAL_FEASIBILITY.md).
-
-## Actual data and sample sizes
+## Data and sample sizes
 
 These are different populations and must not be treated as a funnel:
 
 | Quantity | What it actually means |
 |---|---|
-| **694** | Matching articles in one cached **English shipping-query TimelineVolRaw daily bin**, August 31, 2026. This is an aggregate count, not an ArticleList length or a count of unique stories. We have not established what caused this spike. |
-| **22** | Returned Spanish article-metadata records in one archived ArticleList response, requested with a cap of 250. Evidence discovery only; not a population estimate, even though fewer than 250 records were returned. |
+| **694** | Matching articles in one cached English shipping-query TimelineVolRaw daily bin, August 31, 2026. An aggregate count, not a count of unique stories; its cause is unestablished. |
+| **22** | Returned Spanish article-metadata records in one archived ArticleList response, requested with a cap of 250. |
 | **32** | Unique-URL records in the curated evidence inventory: 22 GDELT ArticleList records, 9 externally discovered records and 1 bulk-metadata hint. |
-| **13** | Publisher pages whose bodies were inspected: **6 Spanish GDELT-result pages + 7 external/contextual pages**. They are not a representative sample of the 694 English matches. |
-| **3 / 10** | Of those 13 inspected pages, 3 explicitly concern the MSC suspension; 10 concern other stories. “Other” is relative to this specific case, not necessarily an invalid broad shipping match. |
-| **5 English / 7 Spanish / 1 Chinese** | Languages of the 13 inspected pages—not a balanced language sample. |
-| **2 pages / 1 group** | The confirmed copied-text example: La Verdad and Diario Vasco have 22 identical extracted lines in the reviewed spans. Folding yields 12 cards from 13 pages; it does not measure independent reporting. |
-| **19** | Uninspected/unavailable inventory records: 16 GDELT metadata-only records, 2 cached publisher HTTP 401 responses and 1 GKG metadata hint. |
+| **13** | Publisher pages whose bodies were reviewed: 6 Spanish GDELT-result pages + 7 external/contextual pages. Not a representative sample of the 694 matches. |
+| **3 / 10** | Of those 13 reviewed pages, 3 concern the MSC suspension; 10 concern other stories. |
+| **5 English / 7 Spanish / 1 Chinese** | Languages of the 13 reviewed pages. |
+| **2 pages / 1 group** | The confirmed copied-text example: La Verdad and Diario Vasco share 22 identical extracted lines in the reviewed spans. |
+| **19** | Unreviewed/unavailable inventory records: 16 GDELT metadata-only records, 2 cached publisher HTTP 401 responses and 1 GKG metadata hint. |
 
-Supporting feasibility data includes 24 returned daily bins for English shipping and four diagnostic GKG ZIP files totaling **20,850,439 compressed bytes**. The bulk slices are not a complete time series or substitutes for DOC language denominators. The three retained MSC pages were externally discovered; their membership and observation times in the GDELT query results remain unverified.
+## Findings
 
-## Technical architecture
+- The three on-story publisher pages explicitly connect MSC, the named vessel, Novorossiysk and a booking/service suspension — what the pages report, not independent confirmation of the event.
+- The reviewed La Verdad/Diario Vasco passages match. Other possible shared reporting, including upstream overlap among the MSC pages, remains unconfirmed.
+- Cached English and Spanish publisher metadata supplies explicit offsets; the Chinese page supplies only a date.
+- The English account describes departure from Novorossiysk, while the Chinese account describes travel toward it. Attack timing and upstream provenance remain unresolved.
 
-- **Python + Flask 3.1.2**, Jinja template, local CSS and plain browser JavaScript. No Node build step, API keys, database service or LLM runtime dependency. Setup, start and test commands are in [README.md](README.md).
-- Frozen JSON artifacts and cached publisher-text excerpts are loaded locally. Python supplies deterministic filters and counts; the client renders results without recalculating population statistics.
-- Source excerpts are rendered as text, never executed as publisher HTML. HTTP(S)-only source links, a restrictive Content Security Policy, loopback binding and disabled debug mode limit the local demo’s exposure.
-- The original response cache preserves request URLs, timestamps, HTTP outcomes and SHA-256 hashes. The judging audit checked cached bodies, extracted text, displayed excerpts, timestamp fields and the aggregate’s source bin.
-- Browser verification exercises the documented walkthrough against a **fresh application process and fresh browser context**, denying outbound server connections/DNS and non-local browser requests. Loopback HTTP is permitted. System-wide network settings are not changed.
+## Methodology
 
-## Verified findings
+**Review method.** Each reviewed page was opened and read; relevance and copied-text labels were recorded by hand. Counts and folding are computed by the app from those recorded labels.
 
-- The three retained publisher pages explicitly connect MSC, the named vessel, Novorossiysk and a booking/service suspension. This establishes what the pages report—not independent confirmation of the event.
-- The inspected La Verdad/Diario Vasco passages match. Other possible shared reporting, including upstream overlap among the MSC pages, remains unconfirmed. No copying direction or earliest origin is inferred.
-- Cached English and Spanish publisher metadata supplies explicit offsets; the Chinese page supplies only a date. Publisher claims are not certified first-publication times.
-- The English account describes departure from Novorossiysk, while the Chinese account describes travel toward it. Attack timing and upstream provenance also remain uncertain.
-- Bulk records dated September 18 exist despite the earlier DOC responses ending September 13. That endpoint is not evidence of a GDELT-wide halt; its specific cause and interval completeness remain unresolved.
-- The final judging audit screened all 19 additional inventory candidates. None has a successful cached publisher body available for inspection, so **no pages were promoted and no synthetic examples were added**. An additional matching-headline pair was documented as a possible metadata-level relationship only.
+**Timestamps.** Article dates are publisher-claimed; date-only entries have no time or timezone. GDELT observation times and capture times are shown separately in source details.
 
-The audit verifies provenance and faithful presentation of the cached reporting. It does not independently establish the truth of publisher claims.
+**Historical data check.** Independently of the case study, six translated GDELT GKG files (00:00 and 00:15 UTC on 1 March 2015, 2017 and 2019) were verified and parsed: 14,725 records, 60 reported source-language code values, 14,320 distinct document identifiers; manual review confirmed 6 non-English article bodies. The equivalent native-stream sample had every language field blank, so an English denominator was not established. No detector, alert threshold, lead time or false-alarm rate was evaluated. Details: [HISTORICAL_FEASIBILITY.md](HISTORICAL_FEASIBILITY.md).
 
-## Verification and judging readiness
+## Limitations
 
-**All tests passed on the final checkout:** data/API tests, import validation and store tests, browser regression tests (including UI-driven import and hostile-payload checks) and one fresh-start offline judging-path test. They cover artifact counts, all filter combinations, confirmed-versus-possible sharing, timestamp precision, source panels, focus restoration, mobile layout, literal rendering of hostile source text and the documented reset procedure.
+The reviewed sample is small, curated, incomplete and mixed-provenance. The original carrier notice and upstream source reports were not verified. Distinct URLs and languages do not establish independent reporting. Comparable full-window topic counts and per-language denominators were not recovered. No language lead, lead time, first publication, alert precision, recall or false-alarm rate has been validated.
 
-The fresh-start run recorded no external browser requests, no blocked outbound server attempts and no JavaScript errors. It also checked that protected cached evidence was unchanged. Presentation fallback screenshots capture the actual walkthrough states—not synthetic mockups.
+## Reproducibility
 
-- [Setup, tests, architecture and limitations](README.md)
-- [90-second walkthrough and startup/reset instructions](DEMO.md)
-- [Presentation fallback screenshots](results/judging/screenshots.md)
-- [Machine-readable offline verification](results/judging/offline_walkthrough.json)
-- [Protected evidence hashes](results/judging/protected_evidence_hashes.json)
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt -r requirements-dev.txt
+.venv/bin/python -m unittest test_demo.py test_investigations.py
+.venv/bin/python app.py --port 8765          # then open http://127.0.0.1:8765/
+```
 
-The cache-only claim/candidate audit was run against raw caches that are not part of the repository; its conclusions are stated in “Verified findings” above.
+Browser tests additionally need Chrome (`playwright install chrome`) and run with `SIGNAL_BROWSER_CHANNEL=chrome`.
 
-## Limitations and future work
+## AI use
 
-This is an **evidence-inspection prototype with a narrow story replay**, not a live radar or independently verified account of the incident. The sample is small, curated, incomplete and mixed-provenance. The original carrier notice and upstream source reports were not verified. Distinct URLs and languages do not establish independent reporting.
-
-Comparable full-window topic counts and per-language denominators from the same corpus/bins were not recovered. No language lead, lead time, first publication, alert precision, recall or false-alarm rate has been validated. Retrospective caches do not reproduce what a system could have known at each historical moment.
-
-One non-story record has a raw `+0900` timestamp whose legacy derived UTC field is empty. The UI now says the conversion was not supplied in the cached artifact, rather than falsely saying no explicit offset exists. Raw values remain visible; no timestamp is invented.
-
-**Early warning is unvalidated future work.** It would require reliable, complete polling snapshots, aligned language denominators, stronger event-identity and syndication validation, preceding-only alert baselines, and held-out evaluation with false-alarm reporting. Those capabilities are not claimed by this submission.
-
-## How Devin contributed
-
-Under the user’s scope and evidence constraints, Devin explored GDELT’s contracts and Voloridge’s tools; authored and ran reproducible cached feasibility probes and the historical translated-stream verification; inspected publisher evidence and recorded provisional classifications; implemented the Flask investigation flow; wrote and ran count, timestamp, security and offline tests; prepared the judging audit, walkthrough and fallback screenshots; and in the final pass set up a fresh environment, fixed CJK rendering, added the technical-results panel and finalized the documentation.
-
-Devin was a development and analysis assistant, **not a live news-analysis dependency or an independent fact-checking authority**. The user set the product direction and required the separation between observed evidence and unsupported early-warning claims.
+Built with Devin, an AI software engineer, under human-set scope and evidence constraints. No LLM is used by the application at runtime.

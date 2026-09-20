@@ -208,7 +208,7 @@ def object_bin(key):
 
 
 def preserve_demo():
-    paths = ['app.py', 'demo_data.py', 'templates/index.html', 'static/app.js', 'static/app.css', 'requirements.txt', 'requirements-dev.txt', 'DEMO.md', 'SUBMISSION.md', 'results/msc_validation/evidence_table.json', 'results/msc_validation/timeline_data.json', 'results/raw_candidates.json']
+    paths = ['app.py', 'demo_data.py', 'investigations.py', 'templates/home.html', 'templates/investigation.html', 'templates/schema.html', 'static/app.js', 'static/home.js', 'static/app.css', 'requirements.txt', 'requirements-dev.txt', 'SUBMISSION.md', 'results/msc_validation/evidence_table.json', 'results/msc_validation/timeline_data.json', 'results/raw_candidates.json']
     paths += [str(p.relative_to(ROOT)) for p in sorted((ROOT / 'results/pages').glob('*.txt'))]
     hashes = {name: sha(ROOT / name) for name in paths}
     path = BASE / 'preserved_demo_hashes.json'
