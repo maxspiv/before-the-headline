@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Signal / Noise — {{ inv.title }}</title>
+<title>{{ inv.title }} — Before the Headline</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
 </head>
 <body data-investigation-id="{{ inv.id }}" data-story-label="{{ inv.story_label }}">
@@ -11,16 +11,14 @@
   <div class="header-inner">
     <div class="brand">
       <a class="wordmark brand-link" href="/">← Investigations</a>
-      <span class="wordmark">Signal / Noise</span>
-      <span class="tagline">Before the Headline · Evidence lab</span>
+      <span class="wordmark">Before the Headline</span>
     </div>
     <div class="header-right">
-      <span class="cache-pill">Local · cached data only</span>
       <span class="coverage-warning">{{ inv.coverage_status }}</span>
       <nav class="site-nav">
-        <a href="#inspect">Inspect</a>
-        <a href="#replay">Replay</a>
-        <a href="#unresolved">Unresolved</a>
+        <a href="#articles">Articles</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#notes">Notes</a>
       </nav>
     </div>
   </div>
@@ -28,58 +26,55 @@
 
 <main>
   <section class="hero">
-    <p class="kicker">{{ inv.kicker }}</p>
+    <p class="kicker">{{ inv.topic }} · {{ 'Bundled' if inv.origin == 'bundled' else 'Imported' }} · {{ inv.summary.inventory_total }} articles</p>
     <h1>{{ inv.title }}</h1>
     <p class="hero-copy">{{ inv.description }}</p>
-    <p><a class="cta" id="begin-investigation" href="#inspect">Begin investigation</a></p>
+    <p class="collection-note">{{ inv.classification_note }}</p>
     {% if inv.aggregate_context %}
     <aside class="aggregate-block" id="aggregate-block">
-      <p class="aggregate-copy"><strong>Broad-query context, not sample size.</strong> <span id="aggregate-count">—</span> aggregate matches.</p>
+      <p class="aggregate-copy"><strong>Query context</strong></p>
+      <p class="aggregate-copy"><strong>{{ inv.aggregate_context.count }}</strong> {{ inv.aggregate_context.language }} matches · {{ inv.aggregate_context.source }} · {{ inv.aggregate_context.date }}</p>
       <p class="aggregate-copy">{{ inv.aggregate_context.meaning }}</p>
-      <p class="aggregate-meta" id="aggregate-meta">{{ inv.aggregate_context.source }}
-      · {{ inv.aggregate_context.language }} · {{ inv.aggregate_context.date }}</p>
     </aside>
     {% endif %}
   </section>
 
-  <section id="inspect" class="panel">
+  <section id="articles" class="panel">
     <div class="section-head">
-      <p class="section-number">01</p>
-      <h2>Inspect the matches</h2>
+      <h2>Articles</h2>
     </div>
     <p class="section-note" id="scope-notice"></p>
-    <p class="control-note">Entire inspected set · before browser filters</p>
     <div class="summary-counters" id="summary-counters" aria-live="polite"></div>
-    <p class="control-note" id="classification-note">{{ inv.classification_note }}{% if inv.origin == 'imported' %} {{ inv.persistence_note }}{% endif %}</p>
 
     <form class="controls" id="filter-controls">
-      <label class="control"><input type="checkbox" id="show-unrelated" checked>
-        <span>Show other stories</span></label>
-      <label class="control"><input type="checkbox" id="show-possible" checked>
-        <span>Show possible shared reporting</span></label>
-      <label class="control"><input type="checkbox" id="fold-confirmed">
-        <span>Fold confirmed copied text</span></label>
-      <label class="control"><input type="checkbox" id="include-uninspected">
-        <span>Include uninspected inventory</span></label>
+      <fieldset>
+        <legend>Filters</legend>
+        <label class="control"><input type="checkbox" id="show-unrelated" checked>
+          <span>Other stories</span></label>
+        <label class="control"><input type="checkbox" id="show-possible" checked>
+          <span>Possible shared reporting</span></label>
+        <label class="control"><input type="checkbox" id="fold-confirmed">
+          <span>Fold copied text</span></label>
+        <label class="control"><input type="checkbox" id="include-uninspected">
+          <span>Unreviewed inventory</span></label>
+      </fieldset>
       <div class="control-buttons">
-        <button type="button" id="focus-story">Focus on {{ inv.story_label }}</button>
-        <button type="button" id="reset-filters">Reset filters</button>
+        <button type="button" id="focus-story">On story only</button>
+        <button type="button" id="reset-filters">Reset</button>
       </div>
     </form>
-    <p class="control-note">Confirmed copied text means matching inspected passages. Possible shared reporting is unconfirmed. Folding counts cards, not independent stories.</p>
+    <p class="control-note">Copied text: matching passages found in review. Shared reporting: similar coverage, unconfirmed. Folding merges cards, not stories.</p>
     <p id="result-count" aria-live="polite"></p>
     <div id="evidence-status" class="status-line" role="status"></div>
-    <p><button type="button" id="retry-evidence" class="hidden">Retry loading evidence</button></p>
+    <p><button type="button" id="retry-evidence" class="hidden">Retry</button></p>
     <div id="evidence-cards" class="card-grid"></div>
   </section>
 
-  <section id="replay" class="panel">
+  <section id="timeline" class="panel">
     <div class="section-head">
-      <p class="section-number">02</p>
-      <h2>Replay the story</h2>
+      <h2>Timeline</h2>
     </div>
-    <p class="section-note">Publisher-claimed calendar dates; date-only
-    observations are not ordered within a day.</p>
+    <p class="section-note">Publisher-claimed dates. Date-only entries are not ordered within a day.</p>
     <p class="section-note" id="replay-scope"></p>
     <div class="day-buttons" id="day-buttons" role="group"
          aria-label="Select publisher-claimed day">
@@ -90,18 +85,17 @@
     <p class="section-note" id="replay-empty-note"></p>
   </section>
 
-  <section id="unresolved" class="panel">
+  <section id="notes" class="panel">
     <div class="section-head">
-      <p class="section-number">03</p>
-      <h2>What remains unresolved</h2>
+      <h2>Notes</h2>
     </div>
     <div id="uncertainty-cards" class="card-grid uncertainty-grid"></div>
   </section>
 </main>
 
 <footer class="site-footer">
-  <p>Evidence-inspection prototype · Story replay only. Early warning is unvalidated future work. No first-publication or cross-language lead claim is made.</p>
-  <details class="provenance"><summary>Artifact provenance</summary>
+  <p>Before the Headline · Runs locally on cached data.</p>
+  <details class="provenance"><summary>Artifact hashes</summary>
     <dl id="artifact-hashes"></dl>
   </details>
 </footer>
@@ -109,35 +103,35 @@
 <dialog id="source-dialog" class="source-dialog" aria-labelledby="source-title">
   <div class="dialog-inner">
     <div class="dialog-head">
-      <span class="coverage-warning">{{ inv.coverage_status }}</span>
-      <button type="button" id="dialog-close" aria-label="Close source panel">Close</button>
+      <span class="dialog-label">Source details</span>
+      <button type="button" id="dialog-close">Close</button>
     </div>
     <h3 id="source-title"></h3>
     <p id="source-meta" class="dialog-meta"></p>
     <div class="claim-panel" id="source-claim"></div>
     <p><a id="source-external-link" target="_blank"
-          rel="noopener noreferrer">Open original page (requires internet)</a>
+          rel="noopener noreferrer">Open original page</a>
        <span id="source-url-text" class="caption"></span></p>
     <div class="dialog-section">
-      <h4>Cached excerpt</h4>
+      <h4>Excerpt</h4>
       <p id="source-excerpt-caption" class="caption"></p>
       <blockquote id="source-excerpt"></blockquote>
     </div>
     <div class="dialog-section">
-      <h4>Relevance and scope</h4>
+      <h4>Relevance</h4>
       <p id="source-scope"></p>
     </div>
     <div class="dialog-section">
-      <h4>Duplication assessment</h4>
+      <h4>Duplication</h4>
       <p id="source-syndication"></p>
       <div id="source-group-members"></div>
     </div>
     <div class="dialog-section">
-      <h4>Reported event timestamps and uncertainty</h4>
+      <h4>Reported event times</h4>
       <p id="source-event-times"></p>
     </div>
     <details class="dialog-section" id="timestamp-details">
-      <summary>All publisher-embedded timestamps</summary>
+      <summary>Publisher timestamps</summary>
       <table id="source-timestamps">
         <thead><tr><th>Field</th><th>Value</th><th>UTC conversion (cached)</th>
           <th>Meaning / location</th></tr></thead>
@@ -145,13 +139,13 @@
       </table>
     </details>
     <div class="dialog-section">
-      <h4>Observation vs capture</h4>
+      <h4>Observation and capture</h4>
       <p id="source-seendate"></p>
       <p id="source-retrieved"></p>
       <p id="source-gkg"></p>
     </div>
     <div class="dialog-section" id="source-uncertainty-section">
-      <h4>Open uncertainties for this source</h4>
+      <h4>Notes</h4>
       <ul id="source-uncertainties"></ul>
     </div>
   </div>

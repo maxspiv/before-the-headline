@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import subprocess
 from pathlib import Path
 
 from flask import Flask, Response, abort, jsonify, render_template, request
@@ -11,8 +12,18 @@ from investigations import (InvestigationImportError, Store, import_template,
                             DEFAULT_DATA_DIR, MAX_BODY_BYTES)
 
 ROOT = Path(__file__).resolve().parent
-PERSISTENCE_NOTE = ('Imported investigations are stored as JSON files on this '
-                    'machine only. Nothing is uploaded.')
+PERSISTENCE_NOTE = ('Imported investigations are saved as JSON files in the '
+                    'directory above on this computer.')
+
+
+def _commit():
+    try:
+        return subprocess.run(
+            ['git', 'rev-parse', '--short', 'HEAD'],
+            cwd=Path(__file__).parent, capture_output=True, text=True,
+            check=True, timeout=5).stdout.strip() or 'unknown'
+    except (OSError, subprocess.SubprocessError):
+        return 'unknown'
 
 
 def create_app(data_dir=None, store=None):
@@ -64,6 +75,7 @@ def create_app(data_dir=None, store=None):
     @app.get('/healthz')
     def health():
         return jsonify(status='ok', mode='cached-offline',
+                       product='Before the Headline', commit=_commit(),
                        investigations=len(store.list()))
 
     @app.get('/api/investigations')

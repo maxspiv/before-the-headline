@@ -129,8 +129,8 @@ class DemoWebTests(unittest.TestCase):
                 finally:
                     response.close()
         root = self.client.get('/').get_data(as_text=True)
-        self.assertIn('Signal', root)
-        self.assertIn('Incomplete observed coverage', root)
+        self.assertIn('Before the Headline', root)
+        self.assertIn('Incomplete coverage', root)
         self.assertNotIn('https://fonts.', root)
         self.assertNotIn('unpkg.com', root)
         self.assertNotIn('cdn.jsdelivr', root)

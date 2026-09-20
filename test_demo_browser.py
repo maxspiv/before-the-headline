@@ -52,7 +52,7 @@ class DemoBrowserTests(unittest.TestCase):
     def open_demo(self):
         self.page.goto(BASE + SHIPPING, wait_until='networkidle')
         expect(self.page.locator('#evidence-cards .evidence-card')).to_have_count(13)
-        expect(self.page.get_by_text('Incomplete observed coverage', exact=True).first).to_be_visible()
+        expect(self.page.get_by_text('Incomplete coverage', exact=True).first).to_be_visible()
 
     def assert_cards(self, count):
         expect(self.page.locator('#evidence-cards .evidence-card')).to_have_count(count)
@@ -66,8 +66,8 @@ class DemoBrowserTests(unittest.TestCase):
         self.assert_cards(3)
         self.page.locator('#show-possible').uncheck()
         self.assert_cards(0)
-        expect(self.page.get_by_role('button', name='Reset filters', exact=True).first).to_be_visible()
-        self.page.get_by_role('button', name='Reset filters', exact=True).first.click()
+        expect(self.page.get_by_role('button', name='Reset', exact=True).first).to_be_visible()
+        self.page.get_by_role('button', name='Reset', exact=True).first.click()
         self.assert_cards(13)
         self.page.locator('#include-uninspected').check()
         self.assert_cards(32)
@@ -77,7 +77,7 @@ class DemoBrowserTests(unittest.TestCase):
         self.assert_cards(26)
         self.page.locator('#show-unrelated').uncheck()
         self.assert_cards(17)
-        self.page.get_by_role('button', name='Reset filters', exact=True).first.click()
+        self.page.get_by_role('button', name='Reset', exact=True).first.click()
         self.assert_cards(13)
 
     def test_replay_precision_and_source_provenance(self):
@@ -96,7 +96,7 @@ class DemoBrowserTests(unittest.TestCase):
         expect(self.page.locator('#source-title')).to_contain_text('MSC')
         expect(self.page.locator('#source-excerpt')).to_contain_text('驶往新罗西斯克港')
         expect(dialog).to_contain_text(re.compile('time.*timezone.*unknown', re.I))
-        expect(dialog.get_by_text('Incomplete observed coverage', exact=True)).to_be_visible()
+        expect(dialog.get_by_text('Source details', exact=True)).to_be_visible()
         link = self.page.locator('#source-external-link')
         self.assertEqual(link.get_attribute('href'), 'https://www.jctrans.com/cn/news/14074/')
         self.assertEqual(link.get_attribute('target'), '_blank')
@@ -241,7 +241,7 @@ class ImportBrowserTests(unittest.TestCase):
 
     def import_via_ui(self, payload):
         self.page.locator('#import-text').fill(payload)
-        self.page.get_by_role('button', name='Validate and import').click()
+        self.page.get_by_role('button', name='Import', exact=True).click()
 
     def test_import_synthetic_via_home_ui(self):
         self.open_home()
@@ -266,13 +266,13 @@ class ImportBrowserTests(unittest.TestCase):
         day.click()
         syn_b = self.page.locator('[data-replay-source="syn-b"]')
         expect(syn_b).to_contain_text('date only; time and timezone unknown')
-        self.page.get_by_role('button', name='Reset filters', exact=True).first.click()
+        self.page.get_by_role('button', name='Reset', exact=True).first.click()
         self.page.locator('#include-uninspected').check()
         self.page.locator('#evidence-cards [data-source-id="syn-e"]').first.click()
         dialog = self.page.locator('#source-dialog')
         expect(dialog).to_be_visible()
-        expect(dialog).to_contain_text('External link unavailable')
-        expect(dialog).to_contain_text('No reviewed excerpt')
+        expect(dialog).to_contain_text('No link available')
+        expect(dialog).to_contain_text('No excerpt available.')
         link = self.page.locator('#source-external-link')
         self.assertIn(link.get_attribute('href'), (None, ''))
         self.page.keyboard.press('Escape')

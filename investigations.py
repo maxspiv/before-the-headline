@@ -41,17 +41,12 @@ DUPLICATE_STATUSES = ('confirmed', 'possible', 'unassessed')
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 
 DEFAULT_DATE_AXIS_MEANING = (
-    'Publisher-claimed calendar dates supplied with the import, '
-    'not observation or first publication.')
+    'Publisher-claimed dates supplied with the import.')
 DEFAULT_EMPTY_INTERVAL_MEANING = (
-    'unavailable/unsearched observations, not zero coverage')
-IMPORT_EXCERPT_MEANING = (
-    'Excerpt text supplied by the import file; not extracted or verified '
-    'by this app.')
+    'unsearched or unavailable observations')
+IMPORT_EXCERPT_MEANING = 'Supplied with the import file.'
 IMPORTED_SCOPE_NOTICE = (
-    'This investigation was imported from a user-supplied JSON file. '
-    'Relevance labels and excerpts are exactly as supplied; nothing was '
-    'inspected or verified by this app.')
+    'Imported collection. Labels and excerpts are as supplied in the file.')
 
 
 class InvestigationImportError(ValueError):
@@ -421,7 +416,7 @@ def validate_import(obj):
         'id': obj['id'], 'title': title, 'topic': topic,
         'description': description,
         'story_label': story_label or 'the story',
-        'coverage_status': coverage or 'Incomplete observed coverage',
+        'coverage_status': coverage or 'Incomplete coverage',
         'kicker': kicker or 'Imported investigation',
         'aggregate_context': aggregate,
         'articles': articles,
@@ -450,9 +445,9 @@ def build_investigation(normalized, origin, imported_at,
     for article in normalized['articles']:
         relevance = article['relevance']
         category_label = {
-            'related': 'Matches ' + story_label,
+            'related': 'On story',
             'unrelated': 'Other story',
-            'uncertain': 'Unresolved / uninspected',
+            'uncertain': 'Unresolved',
         }[relevance]
         confirmed = article['duplicate_status'] == 'confirmed'
         possible = article['duplicate_status'] == 'possible'
@@ -577,8 +572,8 @@ def build_investigation(normalized, origin, imported_at,
             'Relevance and copied-text labels are recorded, agent-assisted '
             'inspections from this project. Counts and folding are computed '
             'by the app.' if origin == 'bundled' else
-            'Relevance and copied-text labels were supplied with the import '
-            'file and are not verified by this app. Counts and folding are '
+            'Relevance and copied-text labels come from the imported file '
+            'and were not checked by this app. Counts and folding are '
             'computed by the app.'),
         'persistence_note': (
             'Bundled with the app; cannot be removed.'
@@ -723,7 +718,7 @@ def import_template():
         'uncertainties': [
             {'id': 'example-uncertainty',
              'title': 'Example open question',
-             'detail': 'What remains unresolved and why.',
+             'detail': 'What is still open and why.',
              'source_ids': ['example-a', 'example-b']},
         ],
     }

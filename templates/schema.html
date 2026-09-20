@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Signal / Noise — Import schema</title>
+<title>Import format — Before the Headline</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
 </head>
 <body>
@@ -11,15 +11,14 @@
   <div class="header-inner">
     <div class="brand">
       <a class="wordmark brand-link" href="/">← Investigations</a>
-      <span class="wordmark">Signal / Noise</span>
-      <span class="tagline">Before the Headline · Evidence lab</span>
+      <span class="wordmark">Before the Headline</span>
     </div>
-    <div class="header-right"><span class="cache-pill">Local · cached data only</span></div>
+    <div class="header-right"></div>
   </div>
 </header>
 <main>
   <section class="panel">
-    <div class="section-head"><p class="section-number">i</p><h2>Investigation import schema (version 1)</h2></div>
+    <div class="section-head"><h2>Import format (version 1)</h2></div>
     <p class="section-note">A self-contained JSON document describing an investigation: its articles, relevance labels, optional replay timeline and open uncertainties. Download a working example from <a href="/api/import/template">the template endpoint</a> (<code>GET /api/import/template</code>), then POST it to <code>POST /api/investigations/import</code> with <code>Content-Type: application/json</code>. Request bodies are limited to 1 MiB.</p>
 
     <div class="dialog-section">
