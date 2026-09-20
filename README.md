@@ -99,4 +99,4 @@ SIGNAL_BROWSER_CHANNEL=chrome .venv/bin/python -m unittest -v test_judging.py   
 
 ## Acknowledgments
 
-Built for HackMIT 2026 (Voloridge "Signal in the Noise" challenge) with [Devin](https://devin.ai), which wrote much of the code, tests and documentation and carried out the agent-assisted page review under human direction. Uses Flask, Jinja, GDELT data, and Playwright with Chrome for browser tests. The app itself uses no LLM or external service at runtime.
+Built for HackMIT 2026 (Voloridge "Signal in the Noise" challenge) with [Devin](https://devin.ai), which contributed to code, tests, and documentation under human direction. Uses Flask, Jinja, GDELT data, and Playwright with Chrome for browser tests. The app itself uses no LLM or external service at runtime.
