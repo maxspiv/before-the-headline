@@ -2,6 +2,12 @@
 
 These are actual screenshots from the fresh offline walkthrough, not synthetic examples. Follow in order while reading DEMO.md.
 
+## 00-investigations-home.png
+
+Investigations home: bundled shipping case, search box and JSON import panel.
+
+![Investigations home: bundled shipping case, search box and JSON import panel.](00-investigations-home.png)
+
 ## 01-opening.png
 
 694 aggregate matches are separate context, not the inspected sample size.
@@ -43,3 +49,9 @@ Cached source excerpt, date-only precision, provenance and unresolved direction 
 Route conflict, attack-time uncertainty, possible common upstream reporting and incomplete coverage remain unresolved.
 
 ![Route conflict, attack-time uncertainty, possible common upstream reporting and incomplete coverage remain unresolved.](07-unresolved.png)
+
+## 08-import-flow.png
+
+Synthetic investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.
+
+![Synthetic investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.](08-import-flow.png)

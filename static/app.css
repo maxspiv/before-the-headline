@@ -319,3 +319,28 @@ button:hover { background: var(--lime); }
   .control-buttons { margin-left: 0; }
   main { padding: 0 14px; }
 }
+
+.brand-link { color: var(--ivory); text-decoration: none; margin-right: 12px; font-size: 16px; }
+.brand-link:hover { color: var(--lime); }
+.search-control { display: flex; flex-direction: column; gap: 6px; max-width: 520px; }
+.search-control input[type="search"] {
+  font-family: var(--sans); font-size: 15px; padding: 9px 12px;
+  border: 1px solid var(--forest); border-radius: 6px; background: var(--card);
+  color: var(--forest);
+}
+.card-actions { display: flex; gap: 10px; align-items: center; margin-top: auto; }
+.remove-btn { border-color: var(--rust); color: var(--rust); }
+.remove-btn:hover { background: #f4e3d6; }
+.import-panel textarea {
+  width: 100%; max-width: 720px; font-family: monospace; font-size: 13px;
+  padding: 10px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--card); color: var(--forest);
+}
+.import-paste { display: flex; flex-direction: column; gap: 6px; }
+.import-errors { color: var(--rust); font-size: 13px; }
+#import-result a { color: var(--rust); font-weight: 600; }
+.dialog-section table { border-collapse: collapse; width: 100%; font-size: 13px; }
+.dialog-section th, .dialog-section td {
+  border: 1px solid var(--line); padding: 6px 10px; text-align: left;
+  vertical-align: top;
+}

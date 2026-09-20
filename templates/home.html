@@ -15,6 +15,10 @@
     </div>
     <div class="header-right">
       <span class="cache-pill">Local · cached data only</span>
+      <nav class="site-nav">
+        <a href="#import">Import</a>
+        <a href="/import/schema">Schema</a>
+      </nav>
     </div>
   </div>
 </header>
@@ -23,30 +27,101 @@
   <section class="hero">
     <p class="kicker">A HackMIT 2026 evidence desk</p>
     <h1>Investigations</h1>
-    <p class="hero-copy">Each investigation is a cached, inspectable set of pages. Open one to inspect matches and replay the story.</p>
+    <p class="hero-copy">Each investigation is a cached, inspectable set of pages. Open one to inspect matches and replay the story, or import your own JSON file.</p>
   </section>
 
-  <section class="panel">
-    <div class="card-grid">
+  <section class="panel" id="investigation-list">
+    <div class="section-head">
+      <p class="section-number">01</p>
+      <h2>Saved investigations</h2>
+    </div>
+    <p><label class="control search-control" for="investigation-search">
+      <span>Filter saved investigations (does not search news)</span>
+      <input type="search" id="investigation-search" autocomplete="off">
+    </label></p>
+    <p id="home-status" class="status-line" role="status"></p>
+    <div id="investigation-cards" class="card-grid" aria-live="polite">
       {% for inv in investigations %}
-      <article class="evidence-card">
+      <article class="evidence-card investigation-card" data-investigation-id="{{ inv.id }}"
+               data-search="{{ (inv.title ~ ' ' ~ inv.topic ~ ' ' ~ inv.id)|lower }}">
         <p class="card-title">{{ inv.title }}</p>
         <p class="card-meta">{{ inv.topic }}</p>
         <div class="badges">
           <span class="badge uncertain">{{ inv.coverage_status }}</span>
           <span class="badge unrelated">{{ 'Bundled' if inv.origin == 'bundled' else 'Imported' }}</span>
         </div>
-        <p class="card-meta">{{ inv.inspected_count }} inspected pages · {{ inv.article_count }} inventory records</p>
-        <a class="cta" href="/investigations/{{ inv.id }}">Open</a>
+        <p class="card-meta">{{ inv.inspected_count }} inspected pages · {{ inv.article_count }} inventory records · {{ inv.related_count }} story-related{% if inv.imported_at %} · imported {{ inv.imported_at[:10] }}{% endif %}</p>
+        <div class="card-actions">
+          <a class="cta" href="/investigations/{{ inv.id }}">Open</a>
+          {% if inv.origin == 'imported' %}
+          <button type="button" class="remove-btn" data-remove="{{ inv.id }}">Remove</button>
+          {% endif %}
+        </div>
       </article>
       {% endfor %}
     </div>
-    <p class="control-note">{{ persistence_note }} Directory: {{ persistence_directory }}</p>
+    <div id="search-empty" class="empty-state hidden">No saved investigations match that filter.</div>
+    <p class="control-note">{{ persistence_note }} Directory: <code>{{ persistence_directory }}</code></p>
+  </section>
+
+  <section class="panel" id="import">
+    <div class="section-head">
+      <p class="section-number">02</p>
+      <h2>Import an investigation</h2>
+    </div>
+    <p class="section-note">Import a JSON file matching the
+      <a href="/import/schema">import schema</a> (or start from the
+      <a href="/api/import/template">template</a>). Files are validated, then stored as
+      JSON on this machine only — nothing is uploaded, and imported URLs are never fetched.</p>
+    <div class="import-panel">
+      <p><input type="file" id="import-file" accept=".json,application/json"></p>
+      <p><label class="control import-paste" for="import-text"><span>Or paste investigation JSON</span>
+        <textarea id="import-text" rows="10" spellcheck="false"
+                  placeholder='{"schema_version": 1, ...}'></textarea></label></p>
+      <p><button type="button" id="import-submit">Validate and import</button></p>
+      <div id="import-result" role="status"></div>
+      <ul id="import-errors" class="import-errors"></ul>
+    </div>
+  </section>
+
+  <section id="technical-results" class="panel technical-results">
+    <details>
+      <summary>
+        <span class="section-number">04</span>
+        <span class="details-title">Technical results — separate historical multilingual experiment</span>
+        <span class="details-hint">Optional · separate from every investigation above · feasibility, not validated detection</span>
+      </summary>
+      <p class="section-note">A bounded check of whether GDELT's separate <em>translated</em> GKG stream carries usable historical source-language labels. It is independent of every investigation on this page and did not build or evaluate a detector.</p>
+      <div class="summary-counters">
+        <div class="counter"><strong>6</strong>translated GKG files verified</div>
+        <div class="counter"><strong>14,725</strong>GKG records</div>
+        <div class="counter"><strong>60</strong>reported source-language code values</div>
+        <div class="counter"><strong>14,320</strong>distinct typed document identifiers</div>
+        <div class="counter"><strong>6</strong>non-English article bodies confirmed by manual review</div>
+      </div>
+      <div class="card-grid results-grid">
+        <article class="evidence-card">
+          <p class="card-title">What was established</p>
+          <p class="card-meta">Six translated GKG ZIPs for 00:00 and 00:15 UTC on 1 March 2015, 2017 and 2019 returned HTTP 200 and matched manifest sizes and MD5s. Every record carried an explicit <code>srclc</code> source-language code and a translated-record marker. Codes are retained as supplied; 60 code values are not a validated census of 60 languages.</p>
+        </article>
+        <article class="evidence-card">
+          <p class="card-title">Article-body language check</p>
+          <p class="card-meta">A frozen, topic-independent sample of 96 URLs (72 native, 24 translated) was fetched with caching and robots checks. 49 returned HTTP success; 35 diagnostic body-language candidates remained after review. Manual inspection supported six substantial non-English bodies: Russian, Arabic, Finnish, Ukrainian, Spanish and French. Current pages are not guaranteed to match 2015–2019 text.</p>
+        </article>
+        <article class="evidence-card">
+          <p class="card-title">What is not established</p>
+          <p class="card-meta">The native GKG sample (15,339 records) had every language field blank; blank is unknown, not English, so a comparable English denominator remains unvalidated. No 28-day corpus was downloaded (the listed compressed GKG window exceeds 50 GB). No detector, alert threshold, lead time or held-out false-alarm rate was evaluated — these are not evaluated, not zero.</p>
+        </article>
+      </div>
+      <p class="control-note">Details, evidence paths and the recommended next experiment: HISTORICAL_FEASIBILITY.md in the repository. The raw historical caches are not part of this checkout.</p>
+    </details>
   </section>
 </main>
 
 <footer class="site-footer">
-  <p>Evidence-inspection prototype · Story replay only. Early warning is unvalidated future work.</p>
+  <p>Evidence-inspection prototype · Story replay only. Early warning is unvalidated future work. No first-publication or cross-language lead claim is made.</p>
 </footer>
+
+<script src="{{ url_for('static', filename='home.js') }}"></script>
 </body>
 </html>

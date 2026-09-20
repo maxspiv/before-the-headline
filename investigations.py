@@ -5,6 +5,8 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
+from demo_data import safe_external_url
+
 ROOT = Path(__file__).resolve().parent
 log = logging.getLogger(__name__)
 
@@ -211,7 +213,6 @@ def _validate_articles(errors, raw_articles):
                 errors.append('%s.url: must be a string' % path)
             else:
                 _check_len(errors, path + '.url', url, LIMITS['url'])
-                from demo_data import safe_external_url
                 if safe_external_url(url) is None:
                     errors.append('%s.url: invalid or unsafe URL scheme; '
                                   'only http(s) URLs are accepted' % path)
@@ -480,7 +481,6 @@ def build_investigation(normalized, origin, imported_at,
             excerpt = {'text': text, 'truncated': truncated,
                        'source_file': None, 'range_label': None,
                        'meaning': IMPORT_EXCERPT_MEANING}
-        from demo_data import safe_external_url
         url = article.get('url')
         records.append({
             'id': article['id'],

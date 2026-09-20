@@ -179,6 +179,12 @@ class ApiTests(unittest.TestCase):
                                content_type='application/json')
         self.assertEqual(res.status_code, 413)
 
+    def test_schema_page_documents_every_field(self):
+        from investigations import ARTICLE_KEYS, TOP_LEVEL_KEYS
+        html = self.client.get('/import/schema').get_data(as_text=True)
+        for key in TOP_LEVEL_KEYS | ARTICLE_KEYS:
+            self.assertIn('<code>%s</code>' % key, html, key)
+
     def test_template_endpoint_serves_attachment(self):
         res = self.client.get('/api/import/template')
         self.assertEqual(res.status_code, 200)

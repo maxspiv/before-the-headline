@@ -12,7 +12,7 @@ For Voloridge’s “Signal in the Noise” challenge, we built a small, reprodu
 
 ## Implemented approach
 
-The local demo follows one complete investigation around the **reported MSC Ulsan III / Novorossiysk booking suspension**:
+The local app is a **reusable investigation workspace**: an investigations home lists saved cases (bundled or imported), and each opens in the same inspection/replay/unresolved workspace. The bundled case study — the **reported MSC Ulsan III / Novorossiysk booking suspension** — ships as data:
 
 1. Show a broad shipping-query aggregate as context, explicitly separate from the inspected sample.
 2. Browse cached pages with publisher, language, discovery provenance and recorded relevance labels.
@@ -22,7 +22,9 @@ The local demo follows one complete investigation around the **reported MSC Ulsa
 
 The relevance and text-sharing judgments are recorded, agent-assisted inspections of this case—not an automatic multilingual event classifier. No live LLM is used by the application.
 
-An optional, collapsed **Technical results** panel (outside the demo path) summarises the separate historical experiment described below.
+New investigations can be **imported as JSON** from the home page (schema at `/import/schema`, template at `/api/import/template`, 1 MiB limit, all validation errors reported at once). Imports persist as JSON files under `local_investigations/` (`SIGNAL_DATA_DIR` overrides). Imported labels are marked **supplied** rather than recorded and are not verified; imported URLs are stored but never fetched; there is no live search, scraping or detection. Bundled cases cannot be deleted; imported ones can be removed from the home page.
+
+An optional, collapsed **Technical results** panel on the home page (outside the demo path) summarises the separate historical experiment described below.
 
 ## Separate historical experiment: multilingual data feasibility
 
@@ -68,7 +70,7 @@ The audit verifies provenance and faithful presentation of the cached reporting.
 
 ## Verification and judging readiness
 
-**17 tests passed on the final checkout:** 10 data/API tests, 6 browser regression tests and one fresh-start offline judging-path test. They cover artifact counts, all filter combinations, confirmed-versus-possible sharing, timestamp precision, source panels, focus restoration, mobile layout, literal rendering of hostile source text and the documented reset procedure.
+**All tests passed on the final checkout:** data/API tests, import validation and store tests, browser regression tests (including UI-driven import and hostile-payload checks) and one fresh-start offline judging-path test. They cover artifact counts, all filter combinations, confirmed-versus-possible sharing, timestamp precision, source panels, focus restoration, mobile layout, literal rendering of hostile source text and the documented reset procedure.
 
 The fresh-start run recorded no external browser requests, no blocked outbound server attempts and no JavaScript errors. It also checked that protected cached evidence was unchanged. Presentation fallback screenshots capture the actual walkthrough states—not synthetic mockups.
 

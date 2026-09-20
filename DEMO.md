@@ -29,7 +29,7 @@ From the project root:
 .venv/bin/python app.py
 ```
 
-Open **http://127.0.0.1:8765/**. Keep the terminal running; stop with Ctrl-C. The server binds only to loopback and disables debugging/reload.
+Open **http://127.0.0.1:8765/** — the investigations home. Keep the terminal running; stop with Ctrl-C. The server binds only to loopback and disables debugging/reload. Imported investigations are stored under `local_investigations/` (set `SIGNAL_DATA_DIR` to redirect, e.g. for a throwaway demo).
 
 If that port is already serving the demo, use the existing instance. For a separate fresh instance without disturbing it:
 
@@ -52,7 +52,7 @@ Keep the provided `results/` artifacts and page-text files with the app. No Node
 
 1. Press **Escape** if a source panel is open.
 2. Use **Inspect** in the header, then **Reset filters**. Confirm **13 cards**, other stories and possible sharing checked, copied-text folding and uninspected inventory unchecked.
-3. Use **Replay**, then **All observed pages**. Confirm **3 retained pages**. Reset filters affects the evidence browser only; this separate step resets the replay.
+3. Use **Replay**, then **All days**. Confirm **3 retained pages**. Reset filters affects the evidence browser only; this separate step resets the replay.
 4. Scroll to the opening screen. The **Begin investigation** action should be visible. Do not use the browser Back button as a reset procedure.
 
 This exact reset is covered by the fresh-start judging test. The app does not persist user selections in local storage or a server session.
@@ -63,7 +63,8 @@ Use the short narration below, not every detail in the source panel. The sample 
 
 | Time | Action | Narration |
 |---|---|---|
-| **0:00–0:15** | Show the opening screen and separate aggregate context. | “Signal / Noise helps inspect a news spike. GDELT counted 694 English shipping matches on this day. That is separate from our inspected sample—we have not established the spike’s cause.” |
+| **0:00–0:08** | Show the investigations home: the bundled shipping case, the saved-investigation filter (not a news search) and the import panel. | “The workspace is reusable — this shipping case is bundled data; you can also import your own investigation as JSON.” |
+| **0:08–0:15** | Click **Open** on the bundled card. Show the opening screen and separate aggregate context. | “Signal / Noise helps inspect a news spike. GDELT counted 694 English shipping matches on this day. That is separate from our inspected sample—we have not established the spike’s cause.” |
 | **0:15–0:30** | Click **Begin investigation**. Point to the sample counters and source-provenance labels. | “Here are 13 inspected pages: six Spanish GDELT-result pages and seven external or contextual pages. Three concern the MSC suspension; ten concern other stories. The sample is curated, not representative.” |
 | **0:30–0:47** | Turn on **Fold confirmed copied text**: 13 → 12 cards. Turn off **Show other stories**: 3 cards. Briefly turn off **Show possible shared reporting**: 0 cards; restore it: 3. | “These two pages contain matching passages. Folding shows twelve cards. Hiding other stories leaves three MSC pages. Possible upstream sharing is not confirmed copying. Excluding it hides all three, so we keep that uncertainty visible.” |
 | **0:47–1:00** | Use **Replay**. Show all 3 retained pages, then select **1 Sep** to show its 2 dated pages. | “Replay uses publisher-claimed dates, not first publication. The Chinese page has a date but no verified hour or timezone. We don’t invent one.” |
@@ -82,6 +83,7 @@ The cache-only audit screened all **19 remaining inventory candidates**. Sixteen
 
 [Open the screenshot sequence](results/judging/screenshots.md). These are actual viewport captures from the fresh offline demo path:
 
+0. [Investigations home](results/judging/00-investigations-home.png)
 1. [Opening / aggregate context](results/judging/01-opening.png)
 2. [13-page inspected sample](results/judging/02-inspected-sample.png)
 3. [Confirmed copied-text fold / 12 cards](results/judging/03-confirmed-copy-fold.png)
@@ -89,7 +91,8 @@ The cache-only audit screened all **19 remaining inventory candidates**. Sixteen
 5. [Publisher-claimed story timeline](results/judging/05-story-timeline.png)
 6. [Cached source evidence and date-only precision](results/judging/06-source-evidence.png)
 7. [Unresolved details](results/judging/07-unresolved.png)
-8. [Optional technical-results panel (separate historical experiment)](results/judging/08-technical-results.png) — only if asked about multilingual data
+8. [JSON import flow](results/judging/08-import-flow.png)
+9. [Optional technical-results panel (separate historical experiment)](results/judging/08-technical-results.png) — only if asked about multilingual data
 
 If the browser demo is unavailable, advance through these images while giving the same narration. Do not present the screenshots as live news or a complete historical coverage record.
 
@@ -106,11 +109,11 @@ If the browser demo is unavailable, advance through these images while giving th
 
 ## If asked about multilingual or historical data
 
-Expand the collapsed **04 Technical results** panel at the bottom of the page (not in the navigation). Say: “Separately, we verified six translated GDELT GKG files — 14,725 records with 60 reported source-language code values — and manual review confirmed several non-English article bodies. That shows usable multilingual historical data exists. It does not validate detection: a comparable English denominator is missing and no held-out alert evaluation was run.” Do not connect it to the MSC replay.
+Expand the collapsed **Technical results** panel at the bottom of the investigations home page (not in the navigation). Say: “Separately, we verified six translated GDELT GKG files — 14,725 records with 60 reported source-language code values — and manual review confirmed several non-English article bodies. That shows usable multilingual historical data exists. It does not validate detection: a comparable English denominator is missing and no held-out alert evaluation was run.” Do not connect it to the MSC replay.
 
 ## Verification and audit
 
-**17 tests passed**: 10 data/API tests, 6 browser regressions and the fresh-start offline judging-path test. The fresh run used a new application process via the real CLI entry point and a new browser context. Outbound server connections/DNS and non-local browser requests were denied; loopback HTTP was allowed. No external requests, blocked server attempts or JavaScript errors were recorded. System-wide network settings were not changed.
+**All tests passed**: data/API tests, import/store tests, browser regressions (including a UI-driven import + XSS pass) and the fresh-start offline judging-path test. The fresh run used a new application process via the real CLI entry point and a new browser context. Outbound server connections/DNS and non-local browser requests were denied; loopback HTTP was allowed. No external requests, blocked server attempts or JavaScript errors were recorded. System-wide network settings were not changed.
 
 Run the exact fresh-start judging path using installed Chrome:
 
