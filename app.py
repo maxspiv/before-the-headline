@@ -29,10 +29,15 @@ def _commit():
 STARTED_COMMIT = _commit()
 
 
+def trusted_hosts():
+    extra = os.environ.get('SIGNAL_TRUSTED_HOSTS', '')
+    return ['127.0.0.1', 'localhost'] + [h.strip() for h in extra.split(',') if h.strip()]
+
+
 def create_app(data_dir=None, store=None):
     app = Flask(__name__)
     app.config.update(MAX_CONTENT_LENGTH=MAX_BODY_BYTES,
-                      TRUSTED_HOSTS=['127.0.0.1', 'localhost'])
+                      TRUSTED_HOSTS=trusted_hosts())
     app.json.ensure_ascii = False
     if store is None:
         if data_dir is None:
