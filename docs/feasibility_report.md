@@ -159,7 +159,7 @@ If DOC access remains unreliable, a separately scoped bulk-data/warehouse approa
 - `results/charts/raw_shipping_english.svg`: measured raw timeline, candidate marker, excluded latest bin and gap shading. **Within-language audit only.**
 - `results/charts/shipping.svg`, `semiconductors.svg`, `energy.svg`: shared-grid comparison outputs explicitly withheld because normalization is unavailable.
 - `results/charts/availability.svg`: missing and unverified cells, not a zero-coverage heat map.
-- `results/raw_candidates.json`, `normalization_checks.json`, `coverage_inventory.json`, `api_diagnostics.json`, `audit.json`: machine-readable findings and failed checks.
+- `fixtures/shipping-msc-2026/raw_candidates.json`, `results/normalization_checks.json`, `coverage_inventory.json`, `api_diagnostics.json`, `audit.json`: machine-readable findings and failed checks.
 - `results/article_evidence.json`, `evidence_manifest.json`, `source_manifest.json`, `story_review.json`, `pages/`: linked evidence, sampling/cap warnings, fetch outcomes, manual judgments and extracted page text.
 - `cache/<SHA256(request URL)>/<attempt timestamp>.body` and `.json`: fetched API/documentation/article response bytes, URL, HTTP status/headers, retrieval time, errors and SHA-256; previous attempts retained. Redirect responses encountered by the final fetcher are also cached. `results/cache_manifest.json` audits all cached body hashes. Web search was used only to discover external URLs; those pages were then fetched into this cache and kept separate from GDELT evidence.
 

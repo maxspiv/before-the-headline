@@ -549,7 +549,7 @@ def validate_packages(offline=False):
         if not row['older_than_seven_days']:
             raise RuntimeError('Downloaded dependency is too new; do not install: ' + path.name)
     runtime = [r for r in rows if r['name'].lower() not in ('pip', 'setuptools', 'wheel')]
-    target = ROOT / 'requirements-language.txt'
+    target = ROOT / 'research' / 'requirements-language.txt'
     target.write_text('\n'.join(sorted(r['name'] + '==' + r['version'] for r in runtime)) + '\n')
     print(json.dumps({'verified_packages': len(rows), 'cached_package_bytes': sum(r['bytes'] for r in rows), 'requirements': str(target)}, indent=2))
 

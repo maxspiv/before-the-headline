@@ -9,8 +9,8 @@
   "server_events": [
     {
       "kind": "fresh_process",
-      "pid": 14916,
-      "entrypoint": "app.main --port 52407"
+      "pid": 24769,
+      "entrypoint": "app.main --port 42859"
     }
   ],
   "walkthrough_card_counts": [
@@ -33,7 +33,7 @@
     {
       "file": "00-home.png",
       "caption": "Investigations home: bundled shipping case, filter box and JSON import panel.",
-      "sha256": "4cf8d52632629ea25af6f79a2d513ba39557020acbeec5a31402d44b1f30cf6c"
+      "sha256": "8fe1054b274f5580d65f45f8d47f4dc1bee088861eee9ca696bfcf7c9a9dbb81"
     },
     {
       "file": "01-workspace.png",
@@ -63,7 +63,7 @@
     {
       "file": "06-source-details.png",
       "caption": "Cached source excerpt, date-only precision, provenance and direction notes; no external link opened.",
-      "sha256": "7bc2d3105370890fd9cbbc5ce2306cebb334cba7987386f1a704a2331ed5b056"
+      "sha256": "9a441ed23468dd5c03daf80edccb8081331279b184e6934115dc3e949f52d1fd"
     },
     {
       "file": "07-notes.png",
@@ -73,7 +73,7 @@
     {
       "file": "08-import.png",
       "caption": "Investigation imported via JSON paste: second card shows Imported badge; removal restores a clean list.",
-      "sha256": "99e57e5ab4794a620fa2fbf7c094e2d71d93fd707682e214c534ed519efa21ca"
+      "sha256": "49870a74d6f0b77edbb7fdcc14eb886219bd0fc5b3dfa5d69db35e56a6c2449c"
     }
   ]
 }

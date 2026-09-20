@@ -31,6 +31,7 @@ class DemoBrowserTests(unittest.TestCase):
         cls.playwright.stop()
 
     def setUp(self):
+        (ROOT / 'results').mkdir(exist_ok=True)
         self.context = self.browser.new_context(viewport={'width': 1440, 'height': 1000}, reduced_motion='reduce')
         self.external_requests, self.errors = [], []
         def local_only(route):
